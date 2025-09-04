@@ -1,10 +1,7 @@
 import SearchBar from "../components/SearchBar";
 import HamburgerMenu from "../components/HamburgerMenu";
-import RegisterIcon from "../assets/register.svg";
-import LoginIcon from "../assets/login.svg";
-import LanguagesIcon from "../assets/languages.svg";
 
-export default function Header() {
+export default function Header({ onMenuClick, sidebarOpen }) {
 	return (
 		<>
 			<header className="bg-[#1B2039] flex justify-between items-center px-4 py-2 lg:py-4">
@@ -23,22 +20,26 @@ export default function Header() {
 					</p>
 					<img
 						className="hidden md:block"
-						src={LanguagesIcon}
+						src="/icons/languages.svg"
 						alt="Languages"
 					/>
-					<button className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3BC8E7] md:h-auto md:w-auto md:rounded-full md:px-6 md:py-1">
-						<img className="md:hidden" src={RegisterIcon} alt="Register" />
+					<button className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3BC8E7] md:h-auto md:w-auto md:rounded-full md:px-6 md:py-1 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,200,231,0.7)]">
+						<img
+							className="md:hidden"
+							src="/icons/register.svg"
+							alt="Register"
+						/>
 						<span className="hidden text-sm font-medium text-white md:!inline">
 							Register
 						</span>
 					</button>
-					<button className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3BC8E7] md:h-auto md:w-auto md:rounded-full md:px-6 md:py-1">
-						<img className="md:hidden" src={LoginIcon} alt="Login" />
+					<button className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3BC8E7] md:h-auto md:w-auto md:rounded-full md:px-6 md:py-1 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,200,231,0.7)]">
+						<img className="md:hidden" src="/icons/login.svg" alt="Login" />
 						<span className="hidden text-sm font-medium text-white md:!inline">
 							Login
 						</span>
 					</button>
-					<HamburgerMenu />
+					<HamburgerMenu onClick={onMenuClick} isOpen={sidebarOpen} />
 				</div>
 			</header>
 		</>
