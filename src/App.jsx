@@ -1,9 +1,27 @@
+import { useState } from "react";
+
+import Header from "./layouts/Header";
+import Footer from "./layouts/Footer";
+import Sidebar from "./components/Sidebar";
+import Homepage from "./pages/Homepage";
+
 function App() {
-  return (
-    <>
-      <h1>Base React</h1>
-    </>
-  );
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+
+	const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+	const closeSidebar = () => setSidebarOpen(false);
+
+	return (
+		<>
+			<Sidebar isOpen={sidebarOpen} handleClick={toggleSidebar} />
+
+			<Header onMenuClick={toggleSidebar} sidebarOpen={sidebarOpen} />
+			<main>
+				<Homepage />
+			</main>
+			<Footer />
+		</>
+	);
 }
 
 export default App;
