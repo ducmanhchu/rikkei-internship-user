@@ -9,14 +9,13 @@ function App() {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-	const closeSidebar = () => setSidebarOpen(false);
 
 	return (
 		<>
 			<Sidebar isOpen={sidebarOpen} handleClick={toggleSidebar} />
 
 			<Header onMenuClick={toggleSidebar} sidebarOpen={sidebarOpen} />
-			<main>
+			<main className="lg:px-8">
 				<Homepage />
 			</main>
 			<Footer />
