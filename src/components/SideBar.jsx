@@ -23,7 +23,7 @@ export default function Sidebar({ isOpen, handleClick }) {
 		<>
 			<aside
 				className={`
-                    fixed top-0 left-0 h-screen w-48 z-10 bg-[#1B2039] transform transition-transform duration-300 ease-in-out
+                    fixed top-0 left-0 h-screen w-48 z-100 bg-[#1B2039] transform transition-transform duration-300 ease-in-out
                     ${isOpen ? "translate-x-0" : "-translate-x-full"}
                 `}
 			>

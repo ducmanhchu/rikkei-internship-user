@@ -9,7 +9,7 @@ import PillButton from "../components/PillButton";
 export default function Footer() {
 	return (
 		<>
-			<footer className="relative bottom-0 w-full py-4 bg-gradient-to-r from-[#14182A] from-3% via-sky-800/90 via-50% to-[#14182A] to-97%">
+			<footer className="relative bottom-0 w-full px-8 py-4 bg-gradient-to-r from-[#14182A] from-3% via-sky-800/90 via-50% to-[#14182A] to-97%">
 				<img
 					className="mx-auto w-24 pt-4 pb-8"
 					src={MiraculousLogo}
