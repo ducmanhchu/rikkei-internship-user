@@ -1,23 +1,38 @@
-import { useState } from "react";
+import { useLocation, Link } from "react-router-dom";
+
 import MiraculousLogo from "../assets/miraculous.svg";
 
 export default function Sidebar({ isOpen, handleClick }) {
-	const [activeIndex, setActiveIndex] = useState(0);
+	const location = useLocation();
 
 	const menuItems = [
-		{ icon: "/icons/home.svg", label: "Discover" },
-		{ icon: "/icons/albums.svg", label: "Albums" },
-		{ icon: "/icons/artists.svg", label: "Artists" },
-		{ icon: "/icons/genres.svg", label: "Genres" },
-		{ icon: "/icons/toptracks.svg", label: "Top Tracks" },
-		{ icon: "/icons/download.svg", label: "Downloads" },
-		{ icon: "/icons/favourite.svg", label: "Favourites" },
-		{ icon: "/icons/history.svg", label: "History" },
+		{ id: 0, icon: "/icons/home.svg", label: "Discover", path: "/" },
+		{ id: 1, icon: "/icons/albums.svg", label: "Albums", path: "/albums" },
+		{ id: 2, icon: "/icons/artists.svg", label: "Artists", path: "/artists" },
+		{ id: 3, icon: "/icons/genres.svg", label: "Genres", path: "/genres" },
+		{
+			id: 4,
+			icon: "/icons/toptracks.svg",
+			label: "Top Tracks",
+			path: "/top-tracks",
+		},
 	];
 
-	const handleMenuClick = (index) => {
-		setActiveIndex(index);
-	};
+	const additionalMenuItems = [
+		{
+			id: 5,
+			icon: "/icons/download.svg",
+			label: "Downloads",
+			path: "/downloads",
+		},
+		{
+			id: 6,
+			icon: "/icons/favourite.svg",
+			label: "Favourites",
+			path: "/favourites",
+		},
+		{ id: 7, icon: "/icons/history.svg", label: "History", path: "/history" },
+	];
 
 	return (
 		<>
@@ -32,27 +47,52 @@ export default function Sidebar({ isOpen, handleClick }) {
 				</div>
 
 				<nav className="py-4">
-					{menuItems.map((item, index) => (
-						<button
-							key={index}
-							className={`
-                                w-full flex items-center gap-4 px-6 py-3 text-left transition-colors duration-200
-                                ${
-																	activeIndex === index
-																		? "bg-[#3BC8E7] text-white"
-																		: "text-gray-300 hover:bg-gray-700 hover:text-white"
-																}
-                            `}
-							onClick={() => handleMenuClick(index)}
-						>
-							<img
-								className="w-5 h-5 flex-shrink-0"
-								src={item.icon}
-								alt={item.label}
-							/>
-							<span className="font-medium leading-5">{item.label}</span>
-						</button>
-					))}
+					<div className="px-2 mb-10">
+						{menuItems.map((item) => (
+							<Link
+								key={item.path}
+								to={item.path}
+								className={`
+									w-full flex items-center gap-4 px-6 py-3 text-left transition-colors duration-200 border-b border-gray-700
+									${
+										location.pathname === item.path
+											? "bg-[#3BC8E7] text-white"
+											: "text-gray-300 hover:bg-gray-700 hover:text-white"
+									}
+								`}
+							>
+								<img
+									className="w-5 h-5 flex-shrink-0"
+									src={item.icon}
+									alt={item.label}
+								/>
+								<span className="pt-2 leading-5">{item.label}</span>
+							</Link>
+						))}
+					</div>
+					<div className="px-2">
+						{additionalMenuItems.map((item) => (
+							<Link
+								key={item.path}
+								to={item.path}
+								className={`
+									w-full flex items-center gap-4 px-6 py-3 text-left transition-colors duration-200 border-b border-gray-700
+									${
+										location.pathname === item.path
+											? "bg-[#3BC8E7] text-white"
+											: "text-gray-300 hover:bg-gray-700 hover:text-white"
+									}
+								`}
+							>
+								<img
+									className="w-5 h-5 flex-shrink-0"
+									src={item.icon}
+									alt={item.label}
+								/>
+								<span className="pt-2 leading-5">{item.label}</span>
+							</Link>
+						))}
+					</div>
 				</nav>
 
 				<button
