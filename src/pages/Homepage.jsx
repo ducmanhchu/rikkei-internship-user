@@ -140,7 +140,7 @@ export default function Homepage() {
 					<p className="text-[#3BC8E7] text-md">Recently Played</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md">View More</p>
+				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={draftAlbums} />
@@ -161,7 +161,7 @@ export default function Homepage() {
 					<p className="text-[#3BC8E7] text-md">Featured Artists</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md">View More</p>
+				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={draftAlbums} />
@@ -172,7 +172,7 @@ export default function Homepage() {
 					<p className="text-[#3BC8E7] text-md">New Releases</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md">View More</p>
+				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={draftSongs} isNewSongs />
@@ -183,7 +183,7 @@ export default function Homepage() {
 					<p className="text-[#3BC8E7] text-md">Featured Albums</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md">View More</p>
+				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={draftAlbums} />
@@ -194,7 +194,7 @@ export default function Homepage() {
 					<p className="text-[#3BC8E7] text-md">Top Genres</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md">View More</p>
+				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
 				{draftGenres.map((item) => (

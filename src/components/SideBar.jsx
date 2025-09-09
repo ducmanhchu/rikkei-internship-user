@@ -36,9 +36,13 @@ export default function Sidebar({ isOpen, handleClick }) {
 
 	return (
 		<>
+			{isOpen && (
+				<div className="fixed inset-0 bg-black/20 z-40" onClick={handleClick} />
+			)}
+
 			<aside
 				className={`
-                    fixed top-0 left-0 h-screen w-48 z-100 bg-[#1B2039] transform transition-transform duration-300 ease-in-out
+                    fixed top-0 left-0 h-screen w-48 z-50 bg-[#1B2039] transform transition-transform duration-300 ease-in-out
                     ${isOpen ? "translate-x-0" : "-translate-x-full"}
                 `}
 			>
@@ -102,7 +106,10 @@ export default function Sidebar({ isOpen, handleClick }) {
 					<img
 						src="/icons/arrow.svg"
 						alt="Close sidebar"
-						className={`${!isOpen && "lg:rotate-180"}`}
+						className={`${
+							!isOpen &&
+							"lg:rotate-180 lg:transition-rotate lg:esease-in-out lg:duration-300"
+						}`}
 					/>
 				</button>
 			</aside>
