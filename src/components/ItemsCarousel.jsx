@@ -23,26 +23,20 @@ export default function ItemsCarousel({ items, isNewSongs }) {
 
 	const translateX = -(currentIndex * (100 / itemsPerView));
 
-	const handlePrev = (e) => {
-		if (currentIndex === 0) {
-			e.target.disabled = true;
-		} else {
-			setCurrentIndex((prev) => prev - 1);
-		}
+	const handlePrev = () => {
+		setCurrentIndex((prev) => prev - 1);
 	};
 
-	const handleNext = (e) => {
-		if (currentIndex === items.length - itemsPerView) {
-			e.target.disabled = true;
-		} else {
-			setCurrentIndex((prev) => prev + 1);
-		}
+	const handleNext = () => {
+		setCurrentIndex((prev) => prev + 1);
 	};
 
 	return (
 		<div className="relative mx-8">
 			<button
-				className="absolute left-0 top-1/2 z-20 rounded-full bg-transparent cursor-pointer transition-all hover:scale-150"
+				className={`absolute left-0 top-1/2 z-20 rounded-full bg-transparent cursor-pointer transition-all hover:scale-150 ${
+					currentIndex === 0 ? "invisible" : "visible"
+				}`}
 				onClick={handlePrev}
 			>
 				<img className="w-4" src="/icons/arrow.svg" alt="Previous" />
@@ -78,7 +72,9 @@ export default function ItemsCarousel({ items, isNewSongs }) {
 			</div>
 
 			<button
-				className="absolute right-0 top-1/2 z-20 rounded-full bg-transparent cursor-pointer transition-all hover:scale-150"
+				className={`absolute right-0 top-1/2 z-20 rounded-full bg-transparent cursor-pointer transition-all hover:scale-150 ${
+					currentIndex === items.length - itemsPerView ? "invisible" : "visible"
+				}`}
 				onClick={handleNext}
 			>
 				<img className="w-4 rotate-180" src="/icons/arrow.svg" alt="Next" />

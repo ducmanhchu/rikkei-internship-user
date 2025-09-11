@@ -108,7 +108,7 @@ export default function Sidebar({ isOpen, handleClick }) {
 						alt="Close sidebar"
 						className={`${
 							!isOpen &&
-							"lg:rotate-180 lg:transition-rotate lg:esease-in-out lg:duration-300"
+							"lg:rotate-180 lg:transition-transform lg:ease-in-out lg:duration-300"
 						}`}
 					/>
 				</button>
