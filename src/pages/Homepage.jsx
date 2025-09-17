@@ -1,3 +1,7 @@
+import { useState, useEffect } from "react";
+import { songService } from "../services/song";
+import { useSelector } from "react-redux";
+
 import banner from "../assets/banner.png";
 import PillButton from "../components/PillButton";
 import ItemsCarousel from "../components/ItemsCarousel";
@@ -5,114 +9,28 @@ import WeeklySong from "../components/WeeklySong";
 import GenreCard from "../components/GenreCard";
 
 export default function Homepage() {
-	const draftAlbums = [
-		{
-			id: 1,
-			title: "Album One",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 2,
-			title: "Album Two",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 3,
-			title: "Album Three",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 4,
-			title: "Album Four",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 5,
-			title: "Album Five",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 6,
-			title: "Album Six",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 7,
-			title: "Album Seven",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 8,
-			title: "Album Eight",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 9,
-			title: "Album Nine",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-	];
-	const draftSongs = [
-		{
-			id: 1,
-			title: "Song One",
-			artist: "Artist A",
-			duration: "3:45",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 2,
-			title: "Song Two",
-			artist: "Artist B",
-			duration: "3:45",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 3,
-			title: "Song Three",
-			artist: "Artist C",
-			duration: "3:45",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 4,
-			title: "Song Four",
-			artist: "Artist D",
-			duration: "3:45",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 5,
-			title: "Song Five",
-			artist: "Artist E",
-			duration: "3:45",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 6,
-			title: "Song Six",
-			artist: "Artist F",
-			duration: "3:45",
-			cover_image: "/images/album1.png",
-		},
-	];
-	const draftGenres = [
-		{ id: 1, name: "Pop", cover_image: "/images/genre1.png" },
-		{ id: 2, name: "Rock", cover_image: "/images/genre1.png" },
-		{ id: 3, name: "Jazz", cover_image: "/images/genre1.png" },
-		{ id: 4, name: "Classical", cover_image: "/images/genre1.png" },
-		{ id: 5, name: "Hip Hop", cover_image: "/images/genre1.png" },
-		{ id: 6, name: "Country", cover_image: "/images/genre1.png" },
-	];
+	const { isLogin } = useSelector((state) => state.auth);
+
+	const [recentlyPlayed, setRecentlyPlayed] = useState([]);
+	const [weeklySongs, setWeeklySongs] = useState([]);
+	const [featuredArtists, setFeaturedArtists] = useState([]);
+	const [newReleases, setNewReleases] = useState([]);
+	const [featuredAlbums, setFeaturedAlbums] = useState([]);
+	const [topGenres, setTopGenres] = useState([]);
+
+	useEffect(() => {
+		const fetchRecentlyPlayed = async () => {
+			try {
+				const response = await songService.getRecentlyPlayed();
+				if (response.success) {
+					setRecentlyPlayed(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching recently played:", error);
+			}
+		};
+		fetchRecentlyPlayed();
+	}, []);
 
 	return (
 		<>
@@ -135,23 +53,27 @@ export default function Homepage() {
 				</div>
 			</div>
 
-			<div className="flex justify-between mb-6 mx-8">
-				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">Recently Played</p>
-					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
-				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
-			</div>
-			<div className="mb-14">
-				<ItemsCarousel items={draftAlbums} />
-			</div>
+			{isLogin && (
+				<>
+					<div className="flex justify-between mb-6 mx-8">
+						<div className="flex flex-col">
+							<p className="text-[#3BC8E7] text-md">Recently Played</p>
+							<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+						</div>
+						<p className="text-white text-md cursor-pointer">View More</p>
+					</div>
+					<div className="mb-14">
+						<ItemsCarousel items={recentlyPlayed} />
+					</div>
+				</>
+			)}
 
 			<div className="mb-6 mx-8">
 				<p className="text-[#3BC8E7] text-md">Weekly Top 15</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 			</div>
 			<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
-				{draftSongs.map((song, index) => (
+				{weeklySongs.map((song, index) => (
 					<WeeklySong key={song.id} song={song} index={index} />
 				))}
 			</div>
@@ -164,7 +86,7 @@ export default function Homepage() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={draftAlbums} />
+				<ItemsCarousel items={featuredArtists} />
 			</div>
 
 			<div className="flex justify-between mb-6 mx-8">
@@ -175,7 +97,7 @@ export default function Homepage() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={draftSongs} isNewSongs />
+				<ItemsCarousel items={newReleases} isNewSongs />
 			</div>
 
 			<div className="flex justify-between mb-6 mx-8">
@@ -186,7 +108,7 @@ export default function Homepage() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={draftAlbums} />
+				<ItemsCarousel items={featuredAlbums} />
 			</div>
 
 			<div className="flex justify-between mb-6 mx-8">
@@ -197,13 +119,8 @@ export default function Homepage() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
-				{draftGenres.map((item) => (
-					<GenreCard
-						key={item.id}
-						genre={item}
-						additionalClass="w-full h-32"
-						onClick={(g) => console.log("Clicked genre:", g.name)}
-					/>
+				{topGenres.map((item) => (
+					<GenreCard key={item.id} genre={item} additionalClass="w-full h-32" />
 				))}
 			</div>
 		</>

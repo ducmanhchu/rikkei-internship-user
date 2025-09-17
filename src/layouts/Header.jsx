@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { logout } from "../redux/authSlice";
+import { clearPlayer } from "../redux/playerSlice";
 import { authService } from "../services/auth";
 import SearchBar from "../components/SearchBar";
 import HamburgerMenu from "../components/HamburgerMenu";
@@ -16,6 +17,7 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 		try {
 			await authService.logout(token);
 			dispatch(logout());
+			dispatch(clearPlayer());
 			setShowDropdown(false);
 		} catch (error) {
 			console.error("Logout error:", error);

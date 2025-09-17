@@ -19,7 +19,7 @@ export const authService = {
 				return {
 					success: true,
 					data: response.data.data,
-					message: "Login successful",
+					message: response.data.message || "Login successful",
 				};
 			}
 

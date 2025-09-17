@@ -9,6 +9,7 @@ import TopTracks from "../pages/TopTracks";
 import History from "../pages/History";
 import Downloads from "../pages/Downloads";
 import Favourites from "../pages/Favourites";
+import AlbumDetail from "../pages/AlbumDetail";
 
 export const router = createBrowserRouter([
 	{
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
 			{
 				path: "favourites",
 				element: <Favourites />,
+			},
+			{
+				path: "albums/:albumID",
+				element: <AlbumDetail />,
 			},
 		],
 	},

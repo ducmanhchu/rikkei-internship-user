@@ -5,6 +5,7 @@ import Header from "./layouts/Header";
 import Footer from "./layouts/Footer";
 import Sidebar from "./components/SideBar";
 import AuthModal from "./components/AuthModal";
+import Player from "./components/Player";
 
 function App() {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -31,10 +32,11 @@ function App() {
 				sidebarOpen={sidebarOpen}
 				onAuthClick={handleAuthClick}
 			/>
-			<main className="lg:px-8">
+			<main className="lg:px-8 pb-20">
 				<Outlet />
 			</main>
 			<Footer />
+			<Player />
 
 			<AuthModal
 				isOpen={authModalOpen}

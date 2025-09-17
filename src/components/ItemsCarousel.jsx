@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import AlbumCard from "./AlbumCard";
-import NewSongCard from "./NewSongCard";
+import SongCard from "./SongCard";
 
-export default function ItemsCarousel({ items, isNewSongs }) {
+export default function ItemsCarousel({ items, isSong }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [itemsPerView, setItemsPerView] = useState(1);
 
@@ -10,7 +10,7 @@ export default function ItemsCarousel({ items, isNewSongs }) {
 		const updateItemsPerView = () => {
 			const width = window.innerWidth;
 			if (width >= 1024) {
-				if (isNewSongs) setItemsPerView(4);
+				if (isSong) setItemsPerView(4);
 				else setItemsPerView(6);
 			} else if (width >= 768) setItemsPerView(2);
 			else setItemsPerView(1);
@@ -49,7 +49,7 @@ export default function ItemsCarousel({ items, isNewSongs }) {
 						transform: `translateX(${translateX}%)`,
 					}}
 				>
-					{!isNewSongs
+					{!isSong
 						? items.map((album) => (
 								<div
 									key={album.id}
@@ -65,7 +65,7 @@ export default function ItemsCarousel({ items, isNewSongs }) {
 									className="flex-shrink-0"
 									style={{ width: `${100 / itemsPerView}%` }}
 								>
-									<NewSongCard song={song} />
+									<SongCard song={song} />
 								</div>
 						  ))}
 				</div>

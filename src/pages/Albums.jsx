@@ -1,63 +1,10 @@
+import { useState, useEffect } from "react";
+
 import ItemsCarousel from "../components/ItemsCarousel";
 import WeeklySong from "../components/WeeklySong";
+import { albumService } from "../services/album";
 
 export default function Albums() {
-	const draftAlbums = [
-		{
-			id: 1,
-			title: "Album One",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 2,
-			title: "Album Two",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 3,
-			title: "Album Three",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 4,
-			title: "Album Four",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 5,
-			title: "Album Five",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 6,
-			title: "Album Six",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 7,
-			title: "Album Seven",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 8,
-			title: "Album Eight",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 9,
-			title: "Album Nine",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-	];
 	const draftSongs = [
 		{
 			id: 1,
@@ -102,6 +49,22 @@ export default function Albums() {
 			cover_image: "/images/album1.png",
 		},
 	];
+	const [albums, setAlbums] = useState([]);
+
+	useEffect(() => {
+		const fetchALbums = async () => {
+			try {
+				const response = await albumService.getAllAlbums();
+				if (response.success) {
+					setAlbums(response.data.content);
+				}
+			} catch (error) {
+				console.error("Error fetching albums:", error);
+			}
+		};
+		fetchALbums();
+	}, []);
+	console.log("Fetched albums:", albums);
 
 	return (
 		<>
@@ -113,7 +76,7 @@ export default function Albums() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={draftAlbums} />
+				<ItemsCarousel items={albums} />
 			</div>
 
 			<div className="flex justify-between my-6 mx-8">
@@ -124,7 +87,7 @@ export default function Albums() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={draftAlbums} />
+				<ItemsCarousel items={albums} />
 			</div>
 
 			<div className="mb-6 mx-8">
@@ -145,7 +108,7 @@ export default function Albums() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={draftAlbums} />
+				<ItemsCarousel items={albums} />
 			</div>
 
 			<div className="flex justify-between my-6 mx-8">
