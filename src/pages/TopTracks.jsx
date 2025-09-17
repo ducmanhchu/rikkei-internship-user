@@ -1,4 +1,4 @@
-import WeeklySong from "../components/WeeklySong";
+import WeeklyItem from "../components/WeeklyItem";
 import ItemsCarousel from "../components/ItemsCarousel";
 
 export default function TopTracks() {
@@ -113,7 +113,7 @@ export default function TopTracks() {
 			</div>
 			<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
 				{draftSongs.map((song, index) => (
-					<WeeklySong key={song.id} song={song} index={index} />
+					<WeeklyItem key={song.id} song={song} index={index} isSong />
 				))}
 			</div>
 

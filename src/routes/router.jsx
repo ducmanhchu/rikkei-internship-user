@@ -10,6 +10,7 @@ import History from "../pages/History";
 import Downloads from "../pages/Downloads";
 import Favourites from "../pages/Favourites";
 import AlbumDetail from "../pages/AlbumDetail";
+import ArtistDetail from "../pages/ArtistDetail";
 
 export const router = createBrowserRouter([
 	{
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
 			{
 				path: "albums/:albumID",
 				element: <AlbumDetail />,
+			},
+			{
+				path: "artists/:artistID",
+				element: <ArtistDetail />,
 			},
 		],
 	},

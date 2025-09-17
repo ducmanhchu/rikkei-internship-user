@@ -16,7 +16,10 @@ apiClient.interceptors.request.use(
 			{ path: "auth/logout", methods: ["POST"] },
 			{ path: "otp/resend-otp", methods: ["POST"] },
 			{ path: "otp/verify-otp", methods: ["POST"] },
-			{ path: "song/:id/view", methods: ["POST"] },
+			{ path: "song/album/:id", methods: ["GET"] },
+			{ path: "genre", methods: ["GET"] },
+			{ path: "user/featured/artists", methods: ["GET"] },
+			{ path: "album/featured", methods: ["GET"] },
 		];
 
 		const isPublicEndpoint = publicEndpoints.some((endpoint) => {

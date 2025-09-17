@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import AlbumCard from "./AlbumCard";
 import SongCard from "./SongCard";
+import ArtistCard from "./ArtistCard";
 
-export default function ItemsCarousel({ items, isSong }) {
+export default function ItemsCarousel({ items, isAlbum, isSong, isArtist }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [itemsPerView, setItemsPerView] = useState(1);
 
@@ -32,7 +33,7 @@ export default function ItemsCarousel({ items, isSong }) {
 	};
 
 	return (
-		<div className="relative mx-8">
+		<div className="relative">
 			<button
 				className={`absolute left-0 top-1/2 z-20 rounded-full bg-transparent cursor-pointer transition-all hover:scale-150 ${
 					currentIndex === 0 ? "invisible" : "visible"
@@ -49,31 +50,45 @@ export default function ItemsCarousel({ items, isSong }) {
 						transform: `translateX(${translateX}%)`,
 					}}
 				>
-					{!isSong
-						? items.map((album) => (
-								<div
-									key={album.id}
-									className="flex-shrink-0"
-									style={{ width: `${100 / itemsPerView}%` }}
-								>
-									<AlbumCard album={album} />
-								</div>
-						  ))
-						: items.map((song) => (
-								<div
-									key={song.id}
-									className="flex-shrink-0"
-									style={{ width: `${100 / itemsPerView}%` }}
-								>
-									<SongCard song={song} />
-								</div>
-						  ))}
+					{isAlbum &&
+						items.map((album, index) => (
+							<div
+								key={album.id || index}
+								className="flex-shrink-0"
+								style={{ width: `${100 / itemsPerView}%` }}
+							>
+								<AlbumCard album={album} />
+							</div>
+						))}
+					{isSong &&
+						items.map((song, index) => (
+							<div
+								key={song.id || index}
+								className="flex-shrink-0"
+								style={{ width: `${100 / itemsPerView}%` }}
+							>
+								<SongCard song={song} />
+							</div>
+						))}
+					{isArtist &&
+						items.map((artist, index) => (
+							<div
+								key={artist.id || index}
+								className="flex-shrink-0"
+								style={{ width: `${100 / itemsPerView}%` }}
+							>
+								<ArtistCard artist={artist} />
+							</div>
+						))}
 				</div>
 			</div>
 
 			<button
 				className={`absolute right-0 top-1/2 z-20 rounded-full bg-transparent cursor-pointer transition-all hover:scale-150 ${
-					currentIndex === items.length - itemsPerView ? "invisible" : "visible"
+					currentIndex === items.length - itemsPerView ||
+					items.length <= itemsPerView
+						? "invisible"
+						: "visible"
 				}`}
 				onClick={handleNext}
 			>

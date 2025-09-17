@@ -10,6 +10,7 @@ import {
 	clearPlayer,
 } from "../redux/playerSlice";
 import apiClient from "../services/http";
+import { songService } from "../services/song";
 
 export default function Player() {
 	const dispatch = useDispatch();
@@ -20,7 +21,8 @@ export default function Player() {
 		(state) => state.player
 	);
 	const listenedTime = useRef(new Set());
-	const submittedRef = useRef(false);
+	const viewSubmittedRef = useRef(false);
+	const historySubmittedRef = useRef(false);
 
 	useEffect(() => {
 		if (audioRef.current && isLogin) {
@@ -38,10 +40,20 @@ export default function Player() {
 		}
 	}, [volume]);
 
+	useEffect(() => {
+		if (currentSong?.id && isLogin && !historySubmittedRef.current) {
+			historySubmittedRef.current = true;
+			songService.playSong(currentSong.id).catch((error) => {
+				console.error("Error submitting to history:", error);
+			});
+		}
+	}, [currentSong?.id]);
+
 	// Reset tracking khi đổi bài
 	useEffect(() => {
 		listenedTime.current = new Set();
-		submittedRef.current = false;
+		viewSubmittedRef.current = false;
+		historySubmittedRef.current = false;
 	}, [currentSong?.id]);
 
 	// Track listened time
@@ -51,16 +63,24 @@ export default function Player() {
 		const currentTime = audioRef.current.currentTime;
 		dispatch(setCurrentTime(currentTime));
 
-		if (currentSong && audioRef.current.duration >= 30) {
+		if (
+			currentSong &&
+			audioRef.current.duration >= 30 &&
+			!viewSubmittedRef.current
+		) {
 			const second = Math.floor(currentTime);
 			listenedTime.current.add(second);
 
-			if (listenedTime.current.size >= 30 && !submittedRef.current) {
-				submittedRef.current = true;
+			if (listenedTime.current.size >= 30) {
+				viewSubmittedRef.current = true;
 				apiClient.post(`/song/${currentSong.id}/view`).catch((error) => {
 					console.error("Error submitting view:", error);
 				});
 			}
+		}
+
+		if (currentTime === audioRef.current.duration) {
+			dispatch(togglePlay());
 		}
 	};
 

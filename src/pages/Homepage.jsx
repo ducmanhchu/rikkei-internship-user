@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { songService } from "../services/song";
 import { useSelector } from "react-redux";
 
+import { songService } from "../services/song";
+import { albumService } from "../services/album";
+import { artistService } from "../services/artist";
 import banner from "../assets/banner.png";
 import PillButton from "../components/PillButton";
 import ItemsCarousel from "../components/ItemsCarousel";
-import WeeklySong from "../components/WeeklySong";
+import WeeklyItem from "../components/WeeklyItem";
 import GenreCard from "../components/GenreCard";
 
 export default function Homepage() {
@@ -29,11 +31,51 @@ export default function Homepage() {
 				console.error("Error fetching recently played:", error);
 			}
 		};
-		fetchRecentlyPlayed();
+
+		const fetchFeaturedAlbums = async () => {
+			try {
+				const response = await albumService.getFeaturedAlbums();
+				if (response.success) {
+					setFeaturedAlbums(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching featured albums:", error);
+			}
+		};
+
+		const fetchWeeklySongs = async () => {
+			try {
+				const response = await songService.getWeeklySongs();
+				if (response.success) {
+					setWeeklySongs(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching weekly songs:", error);
+			}
+		};
+
+		const fetchFeaturedArtists = async () => {
+			try {
+				const response = await artistService.getFeaturedArtists();
+				if (response.success) {
+					setFeaturedArtists(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching featured artists:", error);
+			}
+		};
+
+		if (isLogin) {
+			fetchRecentlyPlayed();
+		}
+
+		fetchWeeklySongs();
+		fetchFeaturedAlbums();
+		fetchFeaturedArtists();
 	}, []);
 
 	return (
-		<>
+		<div className="px-8">
 			<div className="flex flex-col justify-center lg:flex-row lg:justify-stretch mb-4">
 				<img src={banner} alt="Banner" className="w-full h-auto px-4 " />
 				<div className="flex flex-col place-items-center lg:place-items-start lg:justify-center">
@@ -63,7 +105,7 @@ export default function Homepage() {
 						<p className="text-white text-md cursor-pointer">View More</p>
 					</div>
 					<div className="mb-14">
-						<ItemsCarousel items={recentlyPlayed} />
+						<ItemsCarousel items={recentlyPlayed} isAlbum />
 					</div>
 				</>
 			)}
@@ -74,7 +116,7 @@ export default function Homepage() {
 			</div>
 			<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
 				{weeklySongs.map((song, index) => (
-					<WeeklySong key={song.id} song={song} index={index} />
+					<WeeklyItem key={song.id} song={song} index={index} isSong />
 				))}
 			</div>
 
@@ -86,7 +128,7 @@ export default function Homepage() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={featuredArtists} />
+				<ItemsCarousel items={featuredArtists} isArtist />
 			</div>
 
 			<div className="flex justify-between mb-6 mx-8">
@@ -97,7 +139,7 @@ export default function Homepage() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={newReleases} isNewSongs />
+				<ItemsCarousel items={newReleases} isSong />
 			</div>
 
 			<div className="flex justify-between mb-6 mx-8">
@@ -108,7 +150,7 @@ export default function Homepage() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={featuredAlbums} />
+				<ItemsCarousel items={featuredAlbums} isAlbum />
 			</div>
 
 			<div className="flex justify-between mb-6 mx-8">
@@ -123,6 +165,6 @@ export default function Homepage() {
 					<GenreCard key={item.id} genre={item} additionalClass="w-full h-32" />
 				))}
 			</div>
-		</>
+		</div>
 	);
 }

@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setCurrentSong } from "../redux/playerSlice";
+import { secondsToTime } from "../utils";
 
 export default function SongTable({ songs }) {
 	const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export default function SongTable({ songs }) {
 								</div>
 							</td>
 							<td className="text-center flex-none w-20 py-2 px-2">
-								{song.duration}
+								{secondsToTime(song.duration)}
 							</td>
 						</tr>
 					);

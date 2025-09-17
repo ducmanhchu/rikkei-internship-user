@@ -14,7 +14,7 @@ export default function SongCard({ song }) {
 			onClick={handlePlay}
 		>
 			<img
-				className="w-14 rounded-md me-3"
+				className="w-14 aspect-square object-cover rounded-md me-3"
 				src={song.albumImage}
 				alt={song.title}
 			/>

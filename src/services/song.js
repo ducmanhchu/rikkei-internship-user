@@ -45,4 +45,45 @@ export const songService = {
 			);
 		}
 	},
+
+	getWeeklySongs: async () => {
+		try {
+			const response = await apiClient.get("/song/top-weekly");
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to fetch top songs"
+			);
+		}
+	},
+
+	playSong: async (songID) => {
+		try {
+			const response = await apiClient.post(`/song/${songID}/play`);
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(error.response?.data?.message || "Failed to play song");
+		}
+	},
+
+	getSongByArtist: async (artistID) => {
+		try {
+			const response = await apiClient.get(`/song/artist/${artistID}`);
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to fetch songs by artist"
+			);
+		}
+	},
 };

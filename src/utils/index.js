@@ -1,1 +1,5 @@
-// Xây dựng các hàm dùng chung
+export const secondsToTime = (seconds) => {
+	const mins = Math.floor(seconds / 60);
+	const secs = Math.floor(seconds % 60);
+	return `${mins}:${secs.toString().padStart(2, "0")}`;
+};
