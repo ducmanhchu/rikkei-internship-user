@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setCurrentSong } from "../redux/playerSlice";
+import { secondsToTime } from "../utils";
 
 export default function SongCard({ song }) {
 	const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function SongCard({ song }) {
 				<p className="text-lg text-white">{song.title}</p>
 				<p className="text-sm text-[#DEDEDE]">{song.artistName}</p>
 			</div>
-			<p className="text-white">{song.duration}</p>
+			<p className="text-white">{secondsToTime(song.duration)}</p>
 		</article>
 	);
 }

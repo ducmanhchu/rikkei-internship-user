@@ -1,63 +1,38 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
 import PillButton from "../components/PillButton";
 import AlbumCard from "../components/AlbumCard";
+import { songService } from "../services/song";
 
 export default function History() {
-	const draftAlbums = [
-		{
-			id: 1,
-			title: "Album One",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 2,
-			title: "Album Two",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 3,
-			title: "Album Three",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 4,
-			title: "Album Four",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 5,
-			title: "Album Five",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 6,
-			title: "Album Six",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 7,
-			title: "Album Seven",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 8,
-			title: "Album Eight",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-		{
-			id: 9,
-			title: "Album Nine",
-			artist: "Artist A",
-			cover_image: "/images/album1.png",
-		},
-	];
+	const [history, setHistory] = useState([]);
+	const { isLogin } = useSelector((state) => state.auth);
+
+	useEffect(() => {
+		const fetchHistory = async () => {
+			try {
+				const response = await songService.getPlayedHistory();
+
+				if (response.success) {
+					setHistory(response.data);
+					console.log("Fetched history:", response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching history:", error);
+			}
+		};
+	});
+
+	if (!isLogin) {
+		return (
+			<div className="flex justify-center items-center h-screen">
+				<p className="text-gray-400 font-semibold text-xl">
+					Please log in to view your history.
+				</p>
+			</div>
+		);
+	}
 
 	return (
 		<>
@@ -70,7 +45,7 @@ export default function History() {
 			</div>
 
 			<div className="grid mx-8 mb-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-6">
-				{draftAlbums.map((album) => (
+				{history.map((album) => (
 					<AlbumCard key={album.id} album={album} />
 				))}
 			</div>

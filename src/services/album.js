@@ -65,4 +65,18 @@ export const albumService = {
 			throw new Error(errorMessage);
 		}
 	},
+
+	getTop15Albums: async () => {
+		try {
+			const response = await apiClient.get("/album/top15");
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message || "Failed to fetch top 15 albums";
+			throw new Error(errorMessage);
+		}
+	},
 };

@@ -27,15 +27,21 @@ function App() {
 		<>
 			<Sidebar isOpen={sidebarOpen} handleClick={toggleSidebar} />
 
-			<Header
-				onMenuClick={toggleSidebar}
-				sidebarOpen={sidebarOpen}
-				onAuthClick={handleAuthClick}
-			/>
-			<main className="lg:px-8 pb-20">
-				<Outlet />
-			</main>
-			<Footer />
+			<div
+				className={`transition-all duration-300 ${
+					sidebarOpen ? "lg:ml-48" : "lg:ml-16"
+				}`}
+			>
+				<Header
+					onMenuClick={toggleSidebar}
+					sidebarOpen={sidebarOpen}
+					onAuthClick={handleAuthClick}
+				/>
+				<main className="lg:px-8 pb-20">
+					<Outlet />
+				</main>
+				<Footer />
+			</div>
 			<Player />
 
 			<AuthModal

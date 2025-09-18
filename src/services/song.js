@@ -86,4 +86,34 @@ export const songService = {
 			);
 		}
 	},
+
+	getNewSong: async () => {
+		try {
+			const response = await apiClient.get("/song/new-songs");
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to fetch new songs"
+			);
+		}
+	},
+
+	getPlayedHistory: async () => {
+		try {
+			const response = await apiClient.get("/song/my-history");
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to fetch played history"
+			);
+		}
+	},
 };

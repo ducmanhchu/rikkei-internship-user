@@ -65,6 +65,17 @@ export default function Homepage() {
 			}
 		};
 
+		const fetchNewReleases = async () => {
+			try {
+				const response = await songService.getNewSong();
+				if (response.success) {
+					setNewReleases(response.data.reverse());
+				}
+			} catch (error) {
+				console.error("Error fetching new releases:", error);
+			}
+		};
+
 		if (isLogin) {
 			fetchRecentlyPlayed();
 		}
@@ -72,6 +83,7 @@ export default function Homepage() {
 		fetchWeeklySongs();
 		fetchFeaturedAlbums();
 		fetchFeaturedArtists();
+		fetchNewReleases();
 	}, []);
 
 	return (
@@ -116,7 +128,7 @@ export default function Homepage() {
 			</div>
 			<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
 				{weeklySongs.map((song, index) => (
-					<WeeklyItem key={song.id} song={song} index={index} isSong />
+					<WeeklyItem key={song.id} item={song} index={index} isSong />
 				))}
 			</div>
 

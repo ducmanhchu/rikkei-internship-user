@@ -119,7 +119,6 @@ export default function AuthModal({
 				);
 
 				setMessage("Login successful!");
-				console.log("Login result:", result);
 				dispatch(
 					login({ user: result.data.user, token: result.data.accessToken })
 				);
@@ -141,7 +140,6 @@ export default function AuthModal({
 				);
 
 				setMessage(result.message);
-				console.log("Register result:", result);
 
 				setTimeout(() => {
 					setShowOTPModal(true);

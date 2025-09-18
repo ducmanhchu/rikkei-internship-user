@@ -28,7 +28,7 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 
 	return (
 		<>
-			<header className="bg-[#1B2039] flex justify-between items-center px-4 py-2 lg:py-4">
+			<header className="bg-[#1B2039] sticky top-0 z-40 flex justify-between items-center px-4 py-4 h-[65px]">
 				<div className="flex gap-4 items-center">
 					<SearchBar />
 					<p className="text-[15px] text-white font-medium hidden lg:block">
@@ -75,13 +75,23 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 					) : (
 						<div className="relative">
 							<button
-								className="text-white ms-3 rounded-full px-4 border cursor-pointer hover:bg-gray-700"
+								className="ms-4 cursor-pointer"
 								onClick={() => setShowDropdown(!showDropdown)}
 							>
-								{user?.firstName} {user?.lastName}
+								{user.profileImage ? (
+									<img
+										src={user.profileImage}
+										alt="Profile Image"
+										className="w-10 h-10 rounded-full bg-cover hover:scale-105 transition-transform duration-200"
+									/>
+								) : (
+									<p className="text-white rounded-full text-sm lg:text-[16px]">
+										{user?.firstName} {user?.lastName}
+									</p>
+								)}
 							</button>
 							{showDropdown && (
-								<div className="absolute left-2 bg-black mt-1 rounded-md w-full">
+								<div className="absolute w-[175px] right-1 bg-black rounded-md">
 									<button
 										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
 										onClick={handleLogout}

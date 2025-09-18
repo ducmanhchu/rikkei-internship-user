@@ -1,6 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 
 import MiraculousLogo from "../assets/miraculous.svg";
+import MiniMiraculouseLogo from "../assets/mini-miraculous.svg";
 
 export default function Sidebar({ isOpen, handleClick }) {
 	const location = useLocation();
@@ -36,18 +37,22 @@ export default function Sidebar({ isOpen, handleClick }) {
 
 	return (
 		<>
-			{isOpen && (
-				<div className="fixed inset-0 bg-black/20 z-40" onClick={handleClick} />
-			)}
-
 			<aside
 				className={`
-                    fixed top-0 left-0 h-screen w-48 z-50 bg-[#1B2039] transform transition-transform duration-300 ease-in-out
-                    ${isOpen ? "translate-x-0" : "-translate-x-full"}
+                    fixed top-0 left-0 h-screen z-50 bg-[#1B2039] transform transition-all duration-300 ease-out
+                    ${isOpen ? "translate-x-0 w-48" : "w-16 lg:translate-x-0 "}
                 `}
 			>
-				<div className="flex flex-col items-center py-6">
-					<img src={MiraculousLogo} alt="Miraculous" className="w-24" />
+				<div className="flex flex-col items-center">
+					{!isOpen ? (
+						<img
+							src={MiniMiraculouseLogo}
+							alt="Miraculous"
+							className="w-10 pb-2 pt-6"
+						/>
+					) : (
+						<img src={MiraculousLogo} alt="Miraculous" className="w-24 py-6" />
+					)}
 				</div>
 
 				<nav className="py-4">
@@ -57,20 +62,25 @@ export default function Sidebar({ isOpen, handleClick }) {
 								key={item.path}
 								to={item.path}
 								className={`
-									w-full flex items-center gap-4 px-6 py-3 text-left transition-colors duration-200 border-b border-gray-700
+									w-full flex items-center gap-4 text-left transition-all duration-200 border-b border-gray-700 rounded
 									${
 										location.pathname === item.path
 											? "bg-[#3BC8E7] text-white"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white"
 									}
+									${isOpen ? "px-6 py-3" : "p-4"}
 								`}
 							>
 								<img
-									className="w-5 h-5 flex-shrink-0"
+									className={`${isOpen ? "w-5 h-5" : "w-4 h-4 flex-1"}`}
 									src={item.icon}
 									alt={item.label}
 								/>
-								<span className="pt-2 leading-5">{item.label}</span>
+								{isOpen && (
+									<span className="pt-2 leading-5 transition">
+										{item.label}
+									</span>
+								)}
 							</Link>
 						))}
 					</div>
@@ -80,20 +90,21 @@ export default function Sidebar({ isOpen, handleClick }) {
 								key={item.path}
 								to={item.path}
 								className={`
-									w-full flex items-center gap-4 px-6 py-3 text-left transition-colors duration-200 border-b border-gray-700
+									w-full flex items-center gap-4 text-left transition-all duration-200 border-b border-gray-700 rounded-md
 									${
 										location.pathname === item.path
 											? "bg-[#3BC8E7] text-white"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white"
 									}
+									${isOpen ? "px-6 py-3" : "p-4"}
 								`}
 							>
 								<img
-									className="w-5 h-5 flex-shrink-0"
+									className={`${isOpen ? "w-5 h-5" : "w-4 h-4 flex-1"}`}
 									src={item.icon}
 									alt={item.label}
 								/>
-								<span className="pt-2 leading-5">{item.label}</span>
+								{isOpen && <span className="pt-2 leading-5">{item.label}</span>}
 							</Link>
 						))}
 					</div>
