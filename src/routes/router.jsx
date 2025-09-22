@@ -11,6 +11,7 @@ import Downloads from "../pages/Downloads";
 import Favourites from "../pages/Favourites";
 import AlbumDetail from "../pages/AlbumDetail";
 import ArtistDetail from "../pages/ArtistDetail";
+import Profile from "../pages/Profile";
 
 export const router = createBrowserRouter([
 	{
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
 			{
 				path: "artists/:artistID",
 				element: <ArtistDetail />,
+			},
+			{
+				path: "profile",
+				element: <Profile />,
 			},
 		],
 	},

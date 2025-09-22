@@ -21,7 +21,16 @@ export default function TopTracks() {
 			}
 		};
 
-		const fetchTopAllTimeSongs = async () => {};
+		const fetchTopAllTimeSongs = async () => {
+			try {
+				const response = await songService.getTopAllTimeSongs();
+				if (response.success) {
+					setTopAllTimeSongs(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching top all time songs:", error);
+			}
+		};
 
 		const fetchNewSongs = async () => {
 			try {
@@ -61,7 +70,7 @@ export default function TopTracks() {
 				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="mb-14">
-				<ItemsCarousel items={topAllTimeSongs} />
+				<ItemsCarousel items={topAllTimeSongs} isSong />
 			</div>
 
 			<div className="flex justify-between my-6 mx-8">

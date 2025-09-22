@@ -76,6 +76,7 @@ export default function Player() {
 				apiClient.post(`/song/${currentSong.id}/view`).catch((error) => {
 					console.error("Error submitting view:", error);
 				});
+				console.log(`Submitted view for song ID: ${currentSong.id}`);
 			}
 		}
 

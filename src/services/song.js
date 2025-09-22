@@ -16,21 +16,6 @@ export const songService = {
 		}
 	},
 
-	getRecentlyPlayed: async () => {
-		try {
-			const response = await apiClient.get("/song/recently-played");
-
-			return {
-				success: true,
-				data: response.data.data,
-			};
-		} catch (error) {
-			throw new Error(
-				error.response?.data?.error || "Failed to fetch recently played songs"
-			);
-		}
-	},
-
 	increaseViewSong: async (songID) => {
 		try {
 			const response = await apiClient.post(`/song/${songID}/view`);
@@ -113,6 +98,34 @@ export const songService = {
 		} catch (error) {
 			throw new Error(
 				error.response?.data?.message || "Failed to fetch played history"
+			);
+		}
+	},
+
+	getTopAllTimeSongs: async () => {
+		try {
+			const response = await apiClient.get("/song/stat/view");
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to fetch top all time songs"
+			);
+		}
+	},
+
+	getFavouriteSongs: async () => {
+		try {
+			const response = await apiClient.get("/song/favor-song");
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to fetch favourite songs"
 			);
 		}
 	},

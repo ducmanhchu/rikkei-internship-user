@@ -3,19 +3,18 @@ import apiClient from "./http";
 export const authService = {
 	login: async (email, password) => {
 		try {
-			const response = await apiClient.post("/auth/login", {
-				email,
-				password,
-			});
+			const response = await apiClient.post(
+				"/auth/login",
+				{
+					email,
+					password,
+				},
+				{
+					withCredentials: true,
+				}
+			);
 
 			if (response.data && response.data.data) {
-				const { accessToken, user } = response.data.data;
-
-				if (accessToken) {
-					localStorage.setItem("token", accessToken);
-					localStorage.setItem("user", JSON.stringify(user));
-				}
-
 				return {
 					success: true,
 					data: response.data.data,
@@ -30,6 +29,64 @@ export const authService = {
 				error.response?.data?.data ||
 				"Login failed";
 
+			throw new Error(errorMessage);
+		}
+	},
+
+	refreshToken: async () => {
+		try {
+			const response = await apiClient.post(
+				"/auth/refresh",
+				{},
+				{ withCredentials: true }
+			);
+
+			return {
+				success: true,
+				data: response.data.data,
+				message: response.data.message || "Token refreshed successfully",
+			};
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message || "Token refresh failed";
+			throw new Error(errorMessage);
+		}
+	},
+
+	getMe: async () => {
+		try {
+			const response = await apiClient.get("/user", {
+				withCredentials: true,
+			});
+
+			return {
+				success: true,
+				data: response.data.data,
+				message: response.data.message || "User fetched successfully",
+			};
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message || "Fetching user failed";
+			throw new Error(errorMessage);
+		}
+	},
+
+	logout: async () => {
+		try {
+			const response = await apiClient.post(
+				"/auth/logout",
+				{},
+				{
+					withCredentials: true,
+				}
+			);
+
+			return {
+				success: true,
+				message: response.data.message || "Logout successful",
+			};
+		} catch (error) {
+			const errorMessage = error.response?.data?.message || "Logout failed";
 			throw new Error(errorMessage);
 		}
 	},
@@ -51,32 +108,6 @@ export const authService = {
 			const errorMessage =
 				error.response?.data?.message || "Registration failed";
 			throw new Error(errorMessage);
-		}
-	},
-
-	logout: async (token) => {
-		try {
-			if (token) {
-				const response = await apiClient.post(
-					"/auth/logout",
-					{ token },
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
-
-				return {
-					success: true,
-					message: response.data.message || "Logout successful",
-				};
-			}
-		} catch (error) {
-			console.error("Logout error:", error);
-		} finally {
-			localStorage.removeItem("token");
-			localStorage.removeItem("user");
 		}
 	},
 

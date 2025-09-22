@@ -40,7 +40,7 @@ export default function Sidebar({ isOpen, handleClick }) {
 			<aside
 				className={`
                     fixed top-0 left-0 h-screen z-50 bg-[#1B2039] transform transition-all duration-300 ease-out
-                    ${isOpen ? "translate-x-0 w-48" : "w-16 lg:translate-x-0 "}
+                    ${isOpen ? "translate-x-0 w-48" : "w-16"}
                 `}
 			>
 				<div className="flex flex-col items-center">
@@ -48,63 +48,67 @@ export default function Sidebar({ isOpen, handleClick }) {
 						<img
 							src={MiniMiraculouseLogo}
 							alt="Miraculous"
-							className="w-10 pb-2 pt-6"
+							className="w-12 py-6"
 						/>
 					) : (
 						<img src={MiraculousLogo} alt="Miraculous" className="w-24 py-6" />
 					)}
 				</div>
 
-				<nav className="py-4">
+				<nav>
 					<div className="px-2 mb-10">
 						{menuItems.map((item) => (
 							<Link
 								key={item.path}
 								to={item.path}
 								className={`
-									w-full flex items-center gap-4 text-left transition-all duration-200 border-b border-gray-700 rounded
+									w-full flex items-center gap-4 text-left transition-all duration-300 ease-in-out border-b border-gray-700 rounded
 									${
 										location.pathname === item.path
 											? "bg-[#3BC8E7] text-white"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white"
 									}
-									${isOpen ? "px-6 py-3" : "p-4"}
+									${isOpen ? "px-6 py-3" : "p-3"}
 								`}
 							>
 								<img
-									className={`${isOpen ? "w-5 h-5" : "w-4 h-4 flex-1"}`}
+									className="w-5 h-5 shrink-0"
 									src={item.icon}
 									alt={item.label}
 								/>
 								{isOpen && (
-									<span className="pt-2 leading-5 transition">
+									<span className="pt-2 leading-5 transition whitespace-nowrap">
 										{item.label}
 									</span>
 								)}
 							</Link>
 						))}
 					</div>
-					<div className="px-2">
+					<div className="px-2 mb-8">
 						{additionalMenuItems.map((item) => (
 							<Link
 								key={item.path}
 								to={item.path}
 								className={`
-									w-full flex items-center gap-4 text-left transition-all duration-200 border-b border-gray-700 rounded-md
+									w-full flex items-center gap-4 text-left transition-all duration-300 ease-in-out border-b border-gray-700 rounded
 									${
 										location.pathname === item.path
 											? "bg-[#3BC8E7] text-white"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white"
 									}
-									${isOpen ? "px-6 py-3" : "p-4"}
+									${isOpen ? "px-6 py-3" : "p-3"}
 								`}
 							>
 								<img
-									className={`${isOpen ? "w-5 h-5" : "w-4 h-4 flex-1"}`}
+									className="w-5 h-5 shrink-0"
 									src={item.icon}
 									alt={item.label}
 								/>
-								{isOpen && <span className="pt-2 leading-5">{item.label}</span>}
+								{isOpen && (
+									<span className="pt-2 leading-5 transition whitespace-nowrap">
+										{item.label}
+									</span>
+								)}
 							</Link>
 						))}
 					</div>

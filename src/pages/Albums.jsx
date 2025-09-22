@@ -45,9 +45,21 @@ export default function Albums() {
 			}
 		};
 
+		const fetchNewAlbums = async () => {
+			try {
+				const response = await albumService.getNewAlbums();
+				if (response.success) {
+					setNewAlbums(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching new albums:", error);
+			}
+		};
+
 		fetchFeaturedAlbums();
 		fetchFeaturedArtists();
 		fetchTopAlbums();
+		fetchNewAlbums();
 	}, []);
 
 	return (

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { logout } from "../redux/authSlice";
 import { clearPlayer } from "../redux/playerSlice";
@@ -10,12 +11,12 @@ import HamburgerMenu from "../components/HamburgerMenu";
 
 export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 	const dispatch = useDispatch();
-	const { isLogin, user, token } = useSelector((state) => state.auth);
+	const { isLogin, user } = useSelector((state) => state.auth);
 	const [showDropdown, setShowDropdown] = useState(false);
 
 	const handleLogout = async () => {
 		try {
-			await authService.logout(token);
+			await authService.logout();
 			dispatch(logout());
 			dispatch(clearPlayer());
 			setShowDropdown(false);
@@ -92,6 +93,17 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 							</button>
 							{showDropdown && (
 								<div className="absolute w-[175px] right-1 bg-black rounded-md">
+									<Link to="/profile">
+										<button className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700">
+											Profile
+										</button>
+									</Link>
+									<button
+										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+										onClick={() => {}}
+									>
+										Change Password
+									</button>
 									<button
 										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
 										onClick={handleLogout}

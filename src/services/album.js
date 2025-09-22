@@ -79,4 +79,18 @@ export const albumService = {
 			throw new Error(errorMessage);
 		}
 	},
+
+	getNewAlbums: async () => {
+		try {
+			const response = await apiClient.get("/album/new-releases");
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message || "Failed to fetch new albums";
+			throw new Error(errorMessage);
+		}
+	},
 };

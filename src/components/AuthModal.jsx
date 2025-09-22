@@ -119,9 +119,14 @@ export default function AuthModal({
 				);
 
 				setMessage("Login successful!");
-				dispatch(
-					login({ user: result.data.user, token: result.data.accessToken })
-				);
+				if (result.success) {
+					dispatch(
+						login({
+							user: result.data.user,
+							accessToken: result.data.accessToken,
+						})
+					);
+				}
 
 				if (!loading) {
 					onClose();

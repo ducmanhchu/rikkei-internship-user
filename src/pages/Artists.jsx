@@ -12,7 +12,6 @@ export default function Artists() {
 				const response = await artistService.getFeaturedArtists();
 				if (response.success) {
 					setFeaturedArtists(response.data);
-					console.log("Featured Artists:", response.data);
 				}
 			} catch (error) {
 				console.error("Error fetching featured artists:", error);

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { songService } from "../services/song";
 import { albumService } from "../services/album";
 import { artistService } from "../services/artist";
+import { genreService } from "../services/genre";
 import banner from "../assets/banner.png";
 import PillButton from "../components/PillButton";
 import ItemsCarousel from "../components/ItemsCarousel";
@@ -23,7 +24,7 @@ export default function Homepage() {
 	useEffect(() => {
 		const fetchRecentlyPlayed = async () => {
 			try {
-				const response = await songService.getRecentlyPlayed();
+				const response = await songService.getPlayedHistory();
 				if (response.success) {
 					setRecentlyPlayed(response.data);
 				}
@@ -47,7 +48,11 @@ export default function Homepage() {
 			try {
 				const response = await songService.getWeeklySongs();
 				if (response.success) {
-					setWeeklySongs(response.data);
+					if (response.data.length > 15) {
+						setWeeklySongs(response.data.slice(0, 15));
+					} else {
+						setWeeklySongs(response.data);
+					}
 				}
 			} catch (error) {
 				console.error("Error fetching weekly songs:", error);
@@ -76,6 +81,21 @@ export default function Homepage() {
 			}
 		};
 
+		const fetchGenres = async () => {
+			try {
+				const response = await genreService.getAllGenres();
+				if (response.success) {
+					if (response.data.content.length > 6) {
+						setTopGenres(response.data.content.slice(0, 6));
+					} else {
+						setTopGenres(response.data.content);
+					}
+				}
+			} catch (error) {
+				console.error("Error fetching genres:", error);
+			}
+		};
+
 		if (isLogin) {
 			fetchRecentlyPlayed();
 		}
@@ -84,6 +104,7 @@ export default function Homepage() {
 		fetchFeaturedAlbums();
 		fetchFeaturedArtists();
 		fetchNewReleases();
+		fetchGenres();
 	}, []);
 
 	return (

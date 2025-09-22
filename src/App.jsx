@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 import Header from "./layouts/Header";
@@ -6,11 +6,16 @@ import Footer from "./layouts/Footer";
 import Sidebar from "./components/SideBar";
 import AuthModal from "./components/AuthModal";
 import Player from "./components/Player";
+import { authService } from "./services/auth";
+import { useDispatch } from "react-redux";
+import { setAccessToken, setUser } from "./redux/authSlice";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [authModalOpen, setAuthModalOpen] = useState(false);
 	const [authType, setAuthType] = useState("login");
+	const dispatch = useDispatch();
 
 	const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -22,6 +27,22 @@ function App() {
 	const handleAuthSwitch = (newType) => {
 		setAuthType(newType);
 	};
+
+	useEffect(() => {
+		const fetchMe = async () => {
+			try {
+				const response = await authService.getMe();
+
+				if (response.success && response.data) {
+					dispatch(setUser({ user: response.data }));
+				}
+			} catch {
+				dispatch(setAccessToken(null));
+			}
+		};
+
+		fetchMe();
+	}, []);
 
 	return (
 		<>
@@ -39,6 +60,7 @@ function App() {
 				/>
 				<main className="lg:px-8 pb-20">
 					<Outlet />
+					<ScrollToTop />
 				</main>
 				<Footer />
 			</div>

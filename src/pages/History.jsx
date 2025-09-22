@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import PillButton from "../components/PillButton";
-import AlbumCard from "../components/AlbumCard";
 import { songService } from "../services/song";
+import SongCard from "../components/SongCard";
 
 export default function History() {
 	const [history, setHistory] = useState([]);
@@ -16,18 +16,19 @@ export default function History() {
 
 				if (response.success) {
 					setHistory(response.data);
-					console.log("Fetched history:", response.data);
 				}
 			} catch (error) {
 				console.error("Error fetching history:", error);
 			}
 		};
-	});
+
+		if (isLogin) fetchHistory();
+	}, [isLogin]);
 
 	if (!isLogin) {
 		return (
-			<div className="flex justify-center items-center h-screen">
-				<p className="text-gray-400 font-semibold text-xl">
+			<div className="flex justify-center items-center h-[80vh]">
+				<p className="text-gray-500 text-lg">
 					Please log in to view your history.
 				</p>
 			</div>
@@ -44,9 +45,9 @@ export default function History() {
 				<PillButton text={"Clear"} />
 			</div>
 
-			<div className="grid mx-8 mb-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-6">
-				{history.map((album) => (
-					<AlbumCard key={album.id} album={album} />
+			<div className="grid mx-8 mb-10 gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+				{history.map((song) => (
+					<SongCard key={song.id} song={song} />
 				))}
 			</div>
 		</>
