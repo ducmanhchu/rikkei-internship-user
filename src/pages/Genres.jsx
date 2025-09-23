@@ -31,12 +31,7 @@ export default function Genres() {
 			</div>
 			<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
 				{genres.map((item) => (
-					<GenreCard
-						key={item.id}
-						genre={item}
-						additionalClass="w-full h-32"
-						onClick={(g) => console.log("Clicked genre:", g.name)}
-					/>
+					<GenreCard key={item.id} genre={item} additionalClass="w-full h-32" />
 				))}
 			</div>
 		</>

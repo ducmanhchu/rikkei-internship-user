@@ -32,7 +32,7 @@ export default function WeeklyItem({ item, index, isSong }) {
 				<p className="text-[#DEDEDE] text-sm">{item.artistName}</p>
 			</div>
 			{isSong && (
-				<div>
+				<div className="flex gap-2">
 					<p className="text-white">{secondsToTime(item.duration)}</p>
 					<button className="flex gap-0.5 mt-1.5 ms-3 cursor-pointer">
 						<span className="h-0.75 w-0.75 rounded-full bg-white"></span>

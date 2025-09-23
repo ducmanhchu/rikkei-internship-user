@@ -71,11 +71,11 @@ export const authService = {
 		}
 	},
 
-	logout: async () => {
+	logout: async (token) => {
 		try {
 			const response = await apiClient.post(
 				"/auth/logout",
-				{},
+				{ accessToken: token },
 				{
 					withCredentials: true,
 				}

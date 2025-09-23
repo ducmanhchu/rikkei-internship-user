@@ -1,14 +1,12 @@
-export default function GenreCard({ genre, additionalClass, onClick }) {
-	const handleClick = () => {
-		if (onClick) {
-			onClick(genre);
-		}
-	};
+import { useNavigate } from "react-router-dom";
+
+export default function GenreCard({ genre, additionalClass }) {
+	const navigate = useNavigate();
 
 	return (
 		<div
 			className={`relative rounded-lg overflow-hidden cursor-pointer transition-transform duration-200 ${additionalClass}`}
-			onClick={handleClick}
+			onClick={() => navigate(`/genres/${genre.id}`)}
 		>
 			<img
 				src={genre.genreUrl}

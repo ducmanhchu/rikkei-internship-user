@@ -40,7 +40,11 @@ export default function Sidebar({ isOpen, handleClick }) {
 			<aside
 				className={`
                     fixed top-0 left-0 h-screen z-50 bg-[#1B2039] transform transition-all duration-300 ease-out
-                    ${isOpen ? "translate-x-0 w-48" : "w-16"}
+                    ${
+											isOpen
+												? "translate-x-0 w-48"
+												: "-translate-x-full w-16 lg:translate-x-0"
+										}
                 `}
 			>
 				<div className="flex flex-col items-center">

@@ -12,6 +12,7 @@ import Favourites from "../pages/Favourites";
 import AlbumDetail from "../pages/AlbumDetail";
 import ArtistDetail from "../pages/ArtistDetail";
 import Profile from "../pages/Profile";
+import GenreDetail from "../pages/GenreDetail";
 
 export const router = createBrowserRouter([
 	{
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
 			{
 				path: "profile",
 				element: <Profile />,
+			},
+			{
+				path: "genres/:genreID",
+				element: <GenreDetail />,
 			},
 		],
 	},

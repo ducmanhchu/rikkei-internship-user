@@ -1,7 +1,6 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { logout } from "../redux/authSlice";
 import { clearPlayer } from "../redux/playerSlice";
@@ -11,19 +10,20 @@ import HamburgerMenu from "../components/HamburgerMenu";
 
 export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 	const dispatch = useDispatch();
-	const { isLogin, user } = useSelector((state) => state.auth);
+	const navigate = useNavigate();
+	const { isLogin, user, accessToken } = useSelector((state) => state.auth);
 	const [showDropdown, setShowDropdown] = useState(false);
 
 	const handleLogout = async () => {
 		try {
-			await authService.logout();
+			await authService.logout(accessToken);
+		} catch (error) {
+			console.error("Logout error:", error);
+		} finally {
 			dispatch(logout());
 			dispatch(clearPlayer());
 			setShowDropdown(false);
-		} catch (error) {
-			console.error("Logout error:", error);
-			dispatch(logout());
-			setShowDropdown(false);
+			navigate("/");
 		}
 	};
 
@@ -48,7 +48,52 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 						src="/icons/languages.svg"
 						alt="Languages"
 					/>
-					{!isLogin ? (
+					{isLogin && user ? (
+						<div className="relative">
+							<button
+								className="ms-4 cursor-pointer"
+								onClick={() => setShowDropdown(!showDropdown)}
+							>
+								{user.profileImage ? (
+									<img
+										src={user.profileImage}
+										alt="Profile Image"
+										className="w-10 h-10 rounded-full bg-cover hover:scale-105 transition-transform duration-200"
+									/>
+								) : (
+									<p className="text-white rounded-full text-sm lg:text-[16px]">
+										{user?.firstName} {user?.lastName}
+									</p>
+								)}
+							</button>
+							{showDropdown && (
+								<div className="absolute w-[175px] right-1 bg-black rounded-md">
+									<Link to="/profile">
+										<button
+											className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+											onClick={() => setShowDropdown(false)}
+										>
+											Profile
+										</button>
+									</Link>
+									<button
+										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+										onClick={() => {
+											setShowDropdown(false);
+										}}
+									>
+										Change Password
+									</button>
+									<button
+										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+										onClick={handleLogout}
+									>
+										Logout
+									</button>
+								</div>
+							)}
+						</div>
+					) : (
 						<>
 							<button
 								className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3BC8E7] md:h-auto md:w-auto md:rounded-full md:px-6 md:py-1 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,200,231,0.7)] cursor-pointer"
@@ -73,46 +118,6 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 								</span>
 							</button>
 						</>
-					) : (
-						<div className="relative">
-							<button
-								className="ms-4 cursor-pointer"
-								onClick={() => setShowDropdown(!showDropdown)}
-							>
-								{user.profileImage ? (
-									<img
-										src={user.profileImage}
-										alt="Profile Image"
-										className="w-10 h-10 rounded-full bg-cover hover:scale-105 transition-transform duration-200"
-									/>
-								) : (
-									<p className="text-white rounded-full text-sm lg:text-[16px]">
-										{user?.firstName} {user?.lastName}
-									</p>
-								)}
-							</button>
-							{showDropdown && (
-								<div className="absolute w-[175px] right-1 bg-black rounded-md">
-									<Link to="/profile">
-										<button className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700">
-											Profile
-										</button>
-									</Link>
-									<button
-										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
-										onClick={() => {}}
-									>
-										Change Password
-									</button>
-									<button
-										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
-										onClick={handleLogout}
-									>
-										Logout
-									</button>
-								</div>
-							)}
-						</div>
 					)}
 					<HamburgerMenu onClick={onMenuClick} isOpen={sidebarOpen} />
 				</div>

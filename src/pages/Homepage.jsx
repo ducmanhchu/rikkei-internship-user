@@ -105,7 +105,7 @@ export default function Homepage() {
 		fetchFeaturedArtists();
 		fetchNewReleases();
 		fetchGenres();
-	}, []);
+	}, [isLogin]);
 
 	return (
 		<div className="px-8">

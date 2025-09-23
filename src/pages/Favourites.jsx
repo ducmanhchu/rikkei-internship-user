@@ -24,10 +24,17 @@ export default function Favourites() {
 		if (isLogin) fetchFavourites();
 	}, [isLogin]);
 
-	const handleRemoved = (songId) => {
-		setFavouriteSongs((prevSongs) =>
-			prevSongs.filter((song) => song.id !== songId)
-		);
+	const handleRemoved = async (songId) => {
+		try {
+			const response = await songService.removeFavouriteSong(songId);
+			if (response.success) {
+				setFavouriteSongs((prevSongs) =>
+					prevSongs.filter((song) => song.id !== songId)
+				);
+			}
+		} catch (error) {
+			console.error("Error removing favourite song:", error);
+		}
 	};
 
 	if (!isLogin) {
@@ -46,7 +53,7 @@ export default function Favourites() {
 				<p className="text-[#3BC8E7] text-md">Favourites Songs</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 			</div>
-			<UserTable data={favouriteSongs} isFavourite onRemove={handleRemoved} />
+			<UserTable data={favouriteSongs} onRemove={handleRemoved} />
 			{favouriteSongs.length > 10 && (
 				<div className="flex justify-center my-6">
 					<PillButton text="View More" />

@@ -176,4 +176,49 @@ export const songService = {
 			);
 		}
 	},
+
+	getDownloadedSongs: async () => {
+		try {
+			const response = await apiClient.get("/download");
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to fetch downloaded songs"
+			);
+		}
+	},
+
+	downloadSong: async (songID) => {
+		try {
+			const response = await apiClient.post(`/download/${songID}`);
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to download song"
+			);
+		}
+	},
+
+	removeDownloadedSong: async (songID) => {
+		try {
+			const response = await apiClient.delete(`/download/${songID}`);
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to remove downloaded song"
+			);
+		}
+	},
 };
