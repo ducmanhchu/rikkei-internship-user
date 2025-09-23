@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import GenreCard from "../components/GenreCard";
+import GenreCard from "../components/card/GenreCard";
 import { genreService } from "../services/genre";
 
 export default function Genres() {

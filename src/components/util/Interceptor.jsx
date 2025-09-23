@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import apiClient from "../services/http";
-import { authService } from "../services/auth";
-import { setAccessToken } from "../redux/authSlice";
+import apiClient from "../../services/http";
+import { authService } from "../../services/auth";
+import { setAccessToken } from "../../redux/authSlice";
 
 export default function Interceptor() {
 	const accessToken = useSelector((state) => state.auth.accessToken);

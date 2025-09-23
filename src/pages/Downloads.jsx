@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { songService } from "../services/song";
-import PillButton from "../components/PillButton";
-import UserTable from "../components/UserTable";
+import PillButton from "../components/button/PillButton";
+import UserTable from "../components/table/UserTable";
 
 export default function Downloads() {
 	const { isLogin } = useSelector((state) => state.auth);

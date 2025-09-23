@@ -7,7 +7,7 @@ import { clearPlayer } from "../redux/playerSlice";
 import { authService } from "../services/auth";
 import { openModal } from "../redux/modalSlice";
 import SearchBar from "../components/SearchBar";
-import HamburgerMenu from "../components/HamburgerMenu";
+import HamburgerMenu from "../components/button/HamburgerMenu";
 
 export default function Header({ onMenuClick, sidebarOpen }) {
 	const dispatch = useDispatch();

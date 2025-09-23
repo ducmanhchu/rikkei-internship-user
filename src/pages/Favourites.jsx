@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import PillButton from "../components/PillButton";
+import PillButton from "../components/button/PillButton";
+import UserTable from "../components/table/UserTable";
 import { songService } from "../services/song";
-import UserTable from "../components/UserTable";
 
 export default function Favourites() {
 	const isLogin = useSelector((state) => state.auth.isLogin);

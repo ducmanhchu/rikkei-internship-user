@@ -8,8 +8,8 @@ import Player from "./components/Player";
 import Header from "./layouts/Header";
 import Footer from "./layouts/Footer";
 import Sidebar from "./components/SideBar";
-import ScrollToTop from "./components/ScrollToTop";
-import ModalManager from "./components/ModalManager";
+import ScrollToTop from "./components/util/ScrollToTop";
+import ModalManager from "./components/modal/ModalManager";
 
 function App() {
 	const dispatch = useDispatch();

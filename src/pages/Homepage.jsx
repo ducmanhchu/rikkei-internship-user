@@ -6,10 +6,10 @@ import { albumService } from "../services/album";
 import { artistService } from "../services/artist";
 import { genreService } from "../services/genre";
 import banner from "../assets/banner.png";
-import PillButton from "../components/PillButton";
-import ItemsCarousel from "../components/ItemsCarousel";
+import PillButton from "../components/button/PillButton";
+import ItemsCarousel from "../components/util/ItemsCarousel";
 import WeeklyItem from "../components/WeeklyItem";
-import GenreCard from "../components/GenreCard";
+import GenreCard from "../components/card/GenreCard";
 
 export default function Homepage() {
 	const { isLogin } = useSelector((state) => state.auth);

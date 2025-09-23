@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import ArtistCard from "../components/ArtistCard";
+import ArtistCard from "../components/card/ArtistCard";
 import { artistService } from "../services/artist";
 
 export default function Artists() {

@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
-import { setCurrentSong } from "../redux/playerSlice";
 import { useState } from "react";
 
-import { secondsToTime } from "../utils";
+import { setCurrentSong } from "../../redux/playerSlice";
+import { secondsToTime } from "../../utils";
 
 export default function SongCard({ song }) {
 	const dispatch = useDispatch();

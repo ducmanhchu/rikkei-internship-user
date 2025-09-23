@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { songService } from "../services/song";
-import SongTable from "../components/SongTable";
+import SongTable from "../components/table/SongTable";
 
 export default function AlbumDetail() {
 	const { albumID } = useParams();

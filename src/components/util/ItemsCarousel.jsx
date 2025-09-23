@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import AlbumCard from "./AlbumCard";
-import SongCard from "./SongCard";
-import ArtistCard from "./ArtistCard";
+
+import AlbumCard from "../card/AlbumCard";
+import SongCard from "../card/SongCard";
+import ArtistCard from "../card/ArtistCard";
 
 export default function ItemsCarousel({ items, isAlbum, isSong, isArtist }) {
 	const [currentIndex, setCurrentIndex] = useState(0);

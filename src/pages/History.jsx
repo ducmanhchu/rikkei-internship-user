@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import PillButton from "../components/PillButton";
+import PillButton from "../components/button/PillButton";
+import SongCard from "../components/card/SongCard";
 import { songService } from "../services/song";
-import SongCard from "../components/SongCard";
 
 export default function History() {
 	const [history, setHistory] = useState([]);

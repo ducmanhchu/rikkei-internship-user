@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { authService } from "../services/auth";
-import { openModal, closeModal } from "../redux/modalSlice";
+import { authService } from "../../services/auth";
+import { openModal, closeModal } from "../../redux/modalSlice";
 
 export default function OTPModal({ data }) {
 	const dispatch = useDispatch();

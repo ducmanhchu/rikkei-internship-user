@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { openModal, closeModal } from "../redux/modalSlice";
-import { authService } from "../services/auth";
+import { openModal, closeModal } from "../../redux/modalSlice";
+import { authService } from "../../services/auth";
 
 export default function RegisterModal() {
 	const dispatch = useDispatch();

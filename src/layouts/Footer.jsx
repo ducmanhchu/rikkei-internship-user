@@ -3,8 +3,8 @@ import GoogleplayBadge from "../assets/googleplay.png";
 import AppstoreBadge from "../assets/appstore.png";
 import WindowsBadge from "../assets/windows.png";
 
-import LogoButton from "../components/LogoButton";
-import PillButton from "../components/PillButton";
+import LogoButton from "../components/button/LogoButton";
+import PillButton from "../components/button/PillButton";
 
 export default function Footer() {
 	return (

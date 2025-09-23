@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
-import ItemsCarousel from "../components/ItemsCarousel";
-import WeeklyItem from "../components/WeeklyItem";
 import { albumService } from "../services/album";
 import { artistService } from "../services/artist";
+import ItemsCarousel from "../components/util/ItemsCarousel";
+import WeeklyItem from "../components/WeeklyItem";
 
 export default function Albums() {
 	const [featuredAlbums, setFeaturedAlbums] = useState([]);

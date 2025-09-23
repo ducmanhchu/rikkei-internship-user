@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import WeeklyItem from "../components/WeeklyItem";
-import ItemsCarousel from "../components/ItemsCarousel";
+import ItemsCarousel from "../components/util/ItemsCarousel";
 import { songService } from "../services/song";
 
 export default function TopTracks() {

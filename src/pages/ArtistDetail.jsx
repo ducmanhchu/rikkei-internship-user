@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 
 import { albumService } from "../services/album";
 import { songService } from "../services/song";
-import SongTable from "../components/SongTable";
-import ItemsCarousel from "../components/ItemsCarousel";
+import SongTable from "../components/table/SongTable";
+import ItemsCarousel from "../components/util/ItemsCarousel";
 
 export default function ArtistDetail() {
 	const { artistID } = useParams();

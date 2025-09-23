@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { authService } from "../services/auth";
-import ItemsCarousel from "../components/ItemsCarousel";
+import ItemsCarousel from "../components/util/ItemsCarousel";
 
 export default function Profile() {
 	const [profileData, setProfileData] = useState(null);

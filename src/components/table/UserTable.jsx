@@ -1,4 +1,4 @@
-import { secondsToTime } from "../utils";
+import { secondsToTime } from "../../utils";
 
 export default function UserTable({ data, onRemove }) {
 	return (

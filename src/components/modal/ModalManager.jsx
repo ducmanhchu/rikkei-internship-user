@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from "../redux/modalSlice";
+import { closeModal } from "../../redux/modalSlice";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import OTPModal from "./OTPModal";
