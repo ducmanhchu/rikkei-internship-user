@@ -1,6 +1,6 @@
 import ItemsCarousel from "../components/ItemsCarousel";
 import PillButton from "../components/PillButton";
-import Table from "../components/Table";
+import UserTable from "../components/UserTable";
 
 export default function Downloads() {
 	const draftAlbums = [
@@ -110,7 +110,7 @@ export default function Downloads() {
 				<p className="text-[#3BC8E7] text-md">Free Downloads</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 			</div>
-			<Table data={draftSongs} />
+			<UserTable data={draftSongs} />
 			<div className="flex justify-center my-6">
 				<PillButton text="View More" />
 			</div>

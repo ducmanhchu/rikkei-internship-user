@@ -138,7 +138,13 @@ export default function Homepage() {
 						<p className="text-white text-md cursor-pointer">View More</p>
 					</div>
 					<div className="mb-14">
-						<ItemsCarousel items={recentlyPlayed} isAlbum />
+						{recentlyPlayed.length === 0 ? (
+							<p className="text-gray-500 text-md ms-8">
+								No recently played items available.
+							</p>
+						) : (
+							<ItemsCarousel items={recentlyPlayed} isAlbum />
+						)}
 					</div>
 				</>
 			)}

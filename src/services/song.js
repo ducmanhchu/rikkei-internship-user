@@ -102,6 +102,21 @@ export const songService = {
 		}
 	},
 
+	clearHistory: async () => {
+		try {
+			const response = await apiClient.delete("/song/history/clear");
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to clear history"
+			);
+		}
+	},
+
 	getTopAllTimeSongs: async () => {
 		try {
 			const response = await apiClient.get("/song/stat/view");
@@ -118,7 +133,7 @@ export const songService = {
 
 	getFavouriteSongs: async () => {
 		try {
-			const response = await apiClient.get("/song/favor-song");
+			const response = await apiClient.get("/wishlist");
 			return {
 				success: true,
 				data: response.data.data,
@@ -126,6 +141,38 @@ export const songService = {
 		} catch (error) {
 			throw new Error(
 				error.response?.data?.message || "Failed to fetch favourite songs"
+			);
+		}
+	},
+
+	addFavouriteSong: async (songID) => {
+		try {
+			const response = await apiClient.post("/wishlist/add", { id: songID });
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to add favourite song"
+			);
+		}
+	},
+
+	removeFavouriteSong: async (songID) => {
+		try {
+			const response = await apiClient.delete("/wishlist/remove", {
+				data: { id: songID },
+			});
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to remove favourite song"
 			);
 		}
 	},

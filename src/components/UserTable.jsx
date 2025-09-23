@@ -1,4 +1,18 @@
-export default function Table({ data, isFavourite }) {
+import { secondsToTime } from "../utils";
+import { songService } from "../services/song";
+
+export default function UserTable({ data, isFavourite, onRemove }) {
+	const handleRemove = async (songId) => {
+		try {
+			const result = await songService.removeFavouriteSong(songId);
+			if (result.success) {
+				onRemove(songId);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<div className="mx-8">
 			<table className="text-white table-auto w-full border-collapse">
@@ -28,8 +42,10 @@ export default function Table({ data, isFavourite }) {
 								{index < 9 ? `0${index + 1}` : index + 1}
 							</td>
 							<td className={`py-4 px-4`}>{song.title}</td>
-							<td className={`py-4 px-4`}>{song.album}</td>
-							<td className="py-4 px-4 text-gray-300">{song.duration}</td>
+							<td className={`py-4 px-4`}>{song.albumTitle}</td>
+							<td className="py-4 px-4 text-gray-300">
+								{secondsToTime(song.duration)}
+							</td>
 							<td
 								className={`py-4 px-4 text-center ${
 									isFavourite ? "hidden" : ""
@@ -49,6 +65,7 @@ export default function Table({ data, isFavourite }) {
 										src="/icons/remove.svg"
 										alt="Remove from favourite"
 										className="w-5 h-5 opacity-70 hover:opacity-100"
+										onClick={() => handleRemove(song.id)}
 									/>
 								</button>
 							</td>
