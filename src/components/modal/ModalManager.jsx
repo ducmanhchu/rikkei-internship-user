@@ -1,18 +1,42 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+
 import { closeModal } from "../../redux/modalSlice";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import OTPModal from "./OTPModal";
+import AuthReqModal from "./AuthReqModal";
 
 const MODAL_COMPONENTS = {
 	LOGIN_MODAL: LoginModal,
 	REGISTER_MODAL: RegisterModal,
 	OTP_MODAL: OTPModal,
+	AUTH_REQ_MODAL: AuthReqModal,
 };
 
 export default function ModalManager() {
 	const dispatch = useDispatch();
 	const { activeModal, modalData } = useSelector((state) => state.modal);
+
+	useEffect(() => {
+		const body = document.body;
+		if (activeModal) {
+			const scrollbarWidth =
+				window.innerWidth - document.documentElement.clientWidth;
+			if (scrollbarWidth > 0) {
+				body.style.paddingRight = `${scrollbarWidth}px`;
+			}
+			body.style.overflow = "hidden";
+		} else {
+			body.style.overflow = "";
+			body.style.paddingRight = "";
+		}
+
+		return () => {
+			body.style.overflow = "";
+			body.style.paddingRight = "";
+		};
+	}, [activeModal]);
 
 	if (!activeModal || !MODAL_COMPONENTS[activeModal]) return null;
 

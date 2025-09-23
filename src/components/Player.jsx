@@ -7,10 +7,10 @@ import {
 	setVolume,
 	nextSong,
 	previousSong,
-	clearPlayer,
 } from "../redux/playerSlice";
-import apiClient from "../services/http";
+import { openModal } from "../redux/modalSlice";
 import { songService } from "../services/song";
+import apiClient from "../services/http";
 
 export default function Player() {
 	const dispatch = useDispatch();
@@ -48,6 +48,14 @@ export default function Player() {
 			});
 		}
 	}, [currentSong?.id]);
+
+	useEffect(() => {
+		if (!isLogin && currentSong) {
+			dispatch(
+				openModal({ modalName: "AUTH_REQ_MODAL", modalData: currentSong })
+			);
+		}
+	}, [isLogin, currentSong]);
 
 	// Reset tracking khi đổi bài
 	useEffect(() => {
@@ -114,42 +122,7 @@ export default function Player() {
 	}
 
 	if (!isLogin) {
-		return (
-			<div
-				className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4	"
-				onClick={() => dispatch(clearPlayer())}
-			>
-				<div className="flex flex-col gap-6 backdrop-blur-sm rounded-lg p-8 text-center md:flex-row">
-					<img
-						className="w-32 h-32 rounded-lg object-cover mx-auto md:w-42 md:h-42 lg:w-52 lg:h-52"
-						src={currentSong.albumImage}
-						alt={currentSong.title}
-					/>
-
-					<div className="">
-						<div className="mb-6">
-							<h2 className="text-white text-2xl font-bold mb-2 lg:text-3xl">
-								Đăng nhập
-							</h2>
-							<h2 className="text-white text-2xl font-bold mb-2 lg:text-3xl">
-								để nghe ngay
-							</h2>
-						</div>
-
-						<button className="w-full cursor-pointer bg-[#3BC8E7] hover:bg-[#099bbc] text-black font-bold py-3 px-6 rounded-full transition-colors duration-200 text-md">
-							Đăng ký miễn phí
-						</button>
-
-						<div className="text-white text-sm mt-4">
-							Bạn đã có tài khoản?&nbsp;
-							<button className="text-white underline hover:text-gray-300 font-semibold cursor-pointer">
-								Đăng nhập
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
+		return null;
 	}
 
 	return (
