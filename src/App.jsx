@@ -1,32 +1,19 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
-import Header from "./layouts/Header";
-import Footer from "./layouts/Footer";
-import Sidebar from "./components/SideBar";
-import AuthModal from "./components/AuthModal";
-import Player from "./components/Player";
 import { authService } from "./services/auth";
 import { useDispatch } from "react-redux";
 import { setAccessToken, setUser } from "./redux/authSlice";
+import Player from "./components/Player";
+import Header from "./layouts/Header";
+import Footer from "./layouts/Footer";
+import Sidebar from "./components/SideBar";
 import ScrollToTop from "./components/ScrollToTop";
+import ModalManager from "./components/ModalManager";
 
 function App() {
-	const [sidebarOpen, setSidebarOpen] = useState(false);
-	const [authModalOpen, setAuthModalOpen] = useState(false);
-	const [authType, setAuthType] = useState("login");
 	const dispatch = useDispatch();
-
-	const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
-	const handleAuthClick = (type) => {
-		setAuthType(type);
-		setAuthModalOpen(true);
-	};
-
-	const handleAuthSwitch = (newType) => {
-		setAuthType(newType);
-	};
+	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchMe = async () => {
@@ -44,6 +31,8 @@ function App() {
 		fetchMe();
 	}, []);
 
+	const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
 	return (
 		<>
 			<Sidebar isOpen={sidebarOpen} handleClick={toggleSidebar} />
@@ -53,11 +42,7 @@ function App() {
 					sidebarOpen ? "lg:ml-48" : "lg:ml-16"
 				}`}
 			>
-				<Header
-					onMenuClick={toggleSidebar}
-					sidebarOpen={sidebarOpen}
-					onAuthClick={handleAuthClick}
-				/>
+				<Header onMenuClick={toggleSidebar} sidebarOpen={sidebarOpen} />
 				<main className="lg:px-8 pb-20">
 					<Outlet />
 					<ScrollToTop />
@@ -66,12 +51,7 @@ function App() {
 			</div>
 			<Player />
 
-			<AuthModal
-				isOpen={authModalOpen}
-				onClose={() => setAuthModalOpen(false)}
-				type={authType}
-				toggleType={handleAuthSwitch}
-			/>
+			<ModalManager />
 		</>
 	);
 }

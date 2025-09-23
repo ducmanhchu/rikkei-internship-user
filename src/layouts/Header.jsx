@@ -5,10 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../redux/authSlice";
 import { clearPlayer } from "../redux/playerSlice";
 import { authService } from "../services/auth";
+import { openModal } from "../redux/modalSlice";
 import SearchBar from "../components/SearchBar";
 import HamburgerMenu from "../components/HamburgerMenu";
 
-export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
+export default function Header({ onMenuClick, sidebarOpen }) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { isLogin, user, accessToken } = useSelector((state) => state.auth);
@@ -97,7 +98,9 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 						<>
 							<button
 								className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3BC8E7] md:h-auto md:w-auto md:rounded-full md:px-6 md:py-1 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,200,231,0.7)] cursor-pointer"
-								onClick={() => onAuthClick("register")}
+								onClick={() =>
+									dispatch(openModal({ modalName: "REGISTER_MODAL" }))
+								}
 							>
 								<img
 									className="md:hidden"
@@ -110,7 +113,9 @@ export default function Header({ onMenuClick, sidebarOpen, onAuthClick }) {
 							</button>
 							<button
 								className="flex h-7 w-7 items-center justify-center rounded-full bg-[#3BC8E7] md:h-auto md:w-auto md:rounded-full md:px-6 md:py-1 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,200,231,0.7)] cursor-pointer"
-								onClick={() => onAuthClick("login")}
+								onClick={() =>
+									dispatch(openModal({ modalName: "LOGIN_MODAL" }))
+								}
 							>
 								<img className="md:hidden" src="/icons/login.svg" alt="Login" />
 								<span className="hidden text-sm font-medium text-white md:!inline">

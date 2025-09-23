@@ -1,12 +1,15 @@
 import { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import { authService } from "../services/auth";
+import { openModal, closeModal } from "../redux/modalSlice";
 
-export default function OTPModal({ isOpen, onClose, email, onSuccess }) {
-	const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+export default function OTPModal({ data }) {
+	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
+	const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 	const [countdown, setCountdown] = useState(60);
 	const inputRefs = useRef([]);
 
@@ -17,9 +20,7 @@ export default function OTPModal({ isOpen, onClose, email, onSuccess }) {
 		}
 	}, [countdown]);
 
-	if (!isOpen) return null;
-
-	const handleInputChange = (index, value) => {
+	const handleChange = (index, value) => {
 		if (!/^\d*$/.test(value)) return;
 
 		const newOtp = [...otp];
@@ -48,23 +49,24 @@ export default function OTPModal({ isOpen, onClose, email, onSuccess }) {
 		}
 
 		setLoading(true);
+		setMessage("");
 		setError("");
 
 		try {
-			const result = await authService.verifyOTP(email, otpCode);
+			const result = await authService.verifyOTP(data.email, otpCode);
 			setMessage("Verification successful!");
 
 			if (result.success) {
 				setTimeout(() => {
-					onClose();
+					dispatch(closeModal());
 					setOtp(["", "", "", "", "", ""]);
-					setMessage("");
-					onSuccess();
-				}, 2000);
+					dispatch(openModal({ modalName: "LOGIN_MODAL" }));
+				}, 1500);
 			}
 		} catch (error) {
 			setError(error.message || "Invalid OTP code");
 		} finally {
+			setMessage("");
 			setLoading(false);
 		}
 	};
@@ -73,7 +75,7 @@ export default function OTPModal({ isOpen, onClose, email, onSuccess }) {
 		setError("");
 
 		try {
-			await authService.resendOTP(email);
+			await authService.resendOTP(data.email);
 			setMessage("OTP resent successfully!");
 			setCountdown(60);
 			setOtp(["", "", "", "", "", ""]);
@@ -89,7 +91,7 @@ export default function OTPModal({ isOpen, onClose, email, onSuccess }) {
 		<div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center overflow-auto p-4">
 			<div className="bg-[#3BC8E7] rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
 				<button
-					onClick={onClose}
+					onClick={() => dispatch(closeModal())}
 					className="absolute top-3 right-6 text-white hover:text-gray-200 text-4xl font-light cursor-pointer"
 				>
 					×
@@ -102,7 +104,7 @@ export default function OTPModal({ isOpen, onClose, email, onSuccess }) {
 				<p className="text-white text-sm text-center mb-6">
 					We&apos;ve sent a 6-digit code to
 					<br />
-					<span className="font-semibold">{email}</span>
+					<span className="font-semibold">{data.email}</span>
 				</p>
 
 				{message && (
@@ -126,7 +128,7 @@ export default function OTPModal({ isOpen, onClose, email, onSuccess }) {
 								type="text"
 								maxLength="1"
 								value={digit}
-								onChange={(e) => handleInputChange(index, e.target.value)}
+								onChange={(e) => handleChange(index, e.target.value)}
 								onKeyDown={(e) => handleKeyDown(index, e)}
 								className="w-12 h-12 text-center text-xl font-bold border-2 border-white rounded-lg bg-white text-gray-700 focus:outline-none focus:border-blue-500"
 							/>
