@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
 	togglePlay,
@@ -10,6 +10,7 @@ import {
 } from "../redux/playerSlice";
 import { openModal } from "../redux/modalSlice";
 import { songService } from "../services/song";
+import { selectCurrentSong } from "../redux/selector/playerSelector";
 import apiClient from "../services/http";
 import Queue from "./Queue";
 
@@ -18,13 +19,15 @@ export default function Player() {
 	const { isLogin } = useSelector((state) => state.auth);
 
 	const audioRef = useRef(null);
-	const { currentSong, isPlaying, currentTime, duration, volume } = useSelector(
+	const currentSong = useSelector(selectCurrentSong);
+	const { isPlaying, currentTime, duration, volume } = useSelector(
 		(state) => state.player
 	);
 	const listenedTime = useRef(new Set());
 	const viewSubmittedRef = useRef(false);
 	const historySubmittedRef = useRef(false);
-	const [queue, setQueue] = useState([false]);
+	const [queue, setQueue] = useState(false);
+	const handleCloseQueue = useCallback(() => setQueue(false), []);
 
 	useEffect(() => {
 		if (audioRef.current && isLogin) {
@@ -34,7 +37,7 @@ export default function Player() {
 				audioRef.current.pause();
 			}
 		}
-	}, [currentSong, isPlaying]);
+	}, [currentSong?.id, isPlaying]);
 
 	useEffect(() => {
 		if (audioRef.current) {
@@ -283,7 +286,7 @@ export default function Player() {
 					/>
 				</div>
 			</div>
-			{queue && <Queue songs={[]} onClosed={() => setQueue(false)} />}
+			{queue && <Queue onClosed={handleCloseQueue} />}
 		</div>
 	);
 }

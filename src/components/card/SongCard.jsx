@@ -8,13 +8,12 @@ export default function SongCard({ song }) {
 	const dispatch = useDispatch();
 	const [functional, setFunctional] = useState(false);
 
-	const handlePlay = () => {
-		dispatch(setCurrentSong(song));
-	};
-
 	return (
 		<article className="flex relative p-2 pe-6 rounded-md cursor-pointer hover:bg-gray-500/30 transition-bg duration-150">
-			<div className="flex grow shrink-0 items-center" onClick={handlePlay}>
+			<div
+				className="flex grow shrink-0 items-center"
+				onClick={() => dispatch(setCurrentSong(song))}
+			>
 				<img
 					className="w-14 aspect-square object-cover rounded-md me-3"
 					src={song.albumImage}

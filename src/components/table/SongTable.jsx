@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { setCurrentSong } from "../../redux/playerSlice";
+import { setCurrentSong, setPlaylist } from "../../redux/playerSlice";
 import { secondsToTime } from "../../utils";
 import { useState } from "react";
 
@@ -9,6 +9,7 @@ export default function SongTable({ songs }) {
 
 	const handlePlay = (song) => {
 		dispatch(setCurrentSong(song));
+		dispatch(setPlaylist(songs));
 	};
 
 	const songLists = expanded ? songs : songs.slice(0, 5);

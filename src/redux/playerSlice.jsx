@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-	currentSong: null,
+	currentSongId: null,
 	isPlaying: false,
 	currentTime: 0,
 	duration: 0,
@@ -15,12 +15,20 @@ const playerSlice = createSlice({
 	initialState,
 	reducers: {
 		setCurrentSong: (state, action) => {
-			const song = action.payload;
-			state.isPlaying = true;
-			state.currentSong = song;
+			const id =
+				typeof action.payload === "object" ? action.payload.id : action.payload;
 
-			const index = state.playlist.findIndex((s) => s.id === song.id);
+			state.currentSongId = id;
+
+			let index = state.playlist.findIndex((s) => s.id === id);
+
+			if (index === -1 && typeof action.payload === "object") {
+				state.playlist = [action.payload];
+				index = 0;
+			}
+
 			state.currentIndex = index >= 0 ? index : -1;
+			state.isPlaying = true;
 		},
 		togglePlay: (state) => {
 			state.isPlaying = !state.isPlaying;
@@ -36,21 +44,30 @@ const playerSlice = createSlice({
 		},
 		setPlaylist: (state, action) => {
 			state.playlist = action.payload;
+			if (state.currentSongId !== null) {
+				state.currentIndex = state.playlist.findIndex(
+					(s) => s.id === state.currentSongId
+				);
+			} else {
+				state.currentIndex = -1;
+			}
 		},
 		nextSong: (state) => {
 			if (state.currentIndex < state.playlist.length - 1) {
 				state.currentIndex += 1;
-				state.currentSong = state.playlist[state.currentIndex];
+				state.currentSongId = state.playlist[state.currentIndex]?.id ?? null;
+				state.isPlaying = true;
 			}
 		},
 		previousSong: (state) => {
 			if (state.currentIndex > 0) {
 				state.currentIndex -= 1;
-				state.currentSong = state.playlist[state.currentIndex];
+				state.currentSongId = state.playlist[state.currentIndex]?.id ?? null;
+				state.isPlaying = true;
 			}
 		},
 		clearPlayer: (state) => {
-			state.currentSong = null;
+			state.currentSongId = null;
 			state.isPlaying = false;
 			state.currentTime = 0;
 			state.duration = 0;
