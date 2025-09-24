@@ -6,12 +6,14 @@ import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import OTPModal from "./OTPModal";
 import AuthReqModal from "./AuthReqModal";
+import ProfileModal from "./ProfileModal";
 
 const MODAL_COMPONENTS = {
 	LOGIN_MODAL: LoginModal,
 	REGISTER_MODAL: RegisterModal,
 	OTP_MODAL: OTPModal,
 	AUTH_REQ_MODAL: AuthReqModal,
+	PROFILE_MODAL: ProfileModal,
 };
 
 export default function ModalManager() {

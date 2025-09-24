@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { authService } from "../services/auth";
+import { openModal } from "../redux/modalSlice";
 import ItemsCarousel from "../components/util/ItemsCarousel";
 
 export default function Profile() {
+	const dispatch = useDispatch();
 	const [profileData, setProfileData] = useState(null);
 	const [isArtist, setIsArtist] = useState(false);
 
@@ -18,7 +21,6 @@ export default function Profile() {
 					) {
 						setIsArtist(true);
 					}
-					console.log("Fetched profile data:", response.data);
 				}
 			} catch (error) {
 				console.error("Error fetching profile:", error);
@@ -32,7 +34,10 @@ export default function Profile() {
 		<div className="m-8">
 			<div className="flex gap-4 mb-8">
 				<img
-					src={profileData?.profileImage}
+					src={
+						profileData?.profileImage ||
+						"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+					}
 					className={`w-32 h-32 bg-cover rounded-full lg:w-52 lg:h-52 ${
 						isArtist ? "border-4 border-[#3BC8E7]" : ""
 					}`}
@@ -40,7 +45,17 @@ export default function Profile() {
 				/>
 				<div className="flex flex-col gap-2 justify-center text-white">
 					<h5 className="text-md ps-1">Profile</h5>
-					<h1 className="text-xl font-bold pt-1 md:text-3xl lg:text-5xl">
+					<h1
+						className="text-xl font-bold pt-1 cursor-pointer md:text-3xl lg:text-5xl"
+						onClick={() =>
+							dispatch(
+								openModal({
+									modalName: "PROFILE_MODAL",
+									modalData: profileData,
+								})
+							)
+						}
+					>
 						{profileData?.firstName} {profileData?.lastName}
 					</h1>
 					{isArtist && (

@@ -55,17 +55,14 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 								className="ms-4 cursor-pointer"
 								onClick={() => setShowDropdown(!showDropdown)}
 							>
-								{user.profileImage ? (
-									<img
-										src={user.profileImage}
-										alt="Profile Image"
-										className="w-10 h-10 rounded-full bg-cover hover:scale-105 transition-transform duration-200"
-									/>
-								) : (
-									<p className="text-white rounded-full text-sm lg:text-[16px]">
-										{user?.firstName} {user?.lastName}
-									</p>
-								)}
+								<img
+									src={
+										user.profileImage ||
+										"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+									}
+									alt="Profile Image"
+									className="w-10 h-10 rounded-full bg-cover hover:scale-105 transition-transform duration-200"
+								/>
 							</button>
 							{showDropdown && (
 								<div className="absolute w-[175px] right-1 bg-black rounded-md">

@@ -9,7 +9,10 @@ export default function ArtistCard({ artist }) {
 			onClick={() => navigate(`/artists/${artist.id}`)}
 		>
 			<img
-				src={artist.profileImage}
+				src={
+					artist.profileImage ||
+					"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+				}
 				alt="Artist cover image"
 				className="w-48 h-48 rounded-full object-cover"
 			/>

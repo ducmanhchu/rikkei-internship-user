@@ -144,4 +144,37 @@ export const authService = {
 			throw new Error(errorMessage);
 		}
 	},
+
+	uploadProfileImage: async (file) => {
+		try {
+			const formData = new FormData();
+			formData.append("file", file);
+			const response = await apiClient.post("/user/upload-image", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+			return {
+				success: true,
+				data: response.data.data,
+				message: response.data.message || "Upload Successfully",
+			};
+		} catch (error) {
+			throw new Error(error.response?.data?.message || "Upload failed");
+		}
+	},
+
+	updateProfile: async ({ firstName, lastName }) => {
+		try {
+			const response = await apiClient.put("/user/profile", {
+				firstName,
+				lastName,
+			});
+			return {
+				success: true,
+				data: response.data.data,
+				message: response.data.message || "Profile updated successfully",
+			};
+		} catch (error) {
+			throw new Error(error.response?.data?.message || "Profile update failed");
+		}
+	},
 };
