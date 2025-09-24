@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
 	togglePlay,
@@ -11,6 +11,7 @@ import {
 import { openModal } from "../redux/modalSlice";
 import { songService } from "../services/song";
 import apiClient from "../services/http";
+import Queue from "./Queue";
 
 export default function Player() {
 	const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function Player() {
 	const listenedTime = useRef(new Set());
 	const viewSubmittedRef = useRef(false);
 	const historySubmittedRef = useRef(false);
+	const [queue, setQueue] = useState([false]);
 
 	useEffect(() => {
 		if (audioRef.current && isLogin) {
@@ -135,11 +137,11 @@ export default function Player() {
 				onEnded={() => dispatch(nextSong())}
 			/>
 
-			<div className="flex mx-auto gap-4 max-w-7xl">
+			<div className="flex px-8">
 				{/* Song Info */}
-				<div className="flex items-center gap-3 min-w-0 flex-1">
+				<div className="flex items-center gap-3 min-w-0">
 					<img
-						className="w-12 h-12 rounded object-cover"
+						className="hidden rounded object-cover md:block md:w-12 md:h-12"
 						src={currentSong.albumImage}
 						alt={currentSong.title}
 					/>
@@ -154,8 +156,18 @@ export default function Player() {
 				</div>
 
 				{/* Controls */}
-				<div className="flex flex-col items-center gap-2 flex-1">
+				<div className="flex flex-col items-center gap-2 flex-1 mx-4">
 					<div className="flex items-center gap-4">
+						<button className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all">
+							<svg className="w-5 h-5" viewBox="0 0 24 24">
+								<path
+									d="M18 4L21 7M21 7L18 10M21 7H17C16.0707 7 15.606 7 15.2196 7.07686C13.6329 7.39249 12.3925 8.63288 12.0769 10.2196C12 10.606 12 11.0707 12 12C12 12.9293 12 13.394 11.9231 13.7804C11.6075 15.3671 10.3671 16.6075 8.78036 16.9231C8.39397 17 7.92931 17 7 17H3M18 20L21 17M21 17L18 14M21 17H17C16.0707 17 15.606 17 15.2196 16.9231C15.1457 16.9084 15.0724 16.8917 15 16.873M3 7H7C7.92931 7 8.39397 7 8.78036 7.07686C8.85435 7.09158 8.92758 7.1083 9 7.12698"
+									stroke="#99a1af"
+									strokeWidth="2"
+								/>
+							</svg>
+						</button>
+
 						<button
 							onClick={() => dispatch(previousSong())}
 							className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all"
@@ -196,15 +208,25 @@ export default function Player() {
 								<path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" />
 							</svg>
 						</button>
+
+						<button className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all">
+							<svg className="w-5 h-5" viewBox="0 0 24 24">
+								<path
+									d="M10.0001 17H8.00098C4.68727 17 2.00098 14.3137 2.00098 11C2.00098 7.68629 4.68727 5 8.00098 5H16.0001C19.3138 5 22.0001 7.68629 22.0001 11C22.0001 14.3137 19.3138 17 16.0001 17H14.0001M17.0001 20L14.0001 17M14.0001 17L17.0001 14"
+									stroke="#99a1af"
+									strokeWidth="2"
+								/>
+							</svg>
+						</button>
 					</div>
 
 					{/* Progress Bar */}
-					<div className="flex items-center w-full max-w-md">
+					<div className="flex items-center w-full max-w-xl">
 						<span className="text-white text-center text-sm w-12">
 							{formatTime(currentTime)}
 						</span>
 						<div
-							className="flex-1 h-1 mx-2 bg-gray-600 rounded-full cursor-pointer hover:scale-102 hover:bg-gray-500 transition-all"
+							className="flex-1 min-w-6 h-1 mx-2 bg-gray-600 rounded-full cursor-pointer hover:scale-102 hover:bg-gray-500 transition-all"
 							onClick={handleSeek}
 						>
 							<div
@@ -221,9 +243,21 @@ export default function Player() {
 				</div>
 
 				{/* Volume Control */}
-				<div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
+				<div className="flex items-center gap-2 min-w-0 justify-end">
+					<button
+						className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all"
+						onClick={() => setQueue(!queue)}
+					>
+						<svg className="w-5 h-5" viewBox="0 0 24 24">
+							<path
+								d="M22,4H2A1,1,0,0,0,1,5v6a1,1,0,0,0,1,1H22a1,1,0,0,0,1-1V5A1,1,0,0,0,22,4Zm-1,6H3V6H21Zm2,5a1,1,0,0,1-1,1H2a1,1,0,0,1,0-2H22A1,1,0,0,1,23,15Zm0,4a1,1,0,0,1-1,1H2a1,1,0,0,1,0-2H22A1,1,0,0,1,23,19Z"
+								fill={`${queue ? "#3BC8E7" : "#99a1af"}`}
+							/>
+						</svg>
+					</button>
+
 					<svg
-						className="w-5 h-5 text-white me-2"
+						className="w-5 h-5 text-white mx-2"
 						fill="currentColor"
 						viewBox="0 0 20 20"
 					>
@@ -236,7 +270,7 @@ export default function Player() {
 						step="0.1"
 						value={volume}
 						onChange={(e) => dispatch(setVolume(parseFloat(e.target.value)))}
-						className="w-20 h-1.5 cursor-pointer appearance-none outline-none rounded-full overflow-hidden hover:scale-105 transition-transform
+						className="w-6 md:w-20 h-1.5 cursor-pointer appearance-none outline-none rounded-full overflow-hidden hover:scale-105 transition-transform
 							[&::-webkit-slider-thumb]:appearance-none
 							[&::-webkit-slider-thumb]:w-1.5
 							[&::-webkit-slider-thumb]:h-1.5
@@ -249,6 +283,7 @@ export default function Player() {
 					/>
 				</div>
 			</div>
+			{queue && <Queue songs={[]} onClosed={() => setQueue(false)} />}
 		</div>
 	);
 }

@@ -5,7 +5,7 @@ export default function ArtistCard({ artist }) {
 
 	return (
 		<article
-			className="cursor-pointer hover:bg-gray-600/20 transition-colors duration-200 rounded-md p-2"
+			className="flex flex-col justify-center items-center cursor-pointer hover:bg-gray-600/20 transition-colors duration-200 rounded-md p-2"
 			onClick={() => navigate(`/artists/${artist.id}`)}
 		>
 			<img
