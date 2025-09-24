@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import useColorThief from "use-color-thief";
 
 import { albumService } from "../services/album";
 import { songService } from "../services/song";
@@ -10,6 +11,10 @@ export default function ArtistDetail() {
 	const { artistID } = useParams();
 	const [albums, setAlbums] = useState([]);
 	const [songs, setSongs] = useState([]);
+	const imageRef = useRef();
+	const { color } = useColorThief(imageRef, {
+		format: "hex",
+	});
 
 	useEffect(() => {
 		const fetchSongs = async () => {
@@ -29,7 +34,6 @@ export default function ArtistDetail() {
 				const response = await albumService.getAlbumsByArtist(artistID);
 				if (response && response.data && response.data.length > 0) {
 					setAlbums(response.data);
-					console.log("Fetched albums by artist:", response.data);
 				}
 			} catch (error) {
 				console.error("Error fetching albums:", error);
@@ -41,11 +45,20 @@ export default function ArtistDetail() {
 	}, []);
 
 	return (
-		<div className="m-8">
-			<div className="flex gap-4 mb-8">
+		<div>
+			<div
+				className="flex gap-4 mb-4 py-8 px-12"
+				style={{
+					background: color
+						? `linear-gradient(180deg, ${color} 0%, transparent 100%)`
+						: undefined,
+				}}
+			>
 				<img
+					ref={imageRef}
+					crossOrigin="anonymous"
 					src={songs[0]?.artistImage || songs.profileImage}
-					className="w-32 h-32 bg-cover rounded-full lg:w-52 lg:h-52"
+					className="w-32 h-32 bg-cover shadow-xl/30 rounded-full lg:w-52 lg:h-52"
 					alt="Artist Image"
 				/>
 				<div className="flex flex-col gap-2 justify-center text-white">
@@ -55,7 +68,7 @@ export default function ArtistDetail() {
 					</h1>
 				</div>
 			</div>
-			<div className="mb-8">
+			<div className="px-12 pb-8">
 				<h2 className="text-white text-xl font-bold">Popular</h2>
 				{songs.length > 0 ? (
 					<SongTable songs={songs} />
@@ -65,7 +78,7 @@ export default function ArtistDetail() {
 					</p>
 				)}
 			</div>
-			<div className="">
+			<div className="px-12 pb-10">
 				<h2 className="text-white text-xl font-bold mb-4">Discography</h2>
 				{albums.length > 0 ? (
 					<ItemsCarousel items={albums} isAlbum />

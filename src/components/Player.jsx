@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import useColorThief from "use-color-thief";
+
 import {
 	togglePlay,
 	setCurrentTime,
@@ -17,7 +19,10 @@ import Queue from "./Queue";
 export default function Player() {
 	const dispatch = useDispatch();
 	const { isLogin } = useSelector((state) => state.auth);
-
+	const imageRef = useRef();
+	const { color } = useColorThief(imageRef, {
+		format: "hex",
+	});
 	const audioRef = useRef(null);
 	const currentSong = useSelector(selectCurrentSong);
 	const { isPlaying, currentTime, duration, volume } = useSelector(
@@ -89,7 +94,6 @@ export default function Player() {
 				apiClient.post(`/song/${currentSong.id}/view`).catch((error) => {
 					console.error("Error submitting view:", error);
 				});
-				console.log(`Submitted view for song ID: ${currentSong.id}`);
 			}
 		}
 
@@ -131,7 +135,14 @@ export default function Player() {
 	}
 
 	return (
-		<div className="fixed bottom-0 left-0 right-0 bg-black py-4 z-50">
+		<div
+			className="fixed bottom-0 left-0 right-0 bg-black py-4 z-50"
+			style={{
+				background: color
+					? `linear-gradient(90deg, ${color} 0%, black 25%)`
+					: undefined,
+			}}
+		>
 			<audio
 				ref={audioRef}
 				src={currentSong.songUrl}
@@ -142,17 +153,19 @@ export default function Player() {
 
 			<div className="flex px-8">
 				{/* Song Info */}
-				<div className="flex items-center gap-3 min-w-0">
+				<div className="flex items-center gap-3 md:w-36">
 					<img
-						className="hidden rounded object-cover md:block md:w-12 md:h-12"
+						className="hidden rounded shadow-xl/30 object-cover md:block md:w-14 md:h-14"
+						ref={imageRef}
+						crossOrigin="anonymous"
 						src={currentSong.albumImage}
 						alt={currentSong.title}
 					/>
-					<div className="min-w-0 flex-1">
-						<p className="text-white font-medium truncate">
+					<div>
+						<p className="text-white text-[18px] truncate">
 							{currentSong.title}
 						</p>
-						<p className="text-gray-400 text-sm truncate">
+						<p className="text-gray-300 text-sm truncate">
 							{currentSong.artistName}
 						</p>
 					</div>

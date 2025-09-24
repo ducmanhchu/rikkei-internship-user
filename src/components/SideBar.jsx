@@ -52,7 +52,7 @@ export default function Sidebar({ isOpen, handleClick }) {
 						<img
 							src={MiniMiraculouseLogo}
 							alt="Miraculous"
-							className="w-12 py-6"
+							className="w-13 pt-2 pb-6"
 						/>
 					) : (
 						<img src={MiraculousLogo} alt="Miraculous" className="w-24 py-6" />

@@ -43,7 +43,7 @@ function App() {
 				}`}
 			>
 				<Header onMenuClick={toggleSidebar} sidebarOpen={sidebarOpen} />
-				<main className="lg:px-8 pb-20">
+				<main>
 					<Outlet />
 					<ScrollToTop />
 				</main>

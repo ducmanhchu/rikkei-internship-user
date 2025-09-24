@@ -67,6 +67,7 @@ export default function LoginModal() {
 					login({
 						user: loginRes.data.user,
 						accessToken: loginRes.data.accessToken,
+						roles: loginRes.data.roles,
 					})
 				);
 				dispatch(closeModal());
