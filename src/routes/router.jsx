@@ -13,6 +13,7 @@ import AlbumDetail from "../pages/AlbumDetail";
 import ArtistDetail from "../pages/ArtistDetail";
 import Profile from "../pages/Profile";
 import GenreDetail from "../pages/GenreDetail";
+import Account from "../pages/Account";
 
 export const router = createBrowserRouter([
 	{
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
 			{
 				path: "genres/:genreID",
 				element: <GenreDetail />,
+			},
+			{
+				path: "account",
+				element: <Account />,
 			},
 		],
 	},

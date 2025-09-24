@@ -65,7 +65,7 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 								/>
 							</button>
 							{showDropdown && (
-								<div className="absolute w-[175px] right-1 bg-black rounded-md">
+								<div className="absolute w-[175px] right-1 p-2 bg-black rounded-md">
 									<Link to="/profile">
 										<button
 											className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
@@ -74,16 +74,18 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 											Profile
 										</button>
 									</Link>
+									<Link to="/account">
+										<button
+											className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+											onClick={() => {
+												setShowDropdown(false);
+											}}
+										>
+											Account
+										</button>
+									</Link>
 									<button
-										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
-										onClick={() => {
-											setShowDropdown(false);
-										}}
-									>
-										Change Password
-									</button>
-									<button
-										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+										className="w-full rounded-b-md text-start border-t border-gray-700 text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
 										onClick={handleLogout}
 									>
 										Logout

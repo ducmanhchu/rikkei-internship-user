@@ -10,7 +10,7 @@ export default function WeeklyItem({ item, index, isSong }) {
 
 	return (
 		<div
-			className="flex items-start p-4 border-b border-b-gray-500 cursor-pointer hover:bg-gray-600/20 transition-colors duration-200"
+			className="flex items-start rounded-t-md p-4 border-b border-b-gray-500 cursor-pointer hover:bg-gray-600/20 transition-colors duration-200"
 			onClick={() => {
 				if (isSong) {
 					dispatch(setCurrentSong(item));

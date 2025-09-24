@@ -71,11 +71,11 @@ export default function ProfileModal({ data }) {
 
 	return (
 		<div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4	">
-			<div className=" bg-black rounded-md p-8 max-w-[40vw]">
+			<div className=" bg-black rounded-md p-8 max-w-[45vw]">
 				<div className="flex justify-between mb-6">
 					<h4 className="text-white font-semibold text-2xl">Profile Details</h4>
 					<button
-						className="text-white font-semibold text-2xl cursor-pointer"
+						className="text-white text-2xl cursor-pointer"
 						onClick={() => dispatch(closeModal())}
 					>
 						x
