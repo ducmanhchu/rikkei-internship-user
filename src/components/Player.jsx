@@ -19,10 +19,6 @@ import Queue from "./Queue";
 export default function Player() {
 	const dispatch = useDispatch();
 	const { isLogin } = useSelector((state) => state.auth);
-	const imageRef = useRef();
-	const { color } = useColorThief(imageRef, {
-		format: "hex",
-	});
 	const audioRef = useRef(null);
 	const currentSong = useSelector(selectCurrentSong);
 	const { isPlaying, currentTime, duration, volume } = useSelector(
@@ -33,6 +29,9 @@ export default function Player() {
 	const historySubmittedRef = useRef(false);
 	const [queue, setQueue] = useState(false);
 	const handleCloseQueue = useCallback(() => setQueue(false), []);
+	const { color } = useColorThief(currentSong?.albumImage, {
+		format: "hex",
+	});
 
 	useEffect(() => {
 		if (audioRef.current && isLogin) {
@@ -155,11 +154,10 @@ export default function Player() {
 				{/* Song Info */}
 				<div className="flex items-center gap-3 md:w-36">
 					<img
-						className="hidden rounded shadow-xl/30 object-cover md:block md:w-14 md:h-14"
-						ref={imageRef}
-						crossOrigin="anonymous"
 						src={currentSong.albumImage}
 						alt={currentSong.title}
+						className="w-14 h-14 rounded shadow-xl/30 object-cover"
+						crossOrigin="anonymous"
 					/>
 					<div>
 						<p className="text-white text-[18px] truncate">
