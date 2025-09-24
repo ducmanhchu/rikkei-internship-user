@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 
 import { closeModal } from "../../redux/modalSlice";
 import { authService } from "../../services/auth";
+import { setUser } from "../../redux/authSlice";
 
 export default function ProfileModal({ data }) {
 	const dispatch = useDispatch();
@@ -58,6 +59,7 @@ export default function ProfileModal({ data }) {
 
 			setMessage("Profile updated successfully!");
 			if (updateRes.success) {
+				dispatch(setUser({ user: updateRes.data }));
 				dispatch(closeModal());
 			}
 		} catch {

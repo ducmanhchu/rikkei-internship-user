@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { authService } from "../services/auth";
 import { openModal } from "../redux/modalSlice";
+import { setUser } from "../redux/authSlice";
 import ItemsCarousel from "../components/util/ItemsCarousel";
 
 export default function Profile() {
 	const dispatch = useDispatch();
-	const [profileData, setProfileData] = useState(null);
+	const { user } = useSelector((state) => state.auth);
 	const [isArtist, setIsArtist] = useState(false);
 
 	useEffect(() => {
@@ -15,7 +17,7 @@ export default function Profile() {
 			try {
 				const response = await authService.getMe();
 				if (response.success) {
-					setProfileData(response.data);
+					dispatch(setUser({ user: response.data }));
 					if (
 						response.data.roles.find((role) => role.roleName === "ROLE_ARTIST")
 					) {
@@ -27,15 +29,15 @@ export default function Profile() {
 			}
 		};
 
-		fetchProfile();
-	}, []);
+		if (!user) fetchProfile();
+	}, [dispatch, user]);
 
 	return (
 		<div className="m-8">
 			<div className="flex gap-4 mb-8">
 				<img
 					src={
-						profileData?.profileImage ||
+						user?.profileImage ||
 						"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
 					}
 					className={`w-32 h-32 bg-cover rounded-full lg:w-52 lg:h-52 ${
@@ -51,12 +53,12 @@ export default function Profile() {
 							dispatch(
 								openModal({
 									modalName: "PROFILE_MODAL",
-									modalData: profileData,
+									modalData: user,
 								})
 							)
 						}
 					>
-						{profileData?.firstName} {profileData?.lastName}
+						{user?.firstName} {user?.lastName}
 					</h1>
 					{isArtist && (
 						<span className="text-sm bg-[#3BC8E7] w-fit px-2 py-1 rounded-full text-black font-semibold md:text-lg">
@@ -70,8 +72,8 @@ export default function Profile() {
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Playlists
 				</h2>
-				{profileData?.playlists.length > 0 ? (
-					<ItemsCarousel items={profileData.playlists} isAlbum />
+				{user?.playlists.length > 0 ? (
+					<ItemsCarousel items={user.playlists} isAlbum />
 				) : (
 					<p className="text-gray-400 my-4">No playlists available.</p>
 				)}
@@ -81,8 +83,8 @@ export default function Profile() {
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Featured Albums
 				</h2>
-				{profileData?.albums.length > 0 ? (
-					<ItemsCarousel items={profileData.albums} isAlbum />
+				{user?.albums.length > 0 ? (
+					<ItemsCarousel items={user.albums} isAlbum />
 				) : (
 					<p className="text-gray-400 my-4">No albums available.</p>
 				)}
