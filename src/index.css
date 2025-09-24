@@ -4,4 +4,9 @@
 body {
 	font-family: "Josefin Sans", sans-serif;
 	background-color: #14182a;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }

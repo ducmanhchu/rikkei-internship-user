@@ -48,7 +48,7 @@ export default function History() {
 	}
 
 	return (
-		<>
+		<div className="px-12">
 			<div className="flex justify-between mx-8 mt-8">
 				<div className="flex flex-col">
 					<p className="text-[#3BC8E7] text-md">History</p>
@@ -64,6 +64,6 @@ export default function History() {
 					history.map((song) => <SongCard key={song.id} song={song} />)
 				)}
 			</div>
-		</>
+		</div>
 	);
 }

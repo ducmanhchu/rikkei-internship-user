@@ -21,7 +21,7 @@ export default function Genres() {
 	}, []);
 
 	return (
-		<>
+		<div className="px-12">
 			<div className="flex justify-between my-6 mx-8">
 				<div className="flex flex-col">
 					<p className="text-[#3BC8E7] text-md">Top Genres</p>
@@ -34,6 +34,6 @@ export default function Genres() {
 					<GenreCard key={item.id} genre={item} additionalClass="w-full h-32" />
 				))}
 			</div>
-		</>
+		</div>
 	);
 }

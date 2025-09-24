@@ -26,7 +26,13 @@ export default function Homepage() {
 			try {
 				const response = await songService.getPlayedHistory();
 				if (response.success) {
-					setRecentlyPlayed(response.data);
+					const recentlyAlbums = new Map();
+					response.data.forEach((item) => {
+						if (!recentlyAlbums.has(item.albumId)) {
+							recentlyAlbums.set(item.albumId, item);
+						}
+					});
+					setRecentlyPlayed(Array.from(recentlyAlbums.values()));
 				}
 			} catch (error) {
 				console.error("Error fetching recently played:", error);
@@ -108,7 +114,7 @@ export default function Homepage() {
 	}, [isLogin]);
 
 	return (
-		<div className="px-8">
+		<div>
 			<div className="flex flex-col justify-center lg:flex-row lg:justify-stretch mb-4">
 				<img src={banner} alt="Banner" className="w-full h-auto px-4 " />
 				<div className="flex flex-col place-items-center lg:place-items-start lg:justify-center">
@@ -127,82 +133,87 @@ export default function Homepage() {
 					</div>
 				</div>
 			</div>
-
-			{isLogin && (
-				<>
-					<div className="flex justify-between mb-6 mx-8">
-						<div className="flex flex-col">
-							<p className="text-[#3BC8E7] text-md">Recently Played</p>
-							<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+			<div className="px-12">
+				{isLogin && (
+					<>
+						<div className="flex justify-between mb-6 mx-8">
+							<div className="flex flex-col">
+								<p className="text-[#3BC8E7] text-md">Recently Played</p>
+								<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+							</div>
+							<p className="text-white text-md cursor-pointer">View More</p>
 						</div>
-						<p className="text-white text-md cursor-pointer">View More</p>
+						<div className="mb-14">
+							{recentlyPlayed.length === 0 ? (
+								<p className="text-gray-500 text-md ms-8">
+									No recently played items available.
+								</p>
+							) : (
+								<ItemsCarousel items={recentlyPlayed} isAlbum />
+							)}
+						</div>
+					</>
+				)}
+
+				<div className="mb-6 mx-8">
+					<p className="text-[#3BC8E7] text-md">Weekly Top 15</p>
+					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+				</div>
+				<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
+					{weeklySongs.map((song, index) => (
+						<WeeklyItem key={song.id} item={song} index={index} isSong />
+					))}
+				</div>
+
+				<div className="flex justify-between mb-6 mx-8">
+					<div className="flex flex-col">
+						<p className="text-[#3BC8E7] text-md">Featured Artists</p>
+						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
-					<div className="mb-14">
-						{recentlyPlayed.length === 0 ? (
-							<p className="text-gray-500 text-md ms-8">
-								No recently played items available.
-							</p>
-						) : (
-							<ItemsCarousel items={recentlyPlayed} isAlbum />
-						)}
+					<p className="text-white text-md cursor-pointer">View More</p>
+				</div>
+				<div className="mb-14">
+					<ItemsCarousel items={featuredArtists} isArtist />
+				</div>
+
+				<div className="flex justify-between mb-6 mx-8">
+					<div className="flex flex-col">
+						<p className="text-[#3BC8E7] text-md">New Releases</p>
+						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
-				</>
-			)}
-
-			<div className="mb-6 mx-8">
-				<p className="text-[#3BC8E7] text-md">Weekly Top 15</p>
-				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
-			</div>
-			<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
-				{weeklySongs.map((song, index) => (
-					<WeeklyItem key={song.id} item={song} index={index} isSong />
-				))}
-			</div>
-
-			<div className="flex justify-between mb-6 mx-8">
-				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">Featured Artists</p>
-					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+					<p className="text-white text-md cursor-pointer">View More</p>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
-			</div>
-			<div className="mb-14">
-				<ItemsCarousel items={featuredArtists} isArtist />
-			</div>
-
-			<div className="flex justify-between mb-6 mx-8">
-				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">New Releases</p>
-					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+				<div className="mb-14">
+					<ItemsCarousel items={newReleases} isSong />
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
-			</div>
-			<div className="mb-14">
-				<ItemsCarousel items={newReleases} isSong />
-			</div>
 
-			<div className="flex justify-between mb-6 mx-8">
-				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">Featured Albums</p>
-					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+				<div className="flex justify-between mb-6 mx-8">
+					<div className="flex flex-col">
+						<p className="text-[#3BC8E7] text-md">Featured Albums</p>
+						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+					</div>
+					<p className="text-white text-md cursor-pointer">View More</p>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
-			</div>
-			<div className="mb-14">
-				<ItemsCarousel items={featuredAlbums} isAlbum />
-			</div>
+				<div className="mb-14">
+					<ItemsCarousel items={featuredAlbums} isAlbum />
+				</div>
 
-			<div className="flex justify-between mb-6 mx-8">
-				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">Top Genres</p>
-					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+				<div className="flex justify-between mb-6 mx-8">
+					<div className="flex flex-col">
+						<p className="text-[#3BC8E7] text-md">Top Genres</p>
+						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
+					</div>
+					<p className="text-white text-md cursor-pointer">View More</p>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
-			</div>
-			<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
-				{topGenres.map((item) => (
-					<GenreCard key={item.id} genre={item} additionalClass="w-full h-32" />
-				))}
+				<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
+					{topGenres.map((item) => (
+						<GenreCard
+							key={item.id}
+							genre={item}
+							additionalClass="w-full h-32"
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	);

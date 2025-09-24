@@ -13,7 +13,9 @@ export default function AlbumCard({ album }) {
 				alt="Album cover image"
 				className="w-full aspect-square object-cover rounded-md"
 			/>
-			<p className="text-white text-md mt-2">{album.title}</p>
+			<p className="text-white text-md mt-2">
+				{album.albumTitle || album.title}
+			</p>
 			<p
 				className={`text-gray-400 text-sm ${album.artistName ? "" : "hidden"}`}
 			>

@@ -22,7 +22,7 @@ export default function Artists() {
 	}, []);
 
 	return (
-		<>
+		<div className="px-12">
 			<div className="flex justify-between my-6 mx-8">
 				<div className="flex flex-col">
 					<p className="text-[#3BC8E7] text-md">Featured Artists</p>
@@ -35,6 +35,6 @@ export default function Artists() {
 					<ArtistCard key={item.id} artist={item} />
 				))}
 			</div>
-		</>
+		</div>
 	);
 }

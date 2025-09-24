@@ -49,7 +49,7 @@ export default function TopTracks() {
 	}, []);
 
 	return (
-		<>
+		<div className="px-12">
 			<div className="flex justify-between my-6 mx-8">
 				<div className="flex flex-col">
 					<p className="text-[#3BC8E7] text-md">Weekly Top 15</p>
@@ -83,6 +83,6 @@ export default function TopTracks() {
 			<div className="mb-14">
 				<ItemsCarousel items={newSongs} isSong />
 			</div>
-		</>
+		</div>
 	);
 }

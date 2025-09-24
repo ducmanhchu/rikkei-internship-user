@@ -48,7 +48,7 @@ export default function Favourites() {
 	}
 
 	return (
-		<>
+		<div className="px-12">
 			<div className="flex flex-col mx-8 my-6">
 				<p className="text-[#3BC8E7] text-md">Favourites Songs</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
@@ -64,6 +64,6 @@ export default function Favourites() {
 					No favourite songs available.
 				</p>
 			)}
-		</>
+		</div>
 	);
 }
