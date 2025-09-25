@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { shuffleAround } from "../utils";
 
 const initialState = {
 	currentSongId: null,
@@ -8,6 +9,9 @@ const initialState = {
 	volume: 1,
 	playlist: [],
 	currentIndex: -1,
+	repeatSong: false,
+	repeatPlaylist: false,
+	shuffle: false,
 };
 
 const playerSlice = createSlice({
@@ -66,6 +70,23 @@ const playerSlice = createSlice({
 				state.isPlaying = true;
 			}
 		},
+		setRepeatSong: (state, action) => {
+			state.repeatSong = action.payload;
+		},
+		setRepeatPlaylist: (state, action) => {
+			state.repeatPlaylist = action.payload;
+		},
+		setCurrentIndex: (state, action) => {
+			state.currentIndex = action.payload;
+		},
+		setShuffle: (state) => {
+			state.shuffle = !state.shuffle;
+			if (state.shuffle) {
+				shuffleAround(state.playlist, state.currentIndex);
+			} else {
+				state.playlist = state.playlist.sort((a, b) => a.id - b.id);
+			}
+		},
 		clearPlayer: (state) => {
 			state.currentSongId = null;
 			state.isPlaying = false;
@@ -87,6 +108,10 @@ export const {
 	nextSong,
 	previousSong,
 	clearPlayer,
+	setRepeatSong,
+	setRepeatPlaylist,
+	setCurrentIndex,
+	setShuffle,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

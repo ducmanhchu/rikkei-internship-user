@@ -9,6 +9,10 @@ import {
 	setVolume,
 	nextSong,
 	previousSong,
+	setRepeatSong,
+	setRepeatPlaylist,
+	setCurrentIndex,
+	setShuffle,
 } from "../redux/playerSlice";
 import { openModal } from "../redux/modalSlice";
 import { songService } from "../services/song";
@@ -21,14 +25,23 @@ export default function Player() {
 	const { isLogin } = useSelector((state) => state.auth);
 	const audioRef = useRef(null);
 	const currentSong = useSelector(selectCurrentSong);
-	const { isPlaying, currentTime, duration, volume } = useSelector(
-		(state) => state.player
-	);
+	const {
+		isPlaying,
+		currentTime,
+		duration,
+		volume,
+		currentIndex,
+		playlist,
+		repeatSong,
+		repeatPlaylist,
+		shuffle,
+	} = useSelector((state) => state.player);
 	const listenedTime = useRef(new Set());
 	const viewSubmittedRef = useRef(false);
 	const historySubmittedRef = useRef(false);
 	const [queue, setQueue] = useState(false);
 	const handleCloseQueue = useCallback(() => setQueue(false), []);
+	const repeatType = repeatSong ? "song" : repeatPlaylist ? "playlist" : "none";
 	const { color } = useColorThief(currentSong?.albumImage, {
 		format: "hex",
 	});
@@ -125,6 +138,32 @@ export default function Player() {
 		return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 	};
 
+	const handleRepeat = () => {
+		if (repeatType === "none") {
+			dispatch(setRepeatPlaylist(true));
+		} else if (repeatType === "playlist") {
+			dispatch(setRepeatPlaylist(false));
+			dispatch(setRepeatSong(true));
+		} else {
+			dispatch(setRepeatSong(false));
+			dispatch(setRepeatPlaylist(false));
+		}
+	};
+
+	const handleShuffle = () => dispatch(setShuffle());
+
+	const handleEnded = () => {
+		if (repeatSong) {
+			dispatch(setCurrentTime(0));
+			dispatch(togglePlay());
+		} else if (repeatPlaylist && currentIndex === playlist.length - 1) {
+			dispatch(setCurrentIndex(0));
+			dispatch(togglePlay());
+		} else {
+			dispatch(nextSong());
+		}
+	};
+
 	if (!currentSong) {
 		return null;
 	}
@@ -147,7 +186,7 @@ export default function Player() {
 				src={currentSong.songUrl}
 				onTimeUpdate={handleTimeUpdate}
 				onLoadedMetadata={handleLoadedMetadata}
-				onEnded={() => dispatch(nextSong())}
+				onEnded={handleEnded}
 			/>
 
 			<div className="flex px-8">
@@ -172,16 +211,21 @@ export default function Player() {
 				{/* Controls */}
 				<div className="flex flex-col items-center gap-2 flex-1 mx-4">
 					<div className="flex items-center gap-4">
-						<button className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all">
+						{/* Shuffle Button */}
+						<button
+							className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all"
+							onClick={handleShuffle}
+						>
 							<svg className="w-5 h-5" viewBox="0 0 24 24">
 								<path
 									d="M18 4L21 7M21 7L18 10M21 7H17C16.0707 7 15.606 7 15.2196 7.07686C13.6329 7.39249 12.3925 8.63288 12.0769 10.2196C12 10.606 12 11.0707 12 12C12 12.9293 12 13.394 11.9231 13.7804C11.6075 15.3671 10.3671 16.6075 8.78036 16.9231C8.39397 17 7.92931 17 7 17H3M18 20L21 17M21 17L18 14M21 17H17C16.0707 17 15.606 17 15.2196 16.9231C15.1457 16.9084 15.0724 16.8917 15 16.873M3 7H7C7.92931 7 8.39397 7 8.78036 7.07686C8.85435 7.09158 8.92758 7.1083 9 7.12698"
-									stroke="#99a1af"
+									stroke={shuffle ? "#3BC8E7" : "currentColor"}
 									strokeWidth="2"
 								/>
 							</svg>
 						</button>
 
+						{/* Previous Button */}
 						<button
 							onClick={() => dispatch(previousSong())}
 							className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all"
@@ -191,6 +235,7 @@ export default function Player() {
 							</svg>
 						</button>
 
+						{/* Play/Pause Button */}
 						<button
 							onClick={() => dispatch(togglePlay())}
 							className="bg-white text-black rounded-full p-1.5 cursor-pointer hover:scale-110 transition-transform"
@@ -214,6 +259,7 @@ export default function Player() {
 							)}
 						</button>
 
+						{/* Next Button */}
 						<button
 							onClick={() => dispatch(nextSong())}
 							className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all"
@@ -223,14 +269,69 @@ export default function Player() {
 							</svg>
 						</button>
 
-						<button className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all">
-							<svg className="w-5 h-5" viewBox="0 0 24 24">
-								<path
-									d="M10.0001 17H8.00098C4.68727 17 2.00098 14.3137 2.00098 11C2.00098 7.68629 4.68727 5 8.00098 5H16.0001C19.3138 5 22.0001 7.68629 22.0001 11C22.0001 14.3137 19.3138 17 16.0001 17H14.0001M17.0001 20L14.0001 17M14.0001 17L17.0001 14"
-									stroke="#99a1af"
-									strokeWidth="2"
-								/>
-							</svg>
+						{/* Repeat Button */}
+						<button
+							className="text-gray-400 cursor-pointer hover:scale-110 hover:text-white transition-all"
+							onClick={handleRepeat}
+						>
+							{repeatType === "playlist" || repeatType === "none" ? (
+								<svg
+									className="w-6 h-6"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M17 17H8C6.33333 17 3 16 3 12C3 8 6.33333 7 8 7H16C17.6667 7 21 8 21 12C21 13.4943 20.5348 14.57 19.865 15.3312"
+										stroke={repeatPlaylist ? "#3BC8E7" : "currentColor"}
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+									<path
+										d="M14.5 14.5L17 17L14.5 19.5"
+										stroke={repeatPlaylist ? "#3BC8E7" : "currentColor"}
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+								</svg>
+							) : (
+								<svg
+									className="w-6 h-6"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M17 17H8C6.33333 17 3 16 3 12"
+										stroke={repeatSong ? "#3BC8E7" : "currentColor"}
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+									<path
+										d="M8 7H16C17.6667 7 21 8 21 12C21 13.4943 20.5348 14.57 19.865 15.3312"
+										stroke={repeatSong ? "#3BC8E7" : "currentColor"}
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+									<path
+										d="M14.5 14.5L17 17L14.5 19.5"
+										stroke={repeatSong ? "#3BC8E7" : "currentColor"}
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+									<path
+										d="M4 8V5V3L2 4"
+										stroke={repeatSong ? "#3BC8E7" : "currentColor"}
+										strokeWidth="1.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+								</svg>
+							)}
 						</button>
 					</div>
 
