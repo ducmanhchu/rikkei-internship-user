@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 
-import { secondsToTime } from "../utils";
-import { setCurrentSong } from "../redux/playerSlice";
+import { secondsToTime } from "../../utils";
+import { setCurrentSong } from "../../redux/playerSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function WeeklyItem({ item, index, isSong }) {

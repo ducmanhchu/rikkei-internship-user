@@ -8,7 +8,7 @@ import { genreService } from "../services/genre";
 import banner from "../assets/banner.png";
 import PillButton from "../components/button/PillButton";
 import ItemsCarousel from "../components/util/ItemsCarousel";
-import WeeklyItem from "../components/WeeklyItem";
+import WeeklyItem from "../components/item/WeeklyItem";
 import GenreCard from "../components/card/GenreCard";
 
 export default function Homepage() {

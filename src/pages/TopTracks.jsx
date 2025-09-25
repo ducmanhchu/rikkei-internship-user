@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import WeeklyItem from "../components/WeeklyItem";
+import WeeklyItem from "../components/item/WeeklyItem";
 import ItemsCarousel from "../components/util/ItemsCarousel";
 import { songService } from "../services/song";
 

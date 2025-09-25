@@ -1,4 +1,31 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
 export default function SearchBar() {
+	const [query, setQuery] = useState("");
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	useEffect(() => {
+		const t = setTimeout(() => {
+			const q = query.trim();
+			if (q.length > 0) {
+				const url = `/search?q=${encodeURIComponent(q)}`;
+				const isOnSearch = location.pathname.startsWith("/search");
+				navigate(url, { replace: isOnSearch });
+			}
+		}, 400);
+
+		return () => clearTimeout(t);
+	}, [query, navigate]);
+
+	useEffect(() => {
+		const isOnSearch = location.pathname.startsWith("/search");
+		if (!isOnSearch) {
+			setQuery("");
+		}
+	}, [location.pathname]);
+
 	return (
 		<div className="flex rounded-full w-96 overflow-hidden focus-within:shadow-[0_0_20px_rgba(59,200,231,0.7)] transition-shadow duration-300">
 			<button className="bg-[#6C757D] py-3 px-4 self-center cursor-pointer">
@@ -15,6 +42,8 @@ export default function SearchBar() {
 				</svg>
 			</button>
 			<input
+				value={query}
+				onChange={(e) => setQuery(e.target.value)}
 				type="text"
 				placeholder="What do you want to play?"
 				className="flex-1 text-[16px] text-[#fbf9ff] bg-[#6C757D] focus:outline-none"

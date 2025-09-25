@@ -14,6 +14,7 @@ import ArtistDetail from "../pages/ArtistDetail";
 import Profile from "../pages/Profile";
 import GenreDetail from "../pages/GenreDetail";
 import Account from "../pages/Account";
+import SearchResult from "../pages/SearchResult";
 
 export const router = createBrowserRouter([
 	{
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
 			{
 				path: "account",
 				element: <Account />,
+			},
+			{
+				path: "search",
+				element: <SearchResult />,
 			},
 		],
 	},

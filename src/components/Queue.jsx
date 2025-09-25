@@ -5,7 +5,7 @@ import {
 	selectCurrentSong,
 	selectCurrentIndex,
 } from "../redux/selector/playerSelector";
-import QueueItem from "./QueueItem";
+import QueueItem from "./item/QueueItem";
 
 export function Queue({ onClosed }) {
 	const currentSong = useSelector(selectCurrentSong);

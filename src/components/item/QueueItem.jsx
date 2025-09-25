@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-import { selectCurrentSong } from "../redux/selector/playerSelector";
-import { setCurrentSong } from "../redux/playerSlice";
+import { selectCurrentSong } from "../../redux/selector/playerSelector";
+import { setCurrentSong } from "../../redux/playerSlice";
 
 export default function QueueItem({ item }) {
 	const dispatch = useDispatch();
