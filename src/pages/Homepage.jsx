@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { songService } from "../services/song";
@@ -12,6 +13,7 @@ import WeeklyItem from "../components/item/WeeklyItem";
 import GenreCard from "../components/card/GenreCard";
 
 export default function Homepage() {
+	const navigate = useNavigate();
 	const { isLogin } = useSelector((state) => state.auth);
 
 	const [recentlyPlayed, setRecentlyPlayed] = useState([]);
@@ -22,95 +24,114 @@ export default function Homepage() {
 	const [topGenres, setTopGenres] = useState([]);
 
 	useEffect(() => {
-		const fetchRecentlyPlayed = async () => {
+		const fetchData = async () => {
 			try {
-				const response = await songService.getPlayedHistory();
-				if (response.success) {
-					const recentlyAlbums = new Map();
-					response.data.forEach((item) => {
-						if (!recentlyAlbums.has(item.albumId)) {
-							recentlyAlbums.set(item.albumId, item);
-						}
-					});
-					setRecentlyPlayed(Array.from(recentlyAlbums.values()));
-				}
-			} catch (error) {
-				console.error("Error fetching recently played:", error);
-			}
-		};
+				const promises = [
+					songService.getWeeklySongs(),
+					albumService.getFeaturedAlbums(),
+					artistService.getFeaturedArtists(),
+					songService.getNewSong(),
+					genreService.getAllGenres(),
+				];
 
-		const fetchFeaturedAlbums = async () => {
-			try {
-				const response = await albumService.getFeaturedAlbums();
-				if (response.success) {
-					setFeaturedAlbums(response.data);
+				if (isLogin) {
+					promises.unshift(songService.getPlayedHistory());
 				}
-			} catch (error) {
-				console.error("Error fetching featured albums:", error);
-			}
-		};
 
-		const fetchWeeklySongs = async () => {
-			try {
-				const response = await songService.getWeeklySongs();
-				if (response.success) {
-					if (response.data.length > 15) {
-						setWeeklySongs(response.data.slice(0, 15));
+				const results = await Promise.allSettled(promises);
+
+				let offset = 0;
+				if (isLogin) {
+					const recentlyPlayedRes = results[0];
+					offset = 1;
+					if (
+						recentlyPlayedRes.status === "fulfilled" &&
+						recentlyPlayedRes.value.success
+					) {
+						const recentlyAlbums = new Map();
+						(recentlyPlayedRes.value.data || []).forEach((item) => {
+							if (!recentlyAlbums.has(item.albumId)) {
+								recentlyAlbums.set(item.albumId, item);
+							}
+						});
+						setRecentlyPlayed(Array.from(recentlyAlbums.values()));
 					} else {
-						setWeeklySongs(response.data);
+						setRecentlyPlayed([]);
 					}
 				}
-			} catch (error) {
-				console.error("Error fetching weekly songs:", error);
-			}
-		};
 
-		const fetchFeaturedArtists = async () => {
-			try {
-				const response = await artistService.getFeaturedArtists();
-				if (response.success) {
-					setFeaturedArtists(response.data);
+				const [
+					weeklySongsRes,
+					featuredAlbumsRes,
+					featuredArtistsRes,
+					newReleasesRes,
+					genresRes,
+				] = results.slice(offset);
+
+				// Weekly Songs
+				if (
+					weeklySongsRes &&
+					weeklySongsRes.status === "fulfilled" &&
+					weeklySongsRes.value.success
+				) {
+					const data = weeklySongsRes.value.data || [];
+					setWeeklySongs(data.length > 15 ? data.slice(0, 15) : data);
+				} else {
+					setWeeklySongs([]);
 				}
-			} catch (error) {
-				console.error("Error fetching featured artists:", error);
-			}
-		};
 
-		const fetchNewReleases = async () => {
-			try {
-				const response = await songService.getNewSong();
-				if (response.success) {
-					setNewReleases(response.data.reverse());
+				// Featured Albums
+				if (
+					featuredAlbumsRes &&
+					featuredAlbumsRes.status === "fulfilled" &&
+					featuredAlbumsRes.value.success
+				) {
+					setFeaturedAlbums(featuredAlbumsRes.value.data || []);
+				} else {
+					setFeaturedAlbums([]);
 				}
-			} catch (error) {
-				console.error("Error fetching new releases:", error);
-			}
-		};
 
-		const fetchGenres = async () => {
-			try {
-				const response = await genreService.getAllGenres();
-				if (response.success) {
-					if (response.data.content.length > 6) {
-						setTopGenres(response.data.content.slice(0, 6));
-					} else {
-						setTopGenres(response.data.content);
-					}
+				// Featured Artists
+				if (
+					featuredArtistsRes &&
+					featuredArtistsRes.status === "fulfilled" &&
+					featuredArtistsRes.value.success
+				) {
+					setFeaturedArtists(featuredArtistsRes.value.data || []);
+				} else {
+					setFeaturedArtists([]);
+				}
+
+				// New Releases
+				if (
+					newReleasesRes &&
+					newReleasesRes.status === "fulfilled" &&
+					newReleasesRes.value.success
+				) {
+					const data = newReleasesRes.value.data || [];
+					setNewReleases([...data].reverse());
+				} else {
+					setNewReleases([]);
+				}
+
+				// Genres
+				if (
+					genresRes &&
+					genresRes.status === "fulfilled" &&
+					genresRes.value.success
+				) {
+					const content =
+						genresRes.value.data?.content || genresRes.value.data || [];
+					setTopGenres(content.length > 6 ? content.slice(0, 6) : content);
+				} else {
+					setTopGenres([]);
 				}
 			} catch (error) {
 				console.error("Error fetching genres:", error);
 			}
 		};
 
-		if (isLogin) {
-			fetchRecentlyPlayed();
-		}
-
-		fetchWeeklySongs();
-		fetchFeaturedAlbums();
-		fetchFeaturedArtists();
-		fetchNewReleases();
-		fetchGenres();
+		fetchData();
 	}, [isLogin]);
 
 	return (
@@ -141,7 +162,16 @@ export default function Homepage() {
 								<p className="text-[#3BC8E7] text-md">Recently Played</p>
 								<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 							</div>
-							<p className="text-white text-md cursor-pointer">View More</p>
+							{recentlyPlayed.length > 6 && (
+								<p
+									className="text-white text-md cursor-pointer hover:underline"
+									onClick={() =>
+										navigate(`/show-all/albums?source=recently-played`)
+									}
+								>
+									View More
+								</p>
+							)}
 						</div>
 						<div className="mb-14">
 							{recentlyPlayed.length === 0 ? (
@@ -170,7 +200,14 @@ export default function Homepage() {
 						<p className="text-[#3BC8E7] text-md">Featured Artists</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
-					<p className="text-white text-md cursor-pointer">View More</p>
+					{featuredArtists.length > 6 && (
+						<p
+							className="text-white text-md cursor-pointer hover:underline"
+							onClick={() => navigate(`/show-all/artists?source=featured`)}
+						>
+							View More
+						</p>
+					)}
 				</div>
 				<div className="mb-14">
 					<ItemsCarousel items={featuredArtists} isArtist />
@@ -181,7 +218,14 @@ export default function Homepage() {
 						<p className="text-[#3BC8E7] text-md">New Releases</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
-					<p className="text-white text-md cursor-pointer">View More</p>
+					{newReleases.length > 4 && (
+						<p
+							className="text-white text-md cursor-pointer hover:underline"
+							onClick={() => navigate(`/show-all/songs?source=new-releases`)}
+						>
+							View More
+						</p>
+					)}
 				</div>
 				<div className="mb-14">
 					<ItemsCarousel items={newReleases} isSong />
@@ -192,7 +236,14 @@ export default function Homepage() {
 						<p className="text-[#3BC8E7] text-md">Featured Albums</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
-					<p className="text-white text-md cursor-pointer">View More</p>
+					{featuredAlbums.length > 6 && (
+						<p
+							className="text-white text-md cursor-pointer hover:underline"
+							onClick={() => navigate(`/show-all/albums?source=featured`)}
+						>
+							View More
+						</p>
+					)}
 				</div>
 				<div className="mb-14">
 					<ItemsCarousel items={featuredAlbums} isAlbum />
@@ -203,7 +254,14 @@ export default function Homepage() {
 						<p className="text-[#3BC8E7] text-md">Top Genres</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
-					<p className="text-white text-md cursor-pointer">View More</p>
+					{topGenres.length > 6 && (
+						<p
+							className="text-white text-md cursor-pointer hover:underline"
+							onClick={() => navigate(`/show-all/genres?source=top`)}
+						>
+							View More
+						</p>
+					)}
 				</div>
 				<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
 					{topGenres.map((item) => (

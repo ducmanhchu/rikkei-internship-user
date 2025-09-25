@@ -49,8 +49,8 @@ function App() {
 				</main>
 				<Footer />
 			</div>
-			<Player />
 
+			<Player />
 			<ModalManager />
 		</>
 	);
