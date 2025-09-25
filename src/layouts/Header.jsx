@@ -106,7 +106,7 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 									alt="Register"
 								/>
 								<span className="hidden py-0.5 text-sm font-medium text-white md:!inline">
-									Register
+									Sign Up
 								</span>
 							</button>
 							<button
@@ -117,7 +117,7 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 							>
 								<img className="md:hidden" src="/icons/login.svg" alt="Login" />
 								<span className="hidden py-0.5 text-sm font-medium text-white md:!inline">
-									Login
+									Sign In
 								</span>
 							</button>
 						</>

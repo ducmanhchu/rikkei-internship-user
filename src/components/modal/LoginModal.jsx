@@ -88,7 +88,7 @@ export default function LoginModal() {
 
 	return (
 		<div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center overflow-auto p-4">
-			<div className="bg-[#3BC8E7] rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
+			<div className="bg-[#6C757D] rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
 				<button
 					onClick={() => dispatch(closeModal())}
 					className="absolute top-3 right-6 text-white hover:text-gray-200 text-4xl font-light cursor-pointer"
@@ -96,8 +96,8 @@ export default function LoginModal() {
 					×
 				</button>
 
-				<h2 className="text-white text-2xl font-bold mb-8 text-center">
-					Login
+				<h2 className="text-white text-2xl font-bold mb-2 text-center">
+					Sign In
 				</h2>
 
 				{message && (
@@ -114,34 +114,47 @@ export default function LoginModal() {
 
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<div className="relative">
+						<label
+							htmlFor="email"
+							className="text-white font-normal text-sm mb-2"
+						>
+							Email
+						</label>
 						<input
 							type="email"
 							name="email"
-							placeholder="Enter Your Email"
+							placeholder="Enter your email"
 							value={loginData.email}
 							onChange={handleChange}
-							className="w-full ps-4 pr-12 py-3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+							className="w-full ps-4 pr-12 py-3 rounded-md bg-white text-black placeholder:font-light placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#3BC8E7]"
 							required
 						/>
 						<img
-							className="absolute right-3 top-1/2 transform -translate-y-1/2"
+							className="absolute right-3 top-2/3 transform -translate-y-1/2"
 							src="/icons/email.svg"
 							alt="email"
 						/>
 					</div>
 
 					<div className="relative">
+						<label
+							htmlFor="password"
+							className="text-white font-normal text-sm mb-2"
+						>
+							Password
+						</label>
 						<input
+							id="password"
 							type="password"
 							name="password"
-							placeholder="Enter Password"
+							placeholder="Enter your password"
 							value={loginData.password}
 							onChange={handleChange}
-							className="w-full ps-4 pr-12 py-3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+							className="w-full ps-4 pr-12 py-3 rounded-md bg-white text-black placeholder:font-light placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#3BC8E7]"
 							required
 						/>
 						<img
-							className="absolute right-3 top-1/2 transform -translate-y-1/2"
+							className="absolute right-3 top-2/3 transform -translate-y-1/2"
 							src="/icons/password.svg"
 							alt="password"
 						/>
@@ -150,9 +163,12 @@ export default function LoginModal() {
 					<div className="flex items-center justify-between text-white text-sm">
 						<label className="flex items-center cursor-pointer">
 							<input type="checkbox" className="mr-2 rounded" />
-							<span>Keep Me Signed In</span>
+							<span className="font-light">Keep Me Signed In</span>
 						</label>
-						<button type="button" className="cursor-pointer hover:underline">
+						<button
+							type="button"
+							className="cursor-pointer font-light hover:underline"
+						>
 							Forgot Password?
 						</button>
 					</div>
@@ -160,19 +176,19 @@ export default function LoginModal() {
 					<button
 						type="submit"
 						disabled={loading}
-						className="w-full bg-white text-[#3BC8E7] py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-200 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="w-full cursor-pointer bg-[#3BC8E7] text-base text-black py-3 rounded-full font-semibold hover:bg-[#099bbc] transition-colors duration-200 mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
 					>
-						{loading ? "Processing..." : "Login"}
+						{loading ? "Processing..." : "Sign in"}
 					</button>
 				</form>
 
-				<div className="flex gap-2 mt-6 text-white justify-center">
-					<p className="">Don&apos;t Have An Account?</p>
+				<div className="flex gap-2 mt-4 text-white font-light justify-center">
+					<p className="text-sm">Don&apos;t Have An Account?</p>
 					<button
-						className="font-semibold cursor-pointer hover:underline"
+						className="text-sm font-normal cursor-pointer hover:underline"
 						onClick={handleRegisterClick}
 					>
-						Register Here
+						Sign up here
 					</button>
 				</div>
 			</div>

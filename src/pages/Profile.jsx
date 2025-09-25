@@ -28,8 +28,8 @@ export default function Profile() {
 			}
 		};
 
-		if (!user) fetchProfile();
-	}, [user]);
+		fetchProfile();
+	}, []);
 
 	return (
 		<div>
@@ -77,19 +77,19 @@ export default function Profile() {
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Playlists
 				</h2>
-				{user?.playlists.length > 0 ? (
-					<ItemsCarousel items={user.playlists} isAlbum />
+				{user?.playlists?.length > 0 ? (
+					<ItemsCarousel items={user.playlists ?? []} isAlbum />
 				) : (
 					<p className="text-gray-400 my-4">No playlists available.</p>
 				)}
 			</div>
 
-			<div className="px-12 pb-8">
+			<div className="px-12 pb-8 mb-8">
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Featured Albums
 				</h2>
-				{user?.albums.length > 0 ? (
-					<ItemsCarousel items={user.albums} isAlbum />
+				{user?.albums?.length > 0 ? (
+					<ItemsCarousel items={user.albums ?? []} isAlbum />
 				) : (
 					<p className="text-gray-400 my-4">No albums available.</p>
 				)}
