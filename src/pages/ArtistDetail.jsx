@@ -69,24 +69,26 @@ export default function ArtistDetail() {
 				</div>
 			</div>
 			<div className="px-12 pb-8">
-				<h2 className="text-white text-xl font-bold">Popular</h2>
-				{songs.length > 0 ? (
-					<SongTable songs={songs} />
-				) : (
-					<p className="text-gray-400 my-4">
-						No songs available for this artist.
-					</p>
-				)}
-			</div>
-			<div className="px-12 pb-10">
-				<h2 className="text-white text-xl font-bold mb-4">Discography</h2>
-				{albums.length > 0 ? (
-					<ItemsCarousel items={albums} isAlbum />
-				) : (
-					<p className="text-gray-400 my-4">
-						No albums available for this artist.
-					</p>
-				)}
+				<div className="mx-8 mb-8">
+					<h2 className="text-white text-xl font-bold">Popular</h2>
+					{songs.length > 0 ? (
+						<SongTable songs={songs} />
+					) : (
+						<p className="text-gray-400 my-4">
+							No songs available for this artist.
+						</p>
+					)}
+				</div>
+				<div className="m-8">
+					<h2 className="text-white text-xl font-bold mb-4">Discography</h2>
+					{albums.length > 0 ? (
+						<ItemsCarousel items={albums} isAlbum />
+					) : (
+						<p className="text-gray-400 my-4">
+							No albums available for this artist.
+						</p>
+					)}
+				</div>
 			</div>
 		</div>
 	);
