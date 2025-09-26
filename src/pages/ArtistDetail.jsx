@@ -58,7 +58,7 @@ export default function ArtistDetail() {
 					ref={imageRef}
 					crossOrigin="anonymous"
 					src={songs[0]?.artistImage || songs.profileImage}
-					className="w-32 h-32 bg-cover shadow-xl/30 rounded-full lg:w-52 lg:h-52"
+					className="w-32 h-32 object-cover shadow-xl/30 rounded-full lg:w-52 lg:h-52"
 					alt="Artist Image"
 				/>
 				<div className="flex flex-col gap-2 justify-center text-white">

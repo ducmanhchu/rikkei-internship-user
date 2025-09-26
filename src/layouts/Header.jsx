@@ -56,7 +56,7 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 										"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
 									}
 									alt="Profile Image"
-									className={`w-12 h-12 rounded-full bg-cover border-5  hover:scale-105 transition-transform duration-200 ${
+									className={`w-12 h-12 rounded-full object-cover border-5  hover:scale-105 transition-transform duration-200 ${
 										roles === "ROLE_ARTIST"
 											? "border-[#3BC8E7]/40"
 											: "border-[#6C757D]/40"
@@ -64,7 +64,7 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 								/>
 							</button>
 							{showDropdown && (
-								<div className="absolute w-[175px] right-1 top-14 p-2 bg-black rounded-md">
+								<div className="absolute w-[250px] right-1 top-14 p-2 bg-black rounded-md">
 									<Link to="/profile">
 										<button
 											className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
@@ -73,16 +73,15 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 											Profile
 										</button>
 									</Link>
-									<Link to="/account">
-										<button
-											className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
-											onClick={() => {
-												setShowDropdown(false);
-											}}
-										>
-											Account
-										</button>
-									</Link>
+									<button
+										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+										onClick={() => {
+											setShowDropdown(false);
+											dispatch(openModal({ modalName: "CHANGE_PASS_MODAL" }));
+										}}
+									>
+										Change Password
+									</button>
 									<button
 										className="w-full rounded-b-md text-start border-t border-gray-700 text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
 										onClick={handleLogout}

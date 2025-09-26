@@ -177,4 +177,23 @@ export const authService = {
 			throw new Error(error.response?.data?.message || "Profile update failed");
 		}
 	},
+
+	changePassword: async (oldPassword, newPassword, confirmPassword) => {
+		try {
+			const response = await apiClient.put("/user/change-password", {
+				oldPassword,
+				newPassword,
+				confirmPassword,
+			});
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Change password failed"
+			);
+		}
+	},
 };
