@@ -1,3 +1,5 @@
+import { Bars3Icon, XCircleIcon } from "@heroicons/react/24/outline";
+
 export default function HamburgerMenu({ onClick, isOpen }) {
 	return (
 		<button
@@ -5,13 +7,9 @@ export default function HamburgerMenu({ onClick, isOpen }) {
 			className="lg:hidden flex flex-col justify-center content-center items-center w-6 h-6 space-y-1"
 		>
 			{isOpen ? (
-				<img src="/icons/closesidebar.svg" alt="Close sidebar" />
+				<XCircleIcon className="w-6 h-6 text-white" />
 			) : (
-				<>
-					<span className="block w-5 h-0.5 bg-white"></span>
-					<span className="block w-5 h-0.5 bg-white"></span>
-					<span className="block w-5 h-0.5 bg-white"></span>
-				</>
+				<Bars3Icon className="w-6 h-6 text-white" />
 			)}
 		</button>
 	);

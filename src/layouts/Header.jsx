@@ -8,6 +8,11 @@ import { authService } from "../services/auth";
 import { openModal } from "../redux/modalSlice";
 import SearchBar from "../components/SearchBar";
 import HamburgerMenu from "../components/button/HamburgerMenu";
+import {
+	UserIcon,
+	LockClosedIcon,
+	ArrowLeftStartOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 export default function Header({ onMenuClick, sidebarOpen }) {
 	const dispatch = useDispatch();
@@ -67,26 +72,29 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 								<div className="absolute w-[250px] right-1 top-14 p-2 bg-black rounded-md">
 									<Link to="/profile">
 										<button
-											className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+											className="w-full flex gap-3 rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
 											onClick={() => setShowDropdown(false)}
 										>
-											Profile
+											<UserIcon className="w-5 h-5 text-white" />
+											<p>Profile</p>
 										</button>
 									</Link>
 									<button
-										className="w-full rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+										className="w-full flex gap-3 rounded-md text-start text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
 										onClick={() => {
 											setShowDropdown(false);
 											dispatch(openModal({ modalName: "CHANGE_PASS_MODAL" }));
 										}}
 									>
-										Change Password
+										<LockClosedIcon className="w-5 h-5 text-white" />
+										<p>Change Password</p>
 									</button>
 									<button
-										className="w-full rounded-b-md text-start border-t border-gray-700 text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
+										className="w-full flex gap-3 rounded-b-md text-start border-t border-gray-700 text-white px-4 py-2 cursor-pointer hover:bg-gray-700"
 										onClick={handleLogout}
 									>
-										Logout
+										<ArrowLeftStartOnRectangleIcon className="w-5 h-5 text-white" />
+										<p>Logout</p>
 									</button>
 								</div>
 							)}

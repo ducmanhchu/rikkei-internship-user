@@ -22,17 +22,23 @@ export default function Sidebar({ isOpen, handleClick }) {
 	const additionalMenuItems = [
 		{
 			id: 5,
+			icon: "/icons/library.svg",
+			label: "Library",
+			path: "/library",
+		},
+		{
+			id: 6,
 			icon: "/icons/download.svg",
 			label: "Downloads",
 			path: "/downloads",
 		},
 		{
-			id: 6,
+			id: 7,
 			icon: "/icons/favourite.svg",
 			label: "Favourites",
 			path: "/favourites",
 		},
-		{ id: 7, icon: "/icons/history.svg", label: "History", path: "/history" },
+		{ id: 8, icon: "/icons/history.svg", label: "History", path: "/history" },
 	];
 
 	return (
@@ -66,13 +72,13 @@ export default function Sidebar({ isOpen, handleClick }) {
 								key={item.path}
 								to={item.path}
 								className={`
-									w-full flex items-center gap-4 text-left transition-all duration-300 ease-in-out border-b border-gray-700 rounded
+									w-full flex items-center gap-4 text-left transition-all duration-300 ease-in-out rounded-md border-gray-700 
 									${
 										location.pathname === item.path
 											? "bg-[#3BC8E7] text-white"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white"
 									}
-									${isOpen ? "px-6 py-3" : "p-3"}
+									${isOpen ? "px-6 py-3" : "p-3 justify-center"}
 								`}
 							>
 								<img
@@ -94,13 +100,13 @@ export default function Sidebar({ isOpen, handleClick }) {
 								key={item.path}
 								to={item.path}
 								className={`
-									w-full flex items-center gap-4 text-left transition-all duration-300 ease-in-out border-b border-gray-700 rounded
+									w-full flex items-center gap-4 text-left transition-all duration-300 ease-in-out rounded-md border-gray-700 
 									${
 										location.pathname === item.path
 											? "bg-[#3BC8E7] text-white"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white"
 									}
-									${isOpen ? "px-6 py-3" : "p-3"}
+									${isOpen ? "px-6 py-3" : "p-3 justify-center"}
 								`}
 							>
 								<img
@@ -120,7 +126,7 @@ export default function Sidebar({ isOpen, handleClick }) {
 
 				<button
 					onClick={handleClick}
-					className={`hidden absolute rounded-full bg-[#1B2039] pe-3 w-12 h-10 -right-8 -z-10 top-[50vh] lg:inline-flex lg:justify-end lg:items-center`}
+					className={`hidden absolute rounded-full bg-[#1B2039] pe-3 w-12 h-10 -right-8 -z-10 top-[50vh] cursor-pointer lg:inline-flex lg:justify-end lg:items-center`}
 				>
 					<img
 						src="/icons/arrow.svg"

@@ -15,6 +15,7 @@ import Profile from "../pages/Profile";
 import GenreDetail from "../pages/GenreDetail";
 import SearchResult from "../pages/SearchResult";
 import ShowAll from "../pages/ShowAll";
+import Library from "../pages/Library";
 
 export const router = createBrowserRouter([
 	{
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
 			{
 				path: "show-all/:type",
 				element: <ShowAll />,
+			},
+			{
+				path: "library",
+				element: <Library />,
 			},
 		],
 	},

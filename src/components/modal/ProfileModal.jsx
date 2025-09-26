@@ -70,8 +70,8 @@ export default function ProfileModal({ data }) {
 	};
 
 	return (
-		<div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4	">
-			<div className=" bg-black shadow-2xl/30 rounded-md p-8 max-w-[45vw]">
+		<div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4	">
+			<div className=" bg-linear-to-b from-black to-gray-800 shadow-2xl/30 rounded-md p-8 max-w-[45vw]">
 				<div className="flex justify-between mb-6">
 					<h4 className="text-white font-semibold text-2xl">Profile Details</h4>
 					<button
@@ -127,7 +127,7 @@ export default function ProfileModal({ data }) {
 						<input
 							type="text"
 							id="firstName"
-							className="w-full mb-6 ps-4 py-3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+							className="w-full mb-6 ps-4 py-3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#3BC8E7]"
 							placeholder={data.firstName}
 							value={newProfileData.firstName}
 							onChange={handleChange}
@@ -141,13 +141,13 @@ export default function ProfileModal({ data }) {
 						<input
 							type="text"
 							id="lastName"
-							className="w-full mb-6 ps-4 py-3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+							className="w-full mb-6 ps-4 py-3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#3BC8E7]"
 							placeholder={data.lastName}
 							value={newProfileData.lastName}
 							onChange={handleChange}
 						/>
 						<button
-							className="text-white bg-[#3BC8E7] px-4 py-2 rounded-full cursor-pointer hover:bg-[#3BC8E7]/80"
+							className="text-black font-semibold bg-[#3BC8E7] px-4 py-2 rounded-full cursor-pointer hover:bg-[#3BC8E7]/80"
 							onClick={handleSave}
 						>
 							{loading ? "Saving..." : "Save"}

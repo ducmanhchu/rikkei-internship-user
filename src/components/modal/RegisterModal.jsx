@@ -116,8 +116,8 @@ export default function RegisterModal() {
 	};
 
 	return (
-		<div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center overflow-auto p-4">
-			<div className="bg-[#6C757D] rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
+		<div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center overflow-auto p-4">
+			<div className="bg-linear-to-b from-black to-gray-800 rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
 				<button
 					onClick={() => dispatch(closeModal())}
 					className="absolute top-7 right-6 text-white hover:text-gray-200 text-4xl font-light cursor-pointer"
