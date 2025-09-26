@@ -14,7 +14,6 @@ export default function Library() {
 				const response = await authService.getMe();
 				if (response.success) {
 					setPlaylists(response.data.playlists);
-					console.log(response.data.playlists);
 				}
 			} catch (error) {
 				console.error("Error fetching playlists:", error);

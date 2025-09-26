@@ -1,46 +1,51 @@
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
 import { setCurrentSong } from "../../redux/playerSlice";
 import { secondsToTime } from "../../utils";
+import SongOptionsMenu from "../modal/SongOptionsMenu";
 
 export default function SongCard({ song }) {
 	const dispatch = useDispatch();
-	const [functional, setFunctional] = useState(false);
+	const [openMenu, setOpenMenu] = useState(false);
+	const anchorRef = useRef(null);
 
 	return (
-		<article className="flex relative p-2 pe-6 rounded-md cursor-pointer hover:bg-gray-500/30 transition-bg duration-150">
+		<article className="flex relative p-2 pe-10 rounded-md hover:bg-gray-500/30 transition-bg duration-150">
 			<div
-				className="flex grow shrink-0 items-center"
+				className="flex grow shrink-0 items-center cursor-pointer"
 				onClick={() => dispatch(setCurrentSong(song))}
 			>
 				<img
-					className="w-14 aspect-square object-cover rounded-md me-3"
+					className="size-13 aspect-square object-cover rounded-md me-3.5"
 					src={song.albumImage}
 					alt={song.title}
 				/>
-				<div className="flex flex-col justify-end grow">
-					<p className="text-lg text-white">{song.title}</p>
+				<div className="flex flex-col justify-end gap-1 grow">
+					<p className="text-base text-white">{song.title}</p>
 					<p className="text-sm text-[#DEDEDE]">{song.artistName}</p>
 				</div>
-				<p className="text-white self-start">{secondsToTime(song.duration)}</p>
+				<p className="text-gray-300 text-sm me-2 self-center">
+					{secondsToTime(song.duration)}
+				</p>
 			</div>
 			<button
-				className="flex gap-0.5 mt-1.5 ms-4 cursor-pointer"
-				onClick={() => {
-					setFunctional(!functional);
-				}}
+				type="button"
+				ref={anchorRef}
+				className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded hover:scale-115 transition-transform duration-150 cursor-pointer"
+				onClick={() => setOpenMenu((v) => !v)}
 			>
-				<span className="h-0.75 w-0.75 rounded-full bg-white"></span>
-				<span className="h-0.75 w-0.75 rounded-full bg-white"></span>
-				<span className="h-0.75 w-0.75 rounded-full bg-white"></span>
+				<EllipsisHorizontalIcon className="size-5 text-gray-300" />
 			</button>
-			{/* {functional && (
-				<div className="absolute bottom-8 right-5 bg-black rounded-md p-4 flex flex-col gap-3">
-					<button className="text-white">Add to Playlist</button>
-					<button className="text-white">Add to Favourites</button>
-				</div>
-			)} */}
+			{openMenu && (
+				<SongOptionsMenu
+					anchorRect={anchorRef.current?.getBoundingClientRect?.()}
+					anchorRef={anchorRef}
+					song={song}
+					onClose={() => setOpenMenu(false)}
+				/>
+			)}
 		</article>
 	);
 }

@@ -87,6 +87,11 @@ const playerSlice = createSlice({
 				state.playlist = state.playlist.sort((a, b) => a.id - b.id);
 			}
 		},
+		addToPlaylist: (state, action) => {
+			if (state.playlist.every((s) => s.id !== action.payload.id)) {
+				state.playlist.push(action.payload);
+			}
+		},
 		clearPlayer: (state) => {
 			state.currentSongId = null;
 			state.isPlaying = false;
@@ -112,6 +117,7 @@ export const {
 	setRepeatPlaylist,
 	setCurrentIndex,
 	setShuffle,
+	addToPlaylist,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

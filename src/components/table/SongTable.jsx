@@ -1,11 +1,23 @@
+import { useState, useRef } from "react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+
 import { useDispatch } from "react-redux";
 import { setCurrentSong, setPlaylist } from "../../redux/playerSlice";
 import { secondsToTime } from "../../utils";
-import { useState } from "react";
+import SongOptionsMenu from "../modal/SongOptionsMenu";
 
 export default function SongTable({ songs }) {
 	const dispatch = useDispatch();
 	const [expanded, setExpanded] = useState(false);
+	const [openMenuId, setOpenMenuId] = useState(null);
+	const anchorRef = useRef(new Map());
+
+	const getAnchorRef = (id) => {
+		if (!anchorRef.current.has(id)) {
+			anchorRef.current.set(id, { current: null });
+		}
+		return anchorRef.current.get(id);
+	};
 
 	const handlePlay = (song) => {
 		dispatch(setCurrentSong(song));
@@ -49,8 +61,30 @@ export default function SongTable({ songs }) {
 										</span>
 									</div>
 								</td>
-								<td className="text-center flex-none w-20 py-2 px-2">
-									{secondsToTime(song.duration)}
+								<td className="flex gap-2 justify-center items-center flex-none w-25 py-2 px-2">
+									<p className="text-gray-300">
+										{secondsToTime(song.duration)}
+									</p>
+									<button
+										ref={getAnchorRef(song.id)}
+										className="flex gap-0.5 mt-1.5 ms-2 pb-1.5 cursor-pointer hover:scale-115 transition-transform duration-150"
+										onClick={(e) => {
+											e.stopPropagation();
+											setOpenMenuId(openMenuId === song.id ? null : song.id);
+										}}
+									>
+										<EllipsisHorizontalIcon className="size-5 text-gray-300" />
+									</button>
+									{openMenuId === song.id && (
+										<SongOptionsMenu
+											anchorRect={getAnchorRef(
+												song.id
+											).current?.getBoundingClientRect?.()}
+											anchorRef={getAnchorRef(song.id)}
+											song={song}
+											onClose={() => setOpenMenuId(null)}
+										/>
+									)}
 								</td>
 							</tr>
 						);

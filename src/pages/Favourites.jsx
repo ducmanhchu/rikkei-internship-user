@@ -14,7 +14,7 @@ export default function Favourites() {
 			try {
 				const favourites = await songService.getFavouriteSongs();
 				if (favourites.success) {
-					setFavouriteSongs(favourites.data);
+					setFavouriteSongs(favourites.data.reverse());
 				}
 			} catch (error) {
 				console.error("Error fetching data:", error);
@@ -48,7 +48,7 @@ export default function Favourites() {
 	}
 
 	return (
-		<div className="px-12">
+		<div className="px-12 pb-8">
 			<div className="flex flex-col mx-8 my-6">
 				<p className="text-[#3BC8E7] text-md">Favourites Songs</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
