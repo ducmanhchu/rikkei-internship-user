@@ -155,7 +155,7 @@ export const songService = {
 			};
 		} catch (error) {
 			throw new Error(
-				error.response?.data?.message || "Failed to add favourite song"
+				error.response?.data?.data || "Failed to add favourite song"
 			);
 		}
 	},

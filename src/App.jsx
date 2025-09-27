@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import { authService } from "./services/auth";
 import { useDispatch } from "react-redux";
@@ -35,6 +36,7 @@ function App() {
 
 	return (
 		<>
+			<Toaster position="bottom-center" reverseOrder={true} />
 			<Sidebar isOpen={sidebarOpen} handleClick={toggleSidebar} />
 
 			<div

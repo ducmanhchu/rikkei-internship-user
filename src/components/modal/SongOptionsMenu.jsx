@@ -9,6 +9,7 @@ import {
 	InformationCircleIcon,
 	UserCircleIcon,
 } from "@heroicons/react/24/outline";
+import toast from "react-hot-toast";
 
 import { songService } from "../../services/song";
 import { addToPlaylist } from "../../redux/playerSlice";
@@ -27,7 +28,6 @@ export default function SongOptionsMenu({
 		left: 0,
 		transformOrigin: "top left",
 	});
-	// console.log(song);
 
 	useLayoutEffect(() => {
 		if (!anchorRect) return;
@@ -76,13 +76,14 @@ export default function SongOptionsMenu({
 	}, [onClose]);
 
 	const handleAddToFavourite = async (song) => {
+		const toastId = toast.loading("Adding to favourite...");
 		try {
 			const response = await songService.addFavouriteSong(song.id);
 			if (response.success) {
-				console.log("Added to favourite");
+				toast.success(`${song.title} added to favourite`, { id: toastId });
 			}
 		} catch (error) {
-			console.error("Failed to add to favourite:", error);
+			toast.error(`${error.message}`, { id: toastId });
 		} finally {
 			onClose?.();
 		}
