@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { albumService } from "../services/album";
 import { artistService } from "../services/artist";
@@ -6,6 +7,7 @@ import ItemsCarousel from "../components/util/ItemsCarousel";
 import WeeklyItem from "../components/item/WeeklyItem";
 
 export default function Albums() {
+	const navigate = useNavigate();
 	const [featuredAlbums, setFeaturedAlbums] = useState([]);
 	const [topAlbums, setTopAlbums] = useState([]);
 	const [newAlbums, setNewAlbums] = useState([]);
@@ -69,7 +71,14 @@ export default function Albums() {
 					<p className="text-[#3BC8E7] text-lg">Featured Albums</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
+				{featuredAlbums.length > 6 && (
+					<p
+						className="text-white text-md cursor-pointer hover:underline"
+						onClick={() => navigate(`/show-all/albums?source=featured`)}
+					>
+						View More
+					</p>
+				)}
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={featuredAlbums} isAlbum />
@@ -90,7 +99,14 @@ export default function Albums() {
 					<p className="text-[#3BC8E7] text-lg">Albums By Artists</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
+				{featuredArtists.length > 6 && (
+					<p
+						className="text-white text-md cursor-pointer hover:underline"
+						onClick={() => navigate(`/show-all/artists?source=featured`)}
+					>
+						View More
+					</p>
+				)}
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={featuredArtists} isArtist />
@@ -101,7 +117,14 @@ export default function Albums() {
 					<p className="text-[#3BC8E7] text-lg">New Releases</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
+				{newAlbums.length > 6 && (
+					<p
+						className="text-white text-md cursor-pointer hover:underline"
+						onClick={() => navigate(`/show-all/albums?source=new-releases`)}
+					>
+						View More
+					</p>
+				)}
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={newAlbums} isAlbum />

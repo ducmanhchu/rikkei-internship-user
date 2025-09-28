@@ -28,7 +28,6 @@ export default function Artists() {
 					<p className="text-[#3BC8E7] text-lg">Featured Artists</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				{/* <p className="text-white text-md cursor-pointer">View More</p> */}
 			</div>
 			<div className="mx-8 mb-8 grid md:grid-cols-2 lg:grid-cols-6">
 				{featuredArtists.map((item) => (

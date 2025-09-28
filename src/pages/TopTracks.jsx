@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import WeeklyItem from "../components/item/WeeklyItem";
 import ItemsCarousel from "../components/util/ItemsCarousel";
 import { songService } from "../services/song";
 
 export default function TopTracks() {
+	const navigate = useNavigate();
 	const [topSongs, setTopSongs] = useState([]);
 	const [topAllTimeSongs, setTopAllTimeSongs] = useState([]);
 	const [newSongs, setNewSongs] = useState([]);
@@ -56,7 +58,7 @@ export default function TopTracks() {
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
 			</div>
-			<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
+			<div className="grid grid-cols-1 mx-8 mb-14 gap-3 lg:grid-cols-3">
 				{topSongs.map((song, index) => (
 					<WeeklyItem key={song.id} item={song} index={index} isSong />
 				))}
@@ -67,7 +69,14 @@ export default function TopTracks() {
 					<p className="text-[#3BC8E7] text-lg">Top Tracks Of All Time</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
+				{topAllTimeSongs.length > 4 && (
+					<p
+						className="text-white text-md cursor-pointer hover:underline"
+						onClick={() => navigate(`/show-all/songs?source=top-all-time`)}
+					>
+						View More
+					</p>
+				)}
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={topAllTimeSongs} isSong />
@@ -78,7 +87,14 @@ export default function TopTracks() {
 					<p className="text-[#3BC8E7] text-lg">New Releases</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
+				{newSongs.length > 4 && (
+					<p
+						className="text-white text-md cursor-pointer hover:underline"
+						onClick={() => navigate(`/show-all/songs?source=new-releases`)}
+					>
+						View More
+					</p>
+				)}
 			</div>
 			<div className="mb-14">
 				<ItemsCarousel items={newSongs} isSong />

@@ -24,8 +24,10 @@ export default function ShowAll() {
 		const map = {
 			"albums:featured": "Featured Albums",
 			"albums:recently-played": "Recently Played",
+			"albums:new-releases": "New Releases",
 			"songs:weekly": "Weekly Top",
 			"songs:new-releases": "New Releases",
+			"songs:top-all-time": "Top All Time",
 			"artists:featured": "Featured Artists",
 			"genres:top": "Top Genres",
 		};
@@ -42,6 +44,9 @@ export default function ShowAll() {
 				if (type === "albums") {
 					if (source === "featured") {
 						response = await albumService.getFeaturedAlbums();
+						mounted && setItems(response.data || []);
+					} else if (source === "new-releases") {
+						response = await albumService.getNewAlbums();
 						mounted && setItems(response.data || []);
 					} else if (source === "recently-played") {
 						response = await songService.getPlayedHistory();
@@ -64,6 +69,9 @@ export default function ShowAll() {
 					} else if (source === "new-releases") {
 						response = await songService.getNewSong();
 						mounted && setItems((response.data || []).slice().reverse());
+					} else if (source === "top-all-time") {
+						response = await songService.getTopAllTimeSongs();
+						mounted && setItems(response.data || []);
 					} else {
 						mounted && setItems([]);
 					}

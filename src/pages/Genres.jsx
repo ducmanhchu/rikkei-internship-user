@@ -27,7 +27,6 @@ export default function Genres() {
 					<p className="text-[#3BC8E7] text-lg">Top Genres</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<p className="text-white text-md cursor-pointer">View More</p>
 			</div>
 			<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
 				{genres.map((item) => (

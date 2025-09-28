@@ -14,7 +14,7 @@ export default function WeeklyItem({ item, index, isSong }) {
 	const anchorRef = useRef(null);
 
 	return (
-		<div className="flex justify-between rounded-t-md p-4 border-b border-b-gray-500 cursor-pointer hover:bg-gray-600/20 transition-colors duration-200">
+		<div className="flex justify-between rounded-md p-4 cursor-pointer hover:bg-gray-600/20 transition-colors duration-200">
 			<div
 				className="flex"
 				onClick={() => {

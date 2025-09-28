@@ -189,7 +189,7 @@ export default function Homepage() {
 					<p className="text-[#3BC8E7] text-lg">Weekly Top 15</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
+				<div className="grid grid-cols-1 mx-8 mb-14 gap-3 lg:grid-cols-3">
 					{weeklySongs.map((song, index) => (
 						<WeeklyItem key={song.id} item={song} index={index} isSong />
 					))}
