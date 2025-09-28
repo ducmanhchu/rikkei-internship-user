@@ -53,7 +53,7 @@ export const albumService = {
 
 	getAlbumsByArtist: async (artistID) => {
 		try {
-			const response = await apiClient.get(`/album/${artistID}`);
+			const response = await apiClient.get(`/album/${artistID}/artist`);
 
 			return {
 				success: true,

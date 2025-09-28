@@ -25,7 +25,7 @@ export default function Artists() {
 		<div className="px-12">
 			<div className="flex justify-between my-6 mx-8">
 				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">Featured Artists</p>
+					<p className="text-[#3BC8E7] text-lg">Featured Artists</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
 				{/* <p className="text-white text-md cursor-pointer">View More</p> */}

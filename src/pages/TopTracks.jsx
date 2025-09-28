@@ -52,7 +52,7 @@ export default function TopTracks() {
 		<div className="px-12">
 			<div className="flex justify-between my-6 mx-8">
 				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">Weekly Top 15</p>
+					<p className="text-[#3BC8E7] text-lg">Weekly Top 15</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
 			</div>
@@ -64,7 +64,7 @@ export default function TopTracks() {
 
 			<div className="flex justify-between my-6 mx-8">
 				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">Top Tracks Of All Time</p>
+					<p className="text-[#3BC8E7] text-lg">Top Tracks Of All Time</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
 				<p className="text-white text-md cursor-pointer">View More</p>
@@ -75,7 +75,7 @@ export default function TopTracks() {
 
 			<div className="flex justify-between my-6 mx-8">
 				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">New Releases</p>
+					<p className="text-[#3BC8E7] text-lg">New Releases</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
 				<p className="text-white text-md cursor-pointer">View More</p>

@@ -1,25 +1,46 @@
 import { useNavigate } from "react-router-dom";
 
-export default function AlbumCard({ album }) {
+import PlaylistCover from "../util/PlaylistCover";
+
+export default function AlbumCard({ album, isPlaylist }) {
 	const navigate = useNavigate();
 
 	return (
 		<article
 			className="cursor-pointer hover:bg-gray-600/20 transition-colors duration-200 rounded-md p-2"
-			onClick={() => navigate(`/albums/${album.albumId || album.id}`)}
+			onClick={() => {
+				if (isPlaylist) {
+					navigate(`/playlists/${album.id}`);
+				} else {
+					navigate(`/albums/${album.albumId || album.id}`);
+				}
+			}}
 		>
-			<img
-				src={album.albumImage || album.coverImage}
-				alt="Album cover image"
-				className="w-full aspect-square object-cover rounded-md"
-			/>
+			{isPlaylist ? (
+				album.songs.length >= 4 ? (
+					<PlaylistCover src={album.songs} />
+				) : (
+					<img
+						src={
+							album?.songs[0]?.albumImage ||
+							"https://placehold.co/400/6C757D/FFF?text=Playlist"
+						}
+						alt="Album cover image"
+						className="w-full aspect-square object-cover rounded-md"
+					/>
+				)
+			) : (
+				<img
+					src={album?.albumImage || album?.coverImage}
+					alt="Album cover image"
+					className="w-full aspect-square object-cover rounded-md"
+				/>
+			)}
 			<p className="text-white text-md mt-2">
-				{album.albumTitle || album.title}
+				{isPlaylist ? album.name : album.albumTitle || album.title}
 			</p>
-			<p
-				className={`text-gray-400 text-sm ${album.artistName ? "" : "hidden"}`}
-			>
-				{album.artistName}
+			<p className="text-gray-400 text-sm">
+				{isPlaylist ? album.username : album.artistName}
 			</p>
 		</article>
 	);

@@ -159,7 +159,7 @@ export default function Homepage() {
 					<>
 						<div className="flex justify-between mb-6 mx-8">
 							<div className="flex flex-col">
-								<p className="text-[#3BC8E7] text-md">Recently Played</p>
+								<p className="text-[#3BC8E7] text-lg">Recently Played</p>
 								<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 							</div>
 							{recentlyPlayed.length > 6 && (
@@ -186,7 +186,7 @@ export default function Homepage() {
 				)}
 
 				<div className="mb-6 mx-8">
-					<p className="text-[#3BC8E7] text-md">Weekly Top 15</p>
+					<p className="text-[#3BC8E7] text-lg">Weekly Top 15</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
 				<div className="grid grid-cols-1 mx-8 mb-14 gap-6 lg:grid-cols-3">
@@ -197,7 +197,7 @@ export default function Homepage() {
 
 				<div className="flex justify-between mb-6 mx-8">
 					<div className="flex flex-col">
-						<p className="text-[#3BC8E7] text-md">Featured Artists</p>
+						<p className="text-[#3BC8E7] text-lg">Featured Artists</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
 					{featuredArtists.length > 6 && (
@@ -215,7 +215,7 @@ export default function Homepage() {
 
 				<div className="flex justify-between mb-6 mx-8">
 					<div className="flex flex-col">
-						<p className="text-[#3BC8E7] text-md">New Releases</p>
+						<p className="text-[#3BC8E7] text-lg">New Releases</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
 					{newReleases.length > 4 && (
@@ -233,7 +233,7 @@ export default function Homepage() {
 
 				<div className="flex justify-between mb-6 mx-8">
 					<div className="flex flex-col">
-						<p className="text-[#3BC8E7] text-md">Featured Albums</p>
+						<p className="text-[#3BC8E7] text-lg">Featured Albums</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
 					{featuredAlbums.length > 6 && (
@@ -251,7 +251,7 @@ export default function Homepage() {
 
 				<div className="flex justify-between mb-6 mx-8">
 					<div className="flex flex-col">
-						<p className="text-[#3BC8E7] text-md">Top Genres</p>
+						<p className="text-[#3BC8E7] text-lg">Top Genres</p>
 						<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 					</div>
 					{topGenres.length > 6 && (

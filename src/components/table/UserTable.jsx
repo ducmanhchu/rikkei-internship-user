@@ -1,6 +1,16 @@
+import { useDispatch } from "react-redux";
+
+import { setCurrentSong, setPlaylist } from "../../redux/playerSlice";
 import { secondsToTime } from "../../utils";
 
 export default function UserTable({ data, onRemove }) {
+	const dispatch = useDispatch();
+
+	const handlePlay = (song) => {
+		dispatch(setCurrentSong(song));
+		dispatch(setPlaylist(data));
+	};
+
 	return (
 		<div className="mx-8">
 			<table className="text-white table-fixed w-full border-collapse">
@@ -17,7 +27,8 @@ export default function UserTable({ data, onRemove }) {
 					{data.map((song, index) => (
 						<tr
 							key={song.id}
-							className="hover:bg-gray-800/30 transition-colors duration-150 border-b border-gray-600/30"
+							className="hover:bg-gray-800/30 cursor-pointer transition-colors duration-150 border-b border-gray-600/30"
+							onClick={() => handlePlay(song)}
 						>
 							<td className="py-4 px-2 text-gray-300">
 								{index < 9 ? `0${index + 1}` : index + 1}

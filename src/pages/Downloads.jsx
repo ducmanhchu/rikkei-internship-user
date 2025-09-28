@@ -50,7 +50,7 @@ export default function Downloads() {
 	return (
 		<div className="px-12">
 			<div className="flex flex-col mx-8 my-6">
-				<p className="text-[#3BC8E7] text-md">Free Downloads</p>
+				<p className="text-[#3BC8E7] text-lg">Free Downloads</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 			</div>
 			<UserTable data={downloadedSongs} onRemove={handleRemoved} />

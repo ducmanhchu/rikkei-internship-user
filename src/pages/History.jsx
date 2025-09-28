@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 import PillButton from "../components/button/PillButton";
 import SongCard from "../components/card/SongCard";
@@ -49,12 +50,12 @@ export default function History() {
 
 	return (
 		<div className="px-12">
-			<div className="flex justify-between mx-8 mt-8">
+			<div className="flex justify-between mx-8 mt-8 mb-6">
 				<div className="flex flex-col">
-					<p className="text-[#3BC8E7] text-md">History</p>
+					<p className="text-[#3BC8E7] text-lg">History</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
-				<PillButton text={"Clear"} onClick={handleClear} />
+				<PillButton text={"Clear"} Icon={TrashIcon} onClick={handleClear} />
 			</div>
 
 			<div className="grid mx-8 mb-10 gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

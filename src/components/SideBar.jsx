@@ -1,10 +1,11 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 import MiraculousLogo from "../assets/miraculous.svg";
 import MiniMiraculouseLogo from "../assets/mini-miraculous.svg";
 
 export default function Sidebar({ isOpen, handleClick }) {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const menuItems = [
 		{ id: 0, icon: "/icons/home.svg", label: "Discover", path: "/" },
@@ -53,7 +54,10 @@ export default function Sidebar({ isOpen, handleClick }) {
 										}
                 `}
 			>
-				<div className="flex flex-col items-center">
+				<div
+					className="flex flex-col items-center cursor-pointer"
+					onClick={() => navigate("/")}
+				>
 					{!isOpen ? (
 						<img
 							src={MiniMiraculouseLogo}

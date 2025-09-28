@@ -50,7 +50,7 @@ export default function Favourites() {
 	return (
 		<div className="px-12 pb-8">
 			<div className="flex flex-col mx-8 my-6">
-				<p className="text-[#3BC8E7] text-md">Favourites Songs</p>
+				<p className="text-[#3BC8E7] text-lg">Favourites Songs</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 			</div>
 			<UserTable data={favouriteSongs} onRemove={handleRemoved} />

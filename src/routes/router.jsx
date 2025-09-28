@@ -16,6 +16,7 @@ import GenreDetail from "../pages/GenreDetail";
 import SearchResult from "../pages/SearchResult";
 import ShowAll from "../pages/ShowAll";
 import Library from "../pages/Library";
+import PlaylistDetail from "../pages/PlaylistDetail";
 
 export const router = createBrowserRouter([
 	{
@@ -78,6 +79,10 @@ export const router = createBrowserRouter([
 			{
 				path: "library",
 				element: <Library />,
+			},
+			{
+				path: "playlists/:playlistID",
+				element: <PlaylistDetail />,
 			},
 		],
 	},
