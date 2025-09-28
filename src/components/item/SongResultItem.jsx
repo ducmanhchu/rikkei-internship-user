@@ -13,13 +13,15 @@ export default function SongResultItem({ song }) {
 				onClick={() => dispatch(setCurrentSong(song))}
 			>
 				<img
-					src={song.albumImage}
+					src={song?.album?.coverImage}
 					alt={song.title}
 					className="w-14 aspect-square object-cover rounded-md"
 				/>
 				<div className="flex flex-col">
 					<p className="text-white text-base">{song.title}</p>
-					<p className="text-gray-400 text-sm">{song.artistName}</p>
+					<p className="text-gray-400 text-sm">
+						{song?.artist?.firstName + " " + song?.artist?.lastName}
+					</p>
 				</div>
 			</div>
 			<p className="text-white text-base">{secondsToTime(song.duration)}</p>

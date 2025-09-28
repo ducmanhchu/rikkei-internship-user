@@ -29,13 +29,17 @@ export default function WeeklyItem({ item, index, isSong }) {
 					{index < 9 ? `0${index + 1}` : index + 1}
 				</p>
 				<img
-					src={isSong ? item.albumImage : item.coverImage}
+					src={isSong ? item?.album?.coverImage : item.coverImage}
 					alt="Songs Cover"
 					className="w-14 rounded-md ms-4"
 				/>
 				<div className="flex flex-col self-center gap-1 grow ms-4">
 					<p className="text-white text-base">{item.title}</p>
-					<p className="text-[#DEDEDE] text-sm">{item.artistName}</p>
+					<p className="text-[#DEDEDE] text-sm">
+						{item.artist
+							? item?.artist?.firstName + " " + item?.artist?.lastName
+							: item?.artistName}
+					</p>
 				</div>
 			</div>
 			{isSong && (

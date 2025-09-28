@@ -48,7 +48,7 @@ export default function ShowAll() {
 						if (mounted) {
 							const uniqueAlbumById = new Map();
 							(response.data || []).forEach((item) => {
-								const albumId = item.albumId || item.id;
+								const albumId = item.album?.id;
 								if (!uniqueAlbumById.has(albumId))
 									uniqueAlbumById.set(albumId, item);
 							});

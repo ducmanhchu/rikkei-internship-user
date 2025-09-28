@@ -50,14 +50,14 @@ export default function SongTable({ songs }) {
 								className="flex w-full py-2 cursor-pointer rounded-md hover:bg-gray-400/30 transition-colors"
 								onClick={() => handlePlay(song)}
 							>
-								<td className="text-center flex-none w-12 py-2 px-2">
+								<td className="text-center text-gray-300 flex-none w-12 py-2 px-2">
 									{index + 1}
 								</td>
 								<td className="flex-grow py-2 px-2">
 									<div className="flex flex-col">
 										<span className="font-medium">{song.title}</span>
 										<span className="text-gray-400 text-sm">
-											{song.artistName}
+											{song?.artist?.firstName + " " + song?.artist?.lastName}
 										</span>
 									</div>
 								</td>

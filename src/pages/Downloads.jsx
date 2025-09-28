@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 import { songService } from "../services/song";
 import PillButton from "../components/button/PillButton";
@@ -13,8 +14,9 @@ export default function Downloads() {
 		const fetchDownloadedSongs = async () => {
 			try {
 				const response = await songService.getDownloadedSongs();
+				console.log(response.data);
 				if (response.success) {
-					setDownloadedSongs(response.data);
+					setDownloadedSongs(response.data.map((item) => item.song));
 				}
 			} catch (error) {
 				console.error("Error fetching downloaded songs:", error);
@@ -25,15 +27,18 @@ export default function Downloads() {
 	}, [isLogin]);
 
 	const handleRemoved = async (songID) => {
+		const toastId = toast.loading("Removing downloaded song...");
 		try {
 			const response = await songService.removeDownloadedSong(songID);
 			if (response.success) {
 				setDownloadedSongs((prevSongs) =>
 					prevSongs.filter((song) => song.id !== songID)
 				);
+				toast.success("Downloaded song removed successfully", { id: toastId });
 			}
 		} catch (error) {
 			console.error("Error removing downloaded song:", error);
+			toast.error("Failed to remove downloaded song", { id: toastId });
 		}
 	};
 
@@ -48,12 +53,18 @@ export default function Downloads() {
 	}
 
 	return (
-		<div className="px-12">
+		<div className="px-12 pb-8">
 			<div className="flex flex-col mx-8 my-6">
 				<p className="text-[#3BC8E7] text-lg">Free Downloads</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 			</div>
-			<UserTable data={downloadedSongs} onRemove={handleRemoved} />
+			<div className="px-8 pb-8">
+				<UserTable
+					data={downloadedSongs}
+					onRemove={handleRemoved}
+					isDownloaded
+				/>
+			</div>
 			{downloadedSongs.length > 10 && (
 				<div className="flex justify-center my-6">
 					<PillButton text="View More" />
@@ -64,14 +75,6 @@ export default function Downloads() {
 					No downloaded songs available.
 				</p>
 			)}
-
-			{/* <div className="flex flex-col mx-8 my-6">
-				<p className="text-[#3BC8E7] text-md">Download Now</p>
-				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
-			</div>
-			<div className="mb-14">
-				<ItemsCarousel items={draftAlbums} />
-			</div> */}
 		</div>
 	);
 }

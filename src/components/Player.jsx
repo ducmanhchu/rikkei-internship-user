@@ -42,7 +42,7 @@ export default function Player() {
 	const [queue, setQueue] = useState(false);
 	const handleCloseQueue = useCallback(() => setQueue(false), []);
 	const repeatType = repeatSong ? "song" : repeatPlaylist ? "playlist" : "none";
-	const { color } = useColorThief(currentSong?.albumImage, {
+	const { color } = useColorThief(currentSong?.album?.coverImage, {
 		format: "hex",
 	});
 
@@ -193,7 +193,7 @@ export default function Player() {
 				{/* Song Info */}
 				<div className="flex items-center gap-3 md:w-36">
 					<img
-						src={currentSong.albumImage}
+						src={currentSong.album?.coverImage}
 						alt={currentSong.title}
 						className="w-14 h-14 rounded shadow-xl/30 object-cover"
 						crossOrigin="anonymous"
@@ -203,7 +203,9 @@ export default function Player() {
 							{currentSong.title}
 						</p>
 						<p className="text-gray-300 text-sm truncate">
-							{currentSong.artistName}
+							{currentSong?.artist?.firstName +
+								" " +
+								currentSong?.artist?.lastName}
 						</p>
 					</div>
 				</div>

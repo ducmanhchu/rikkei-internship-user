@@ -90,6 +90,7 @@ export default function SongOptionsMenu({
 	};
 
 	const handleDownload = async (song) => {
+		const toastId = toast.loading("Downloading song...");
 		try {
 			const response = await fetch(song.songUrl);
 			const blob = await response.blob();
@@ -101,9 +102,14 @@ export default function SongOptionsMenu({
 			link.click();
 			document.body.removeChild(link);
 			window.URL.revokeObjectURL(url);
+
+			const downloadRes = await songService.downloadSong(song.id);
+			if (downloadRes.success) {
+				toast.success("Song downloaded", { id: toastId });
+			}
 		} catch (error) {
 			console.error("Failed to download song:", error);
-			alert("Failed to download song");
+			toast.error("Failed to download song", { id: toastId });
 		} finally {
 			onClose?.();
 		}

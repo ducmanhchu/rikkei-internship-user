@@ -12,18 +12,18 @@ export default function AlbumCard({ album, isPlaylist }) {
 				if (isPlaylist) {
 					navigate(`/playlists/${album.id}`);
 				} else {
-					navigate(`/albums/${album.albumId || album.id}`);
+					navigate(`/albums/${album?.album?.id || album.id}`);
 				}
 			}}
 		>
 			{isPlaylist ? (
-				album.songs.length >= 4 ? (
+				album?.songs?.length >= 4 ? (
 					<PlaylistCover src={album.songs} />
 				) : (
 					<img
 						src={
-							album?.songs[0]?.albumImage ||
-							"https://placehold.co/400/6C757D/FFF?text=Playlist"
+							album?.songs[0]?.album?.coverImage ||
+							"https://placehold.co/300/6C757D/FFF?text=Playlist"
 						}
 						alt="Album cover image"
 						className="w-full aspect-square object-cover rounded-md"
@@ -31,16 +31,20 @@ export default function AlbumCard({ album, isPlaylist }) {
 				)
 			) : (
 				<img
-					src={album?.albumImage || album?.coverImage}
+					src={album?.album?.coverImage || album?.coverImage}
 					alt="Album cover image"
 					className="w-full aspect-square object-cover rounded-md"
 				/>
 			)}
 			<p className="text-white text-md mt-2">
-				{isPlaylist ? album.name : album.albumTitle || album.title}
+				{isPlaylist ? album.name : album?.album?.title || album?.title}
 			</p>
 			<p className="text-gray-400 text-sm">
-				{isPlaylist ? album.username : album.artistName}
+				{isPlaylist
+					? album.username
+					: album.artist
+					? album?.artist?.firstName + " " + album?.artist?.lastName
+					: album?.artistName}
 			</p>
 		</article>
 	);

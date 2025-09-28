@@ -19,12 +19,14 @@ export default function SongCard({ song }) {
 			>
 				<img
 					className="size-13 aspect-square object-cover rounded-md me-3.5"
-					src={song.albumImage}
+					src={song?.album?.coverImage}
 					alt={song.title}
 				/>
 				<div className="flex flex-col justify-end gap-1 grow">
 					<p className="text-base text-white">{song.title}</p>
-					<p className="text-sm text-[#DEDEDE]">{song.artistName}</p>
+					<p className="text-sm text-[#DEDEDE]">
+						{song?.artist?.firstName + " " + song?.artist?.lastName}
+					</p>
 				</div>
 				<p className="text-gray-300 text-sm me-2 self-center">
 					{secondsToTime(song.duration)}

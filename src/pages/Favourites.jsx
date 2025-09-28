@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 import PillButton from "../components/button/PillButton";
 import UserTable from "../components/table/UserTable";
@@ -25,15 +26,18 @@ export default function Favourites() {
 	}, [isLogin]);
 
 	const handleRemoved = async (songId) => {
+		const toastId = toast.loading("Removing favourite song...");
 		try {
 			const response = await songService.removeFavouriteSong(songId);
 			if (response.success) {
 				setFavouriteSongs((prevSongs) =>
 					prevSongs.filter((song) => song.id !== songId)
 				);
+				toast.success("Favourite song removed successfully", { id: toastId });
 			}
 		} catch (error) {
 			console.error("Error removing favourite song:", error);
+			toast.error("Failed to remove favourite song", { id: toastId });
 		}
 	};
 
@@ -53,7 +57,13 @@ export default function Favourites() {
 				<p className="text-[#3BC8E7] text-lg">Favourites Songs</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 			</div>
-			<UserTable data={favouriteSongs} onRemove={handleRemoved} />
+			<div className="px-8 pb-8">
+				<UserTable
+					data={favouriteSongs}
+					onRemove={handleRemoved}
+					isDownloaded
+				/>
+			</div>
 			{favouriteSongs.length > 10 && (
 				<div className="flex justify-center my-6">
 					<PillButton text="View More" />

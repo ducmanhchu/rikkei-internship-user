@@ -22,7 +22,6 @@ export default function ArtistDetail() {
 				const response = await songService.getSongByArtist(artistID);
 				if (response && response.data) {
 					setSongs(response.data);
-					console.log("Fetched songs by artist:", response.data);
 				}
 			} catch (error) {
 				console.error("Error fetching songs:", error);
@@ -57,14 +56,14 @@ export default function ArtistDetail() {
 				<img
 					ref={imageRef}
 					crossOrigin="anonymous"
-					src={songs[0]?.artistImage || songs.profileImage}
+					src={songs[0]?.artist?.profileImage}
 					className="w-32 h-32 object-cover shadow-xl/30 rounded-full lg:w-52 lg:h-52"
 					alt="Artist Image"
 				/>
 				<div className="flex flex-col gap-2 justify-center text-white">
 					<h5 className="text-md ps-1">Artist</h5>
 					<h1 className="text-xl font-bold pt-1 md:text-3xl lg:text-5xl">
-						{songs[0]?.artistName || songs.fullName}
+						{songs[0]?.artist?.firstName + " " + songs[0]?.artist?.lastName}
 					</h1>
 				</div>
 			</div>

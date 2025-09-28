@@ -39,17 +39,19 @@ export default function AlbumDetail() {
 			>
 				<img
 					ref={imageRef}
-					className="w-32 h-32 bg-cover shadow-xl/30 rounded-md lg:w-52 lg:h-52"
-					src={songs[0]?.albumImage}
+					className="w-32 h-32 object-cover shadow-xl/30 rounded-md lg:w-52 lg:h-52"
+					src={songs[0]?.album?.coverImage}
 					crossOrigin="anonymous"
 					alt="Album cover"
 				/>
-				<div className="flex flex-col text-white gap-1 justify-end">
+				<div className="flex flex-col text-white gap-2 justify-end">
 					<h5 className="text-sm">Album</h5>
 					<h1 className="text-2xl font-bold pt-1 md:text-4xl lg:text-6xl">
-						{songs[0]?.albumTitle}
+						{songs[0]?.album?.title}
 					</h1>
-					<h4 className="font-medium text-md ">{songs[0]?.artistName}</h4>
+					<h4 className="font-medium text-md ">
+						{songs[0]?.artist?.firstName + " " + songs[0]?.artist?.lastName}
+					</h4>
 				</div>
 			</div>
 			<div className="px-12 pb-8">

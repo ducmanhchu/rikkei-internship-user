@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import useColorThief from "use-color-thief";
 
 import { authService } from "../services/auth";
+import { playlistService } from "../services/playlist";
 import { openModal } from "../redux/modalSlice";
 import { setUser } from "../redux/authSlice";
 import ItemsCarousel from "../components/util/ItemsCarousel";
@@ -11,6 +12,7 @@ import ItemsCarousel from "../components/util/ItemsCarousel";
 export default function Profile() {
 	const dispatch = useDispatch();
 	const { user, roles } = useSelector((state) => state.auth);
+	const [playlists, setPlaylists] = useState([]);
 	const imageRef = useRef();
 	const { color } = useColorThief(imageRef, {
 		format: "hex",
@@ -27,9 +29,22 @@ export default function Profile() {
 				console.error("Error fetching profile:", error);
 			}
 		};
-
 		fetchProfile();
 	}, []);
+
+	useEffect(() => {
+		const fetchPlaylists = async () => {
+			try {
+				const response = await playlistService.getPlaylists();
+				if (response.success) {
+					setPlaylists(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching playlists:", error);
+			}
+		};
+		fetchPlaylists();
+	}, [user]);
 
 	return (
 		<div>
@@ -94,8 +109,8 @@ export default function Profile() {
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Playlists
 				</h2>
-				{user?.playlists?.length > 0 ? (
-					<ItemsCarousel items={user.playlists ?? []} isAlbum />
+				{playlists?.length > 0 ? (
+					<ItemsCarousel items={playlists ?? []} isPlaylist />
 				) : (
 					<p className="text-gray-400 my-4">No playlists available.</p>
 				)}

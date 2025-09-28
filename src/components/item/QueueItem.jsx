@@ -14,7 +14,7 @@ export default function QueueItem({ item }) {
 			onClick={() => dispatch(setCurrentSong(item))}
 		>
 			<img
-				src={item.albumImage}
+				src={item?.album?.coverImage}
 				alt="Song cover"
 				className="aspect-square w-12 h-12 rounded-md"
 			/>
@@ -26,7 +26,9 @@ export default function QueueItem({ item }) {
 				>
 					{item.title}
 				</p>
-				<p className="text-gray-400 text-sm">{item.artistName}</p>
+				<p className="text-gray-400 text-sm">
+					{item?.artist?.firstName + " " + item?.artist?.lastName}
+				</p>
 			</div>
 		</div>
 	);

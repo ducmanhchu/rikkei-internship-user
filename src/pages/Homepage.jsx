@@ -50,8 +50,8 @@ export default function Homepage() {
 					) {
 						const recentlyAlbums = new Map();
 						(recentlyPlayedRes.value.data || []).forEach((item) => {
-							if (!recentlyAlbums.has(item.albumId)) {
-								recentlyAlbums.set(item.albumId, item);
+							if (!recentlyAlbums.has(item.album.id)) {
+								recentlyAlbums.set(item.album.id, item);
 							}
 						});
 						setRecentlyPlayed(Array.from(recentlyAlbums.values()));

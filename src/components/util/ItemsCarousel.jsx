@@ -4,7 +4,13 @@ import AlbumCard from "../card/AlbumCard";
 import SongCard from "../card/SongCard";
 import ArtistCard from "../card/ArtistCard";
 
-export default function ItemsCarousel({ items, isAlbum, isSong, isArtist }) {
+export default function ItemsCarousel({
+	items,
+	isAlbum,
+	isSong,
+	isArtist,
+	isPlaylist,
+}) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [itemsPerView, setItemsPerView] = useState(1);
 
@@ -79,6 +85,16 @@ export default function ItemsCarousel({ items, isAlbum, isSong, isArtist }) {
 								style={{ width: `${100 / itemsPerView}%` }}
 							>
 								<ArtistCard artist={artist} />
+							</div>
+						))}
+					{isPlaylist &&
+						items.map((playlist, index) => (
+							<div
+								key={playlist.id || index}
+								className="flex-shrink-0"
+								style={{ width: `${100 / itemsPerView}%` }}
+							>
+								<AlbumCard album={playlist} isPlaylist />
 							</div>
 						))}
 				</div>

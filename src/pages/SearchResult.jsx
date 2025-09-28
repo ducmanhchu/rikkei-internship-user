@@ -135,7 +135,7 @@ export default function SearchResult() {
 			</div>
 			<div className="mb-8">
 				{playlistResults.length > 0 ? (
-					<ItemsCarousel items={playlistResults} isAlbum />
+					<ItemsCarousel items={playlistResults} isPlaylist />
 				) : (
 					<p className="text-gray-400 my-4">No playlists found.</p>
 				)}

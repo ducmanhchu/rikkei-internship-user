@@ -19,7 +19,6 @@ export default function Library() {
 		const fetchAlbums = async () => {
 			try {
 				const response = await albumService.getAlbumsByArtist(user.id);
-				console.log(response.data);
 				if (response.success) {
 					setAlbums(response.data);
 				}
