@@ -102,7 +102,7 @@ export default function PlaylistDetail() {
 					<img
 						src={
 							playlist?.songs?.[0]?.album?.coverImage ||
-							"https://placehold.co/300/6C757D/FFF?text=Playlist"
+							"/images/placeholder.png"
 						}
 						alt="Playlist cover"
 						className="w-32 h-32 bg-cover shadow-xl/30 rounded-md lg:w-52 lg:h-52 shrink-0"

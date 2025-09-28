@@ -43,52 +43,60 @@ export default function SongTable({ songs }) {
 					</tr>
 				</thead>
 				<tbody>
-					{songLists.map((song, index) => {
-						return (
-							<tr
-								key={song.id}
-								className="flex w-full py-2 cursor-pointer rounded-md hover:bg-gray-400/30 transition-colors"
-								onClick={() => handlePlay(song)}
-							>
-								<td className="text-center text-gray-300 flex-none w-12 py-2 px-2">
-									{index + 1}
-								</td>
-								<td className="flex-grow py-2 px-2">
-									<div className="flex flex-col">
-										<span className="font-medium">{song.title}</span>
-										<span className="text-gray-400 text-sm">
-											{song?.artist?.firstName + " " + song?.artist?.lastName}
-										</span>
-									</div>
-								</td>
-								<td className="flex gap-2 justify-center items-center flex-none w-25 py-2 px-2">
-									<p className="text-gray-300">
-										{secondsToTime(song.duration)}
-									</p>
-									<button
-										ref={getAnchorRef(song.id)}
-										className="flex gap-0.5 mt-1.5 ms-2 pb-1.5 cursor-pointer hover:scale-115 transition-transform duration-150"
-										onClick={(e) => {
-											e.stopPropagation();
-											setOpenMenuId(openMenuId === song.id ? null : song.id);
-										}}
-									>
-										<EllipsisHorizontalIcon className="size-5 text-gray-300" />
-									</button>
-									{openMenuId === song.id && (
-										<SongOptionsMenu
-											anchorRect={getAnchorRef(
-												song.id
-											).current?.getBoundingClientRect?.()}
-											anchorRef={getAnchorRef(song.id)}
-											song={song}
-											onClose={() => setOpenMenuId(null)}
-										/>
-									)}
-								</td>
-							</tr>
-						);
-					})}
+					{songs.length > 0 ? (
+						songLists.map((song, index) => {
+							return (
+								<tr
+									key={song.id}
+									className="flex w-full py-2 cursor-pointer rounded-md hover:bg-gray-400/30 transition-colors"
+									onClick={() => handlePlay(song)}
+								>
+									<td className="text-center text-gray-300 flex-none w-12 py-2 px-2">
+										{index + 1}
+									</td>
+									<td className="flex-grow py-2 px-2">
+										<div className="flex flex-col">
+											<span className="font-medium">{song.title}</span>
+											<span className="text-gray-400 text-sm">
+												{song?.artist?.firstName + " " + song?.artist?.lastName}
+											</span>
+										</div>
+									</td>
+									<td className="flex gap-2 justify-center items-center flex-none w-25 py-2 px-2">
+										<p className="text-gray-300">
+											{secondsToTime(song.duration)}
+										</p>
+										<button
+											ref={getAnchorRef(song.id)}
+											className="flex gap-0.5 mt-1.5 ms-2 pb-1.5 cursor-pointer hover:scale-115 transition-transform duration-150"
+											onClick={(e) => {
+												e.stopPropagation();
+												setOpenMenuId(openMenuId === song.id ? null : song.id);
+											}}
+										>
+											<EllipsisHorizontalIcon className="size-5 text-gray-300" />
+										</button>
+										{openMenuId === song.id && (
+											<SongOptionsMenu
+												anchorRect={getAnchorRef(
+													song.id
+												).current?.getBoundingClientRect?.()}
+												anchorRef={getAnchorRef(song.id)}
+												song={song}
+												onClose={() => setOpenMenuId(null)}
+											/>
+										)}
+									</td>
+								</tr>
+							);
+						})
+					) : (
+						<tr>
+							<td colSpan={3} className="text-center text-white py-4">
+								No songs available.
+							</td>
+						</tr>
+					)}
 				</tbody>
 			</table>
 			{songs.length > 5 && (

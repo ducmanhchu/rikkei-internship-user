@@ -10,6 +10,7 @@ import ProfileModal from "./ProfileModal";
 import ChangePassModal from "./ChangePassModal";
 import PlaylistInfo from "./PlaylistInfo";
 import AddSongPlaylistModal from "./AddSongPlaylistModal";
+import AlbumInfoModal from "./AlbumInfoModal";
 
 const MODAL_COMPONENTS = {
 	LOGIN_MODAL: LoginModal,
@@ -20,6 +21,7 @@ const MODAL_COMPONENTS = {
 	CHANGE_PASS_MODAL: ChangePassModal,
 	PLAYLIST_INFO_MODAL: PlaylistInfo,
 	ADD_SONG_PLAYLIST_MODAL: AddSongPlaylistModal,
+	ALBUM_INFO_MODAL: AlbumInfoModal,
 };
 
 export default function ModalManager() {

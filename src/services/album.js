@@ -3,7 +3,7 @@ import apiClient from "./http";
 export const albumService = {
 	createAlbum: async (title, releaseDate, coverImage, type) => {
 		try {
-			const response = await apiClient.post("/albums", {
+			const response = await apiClient.post("/album/create", {
 				title,
 				releaseDate,
 				coverImage,
@@ -18,6 +18,20 @@ export const albumService = {
 		} catch (error) {
 			const errorMessage =
 				error.response?.data?.message || "Failed to create album";
+			throw new Error(errorMessage);
+		}
+	},
+
+	getAlbumById: async (id) => {
+		try {
+			const response = await apiClient.get(`/album/${id}`);
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message || "Failed to fetch album";
 			throw new Error(errorMessage);
 		}
 	},
@@ -90,6 +104,37 @@ export const albumService = {
 		} catch (error) {
 			const errorMessage =
 				error.response?.data?.message || "Failed to fetch new albums";
+			throw new Error(errorMessage);
+		}
+	},
+
+	updateAlbum: async (id, title, coverImageFile) => {
+		try {
+			const formData = new FormData();
+
+			if (title) {
+				formData.append("title", title);
+			}
+
+			if (coverImageFile) {
+				formData.append("coverImage", coverImageFile);
+			}
+
+			const response = await apiClient.put(`/album/${id}/update`, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.data ||
+				error.response?.data?.message ||
+				"Failed to update album";
 			throw new Error(errorMessage);
 		}
 	},

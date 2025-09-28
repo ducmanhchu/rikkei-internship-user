@@ -22,8 +22,7 @@ export default function AlbumCard({ album, isPlaylist }) {
 				) : (
 					<img
 						src={
-							album?.songs[0]?.album?.coverImage ||
-							"https://placehold.co/300/6C757D/FFF?text=Playlist"
+							album?.songs[0]?.album?.coverImage || "/images/placeholder.png"
 						}
 						alt="Album cover image"
 						className="w-full aspect-square object-cover rounded-md"
@@ -31,7 +30,11 @@ export default function AlbumCard({ album, isPlaylist }) {
 				)
 			) : (
 				<img
-					src={album?.album?.coverImage || album?.coverImage}
+					src={
+						album?.album?.coverImage ||
+						album?.coverImage ||
+						"/images/placeholder.png"
+					}
 					alt="Album cover image"
 					className="w-full aspect-square object-cover rounded-md"
 				/>

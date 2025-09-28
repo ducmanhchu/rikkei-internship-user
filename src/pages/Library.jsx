@@ -62,7 +62,24 @@ export default function Library() {
 		}
 	};
 
-	const handleCreateAlbum = () => {};
+	const handleCreateAlbum = async () => {
+		const toastId = toast.loading("Creating album...");
+		try {
+			const createRes = await albumService.createAlbum(
+				"My Album",
+				new Date(),
+				"/images/placeholder.png",
+				"FREE"
+			);
+			if (createRes.success) {
+				navigate(`/albums/${createRes.data.id}`);
+				toast.success("Album created successfully", { id: toastId });
+			}
+		} catch (error) {
+			toast.error("Failed to create album", { id: toastId });
+			console.error("Error creating album:", error);
+		}
+	};
 
 	if (!isLogin) {
 		return (

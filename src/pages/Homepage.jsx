@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { songService } from "../services/song";
 import { albumService } from "../services/album";
 import { artistService } from "../services/artist";
 import { genreService } from "../services/genre";
+import { setCurrentSong, setPlaylist } from "../redux/playerSlice";
 import banner from "../assets/banner.png";
 import PillButton from "../components/button/PillButton";
 import ItemsCarousel from "../components/util/ItemsCarousel";
@@ -14,6 +15,7 @@ import GenreCard from "../components/card/GenreCard";
 
 export default function Homepage() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const { isLogin } = useSelector((state) => state.auth);
 
 	const [recentlyPlayed, setRecentlyPlayed] = useState([]);
@@ -22,6 +24,7 @@ export default function Homepage() {
 	const [newReleases, setNewReleases] = useState([]);
 	const [featuredAlbums, setFeaturedAlbums] = useState([]);
 	const [topGenres, setTopGenres] = useState([]);
+	const [breakingSongs, setBreakingSongs] = useState([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -76,8 +79,10 @@ export default function Homepage() {
 				) {
 					const data = weeklySongsRes.value.data || [];
 					setWeeklySongs(data.length > 15 ? data.slice(0, 15) : data);
+					setBreakingSongs(data.slice(0, 15).map((song) => song.title));
 				} else {
 					setWeeklySongs([]);
+					setBreakingSongs([]);
 				}
 
 				// Featured Albums
@@ -134,24 +139,28 @@ export default function Homepage() {
 		fetchData();
 	}, [isLogin]);
 
+	const handleListenNow = () => {
+		dispatch(setCurrentSong(weeklySongs[0]));
+		dispatch(setPlaylist(weeklySongs));
+	};
+
 	return (
 		<div>
 			<div className="flex flex-col justify-center lg:flex-row lg:justify-stretch mb-4">
-				<img src={banner} alt="Banner" className="w-full h-auto px-4 " />
-				<div className="flex flex-col place-items-center lg:place-items-start lg:justify-center">
-					<h1 className="text-white text-center text-2xl my-4 lg:text-start lg:text-4xl">
+				<img
+					src={banner}
+					alt="Banner"
+					className="w-full basis-3/7 shrink-0 h-auto px-4 "
+				/>
+				<div className="flex flex-col basis-4/7 place-items-center lg:place-items-start lg:justify-center">
+					<h1 className="text-white text-center text-2xl my-4 lg:text-start lg:text-5xl">
 						This Month&apos;s <br />
-						<span className="text-[#3BC8E7]">Record Breaking Album!</span>
+						<span className="text-[#3BC8E7]">Record Breaking Songs!</span>
 					</h1>
-					<p className="text-[#777777] text-center text-[15px] px-8 leading-7 lg:text-start lg:ps-0">
-						Dream your moments, Until I Met You, Gimme Some Courage, Dark Alley,
-						One More Of A Stranger, Endless Things, The Heartbeat Stops, Walking
-						Promises, Desired Games and many more...
+					<p className="text-[#777777] text-center text-base px-14 mb-4 leading-7 lg:text-start lg:ps-0">
+						{breakingSongs.join(", ")} and many more...
 					</p>
-					<div className="flex gap-2 my-4">
-						<PillButton text="Listen Now" />
-						<PillButton text="Add To Queue" />
-					</div>
+					<PillButton text="Listen Now" onClick={handleListenNow} />
 				</div>
 			</div>
 			<div className="px-12">
