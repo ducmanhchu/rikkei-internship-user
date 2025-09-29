@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	QueueListIcon,
 	HeartIcon,
@@ -11,6 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 
+import { openModal } from "../../redux/modalSlice";
 import { songService } from "../../services/song";
 import { addToPlaylist } from "../../redux/playerSlice";
 
@@ -28,26 +29,33 @@ export default function SongOptionsMenu({
 		left: 0,
 		transformOrigin: "top left",
 	});
+	const { isLogin } = useSelector((state) => state.auth);
 
 	useLayoutEffect(() => {
-		if (!anchorRect) return;
-		const menuWidth = 200;
-		const menuHeight = menuRef.current.offsetHeight;
-		let top = anchorRect.bottom + window.scrollY;
-		let left = anchorRect.left + window.scrollX;
-		let transformOrigin = "top left";
+		const positionCalculator = () => {
+			if (!anchorRect) return;
+			const menuWidth = 200;
+			const menuHeight = menuRef.current.offsetHeight;
+			let top = anchorRect.bottom + window.scrollY;
+			let left = anchorRect.left + window.scrollX;
+			let transformOrigin = "top left";
 
-		if (left + menuWidth > window.scrollX + window.innerWidth) {
-			left = anchorRect.right - menuWidth + window.scrollX;
-			transformOrigin = "top right";
+			if (left + menuWidth > window.scrollX + window.innerWidth) {
+				left = anchorRect.right - menuWidth + window.scrollX;
+				transformOrigin = "top right";
+			}
+
+			if (top + menuHeight > window.scrollY + window.innerHeight - 100) {
+				top = anchorRect.top - menuHeight + window.scrollY;
+				transformOrigin = transformOrigin.replace("top", "bottom");
+			}
+
+			setPosition({ top, left, transformOrigin });
+		};
+
+		if (isLogin) {
+			positionCalculator();
 		}
-
-		if (top + menuHeight > window.scrollY + window.innerHeight - 100) {
-			top = anchorRect.top - menuHeight + window.scrollY;
-			transformOrigin = transformOrigin.replace("top", "bottom");
-		}
-
-		setPosition({ top, left, transformOrigin });
 	}, [anchorRect]);
 
 	useEffect(() => {
@@ -74,6 +82,13 @@ export default function SongOptionsMenu({
 			window.removeEventListener("scroll", handleScroll, true);
 		};
 	}, [onClose]);
+
+	useEffect(() => {
+		if (!isLogin) {
+			dispatch(openModal({ modalName: "AUTH_REQ_MODAL", modalData: song }));
+			onClose?.();
+		}
+	}, [isLogin, dispatch, song, onClose]);
 
 	const handleAddToFavourite = async (song) => {
 		const toastId = toast.loading("Adding to favourite...");
@@ -115,6 +130,10 @@ export default function SongOptionsMenu({
 		}
 	};
 
+	if (!isLogin) {
+		return null;
+	}
+
 	return createPortal(
 		<div
 			style={{
@@ -151,12 +170,12 @@ export default function SongOptionsMenu({
 				<MenuItem
 					Icon={InformationCircleIcon}
 					label="Go to album"
-					onClick={() => navigate(`/albums/${song.albumId}`)}
+					onClick={() => navigate(`/albums/${song?.album?.id}`)}
 				/>
 				<MenuItem
 					Icon={UserCircleIcon}
 					label="Go to artist"
-					onClick={() => navigate(`/artists/${song.artistId}`)}
+					onClick={() => navigate(`/artists/${song?.artist?.id}`)}
 				/>
 			</div>
 		</div>,

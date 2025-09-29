@@ -22,8 +22,8 @@ export default function Artists() {
 	}, []);
 
 	return (
-		<div className="px-12">
-			<div className="flex justify-between my-6 mx-8">
+		<div className="px-12 py-6 min-h-[100vh]">
+			<div className="flex justify-between mb-4 mx-8">
 				<div className="flex flex-col">
 					<p className="text-[#3BC8E7] text-lg">Featured Artists</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>

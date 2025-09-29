@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { closeModal } from "../../redux/modalSlice";
 import { playlistService } from "../../services/playlist";
 
-export default function PlaylistInfo({ data }) {
+export default function PlaylistInfoModal({ data }) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);

@@ -12,12 +12,16 @@ export default function AlbumInfoModal({ data }) {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
-	const [previewImage, setPreviewImage] = useState(data?.coverImage || "");
+	const [previewImage, setPreviewImage] = useState(
+		data?.album?.coverImage || ""
+	);
 	const [newAlbumData, setNewAlbumData] = useState({
-		title: data?.title || "",
-		releaseDate: data?.releaseDate ? data.releaseDate.split("T")[0] : "",
-		type: data?.type || "FREE",
-		coverImage: data?.coverImage || "",
+		title: data?.album?.title || "",
+		releaseDate: data?.album?.releaseDate
+			? data.album.releaseDate.split("T")[0]
+			: "",
+		type: data?.album?.type || "FREE",
+		coverImage: data?.album?.coverImage || "",
 	});
 	const [selectedImage, setSelectedImage] = useState(null);
 
@@ -50,20 +54,24 @@ export default function AlbumInfoModal({ data }) {
 
 		try {
 			const response = await albumService.updateAlbum(
-				data.id,
+				data.album.id,
 				newAlbumData.title,
 				selectedImage
 			);
 
 			if (response.success) {
 				const updatedAlbum = {
-					...data,
+					...data.album,
 					title: newAlbumData.title,
 					coverImage: response.data.coverImage,
+					songs: data.songs,
 				};
 
 				if (window.updateAlbumDetail) {
-					window.updateAlbumDetail(updatedAlbum);
+					window.updateAlbumDetail({
+						...data,
+						album: updatedAlbum,
+					});
 				}
 
 				dispatch(closeModal());

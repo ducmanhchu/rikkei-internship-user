@@ -1,10 +1,22 @@
 import { useDispatch } from "react-redux";
+import { useState, useRef } from "react";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
 import { setCurrentSong, setPlaylist } from "../../redux/playerSlice";
 import { secondsToTime } from "../../utils";
+import SongOptionsMenu from "../modal/SongOptionsMenu";
 
 export default function UserTable({ data, onRemove, isDownloaded }) {
 	const dispatch = useDispatch();
+	const [openMenuId, setOpenMenuId] = useState(null);
+	const anchorRef = useRef(new Map());
+
+	const getAnchorRef = (id) => {
+		if (!anchorRef.current.has(id)) {
+			anchorRef.current.set(id, { current: null });
+		}
+		return anchorRef.current.get(id);
+	};
 
 	const handlePlay = (song) => {
 		dispatch(setCurrentSong(song));
@@ -22,7 +34,7 @@ export default function UserTable({ data, onRemove, isDownloaded }) {
 							<th className="text-left py-3 px-4 font-normal">Album</th>
 						)}
 						<th className="text-left py-3 px-4 font-normal">Duration</th>
-						<th className="text-center py-3 px-4 font-normal">Remove</th>
+						<th className="text-center py-3 px-4 font-normal">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -50,7 +62,27 @@ export default function UserTable({ data, onRemove, isDownloaded }) {
 								<td className="py-4 px-4 text-gray-300">
 									{secondsToTime(song.duration)}
 								</td>
-								<td className="py-4 px-4 text-center">
+								<td className="flex gap-4 justify-center items-center py-4 px-4 text-center">
+									<button
+										ref={getAnchorRef(song.id)}
+										className="flex gap-0.5 mt-1.5 ms-2 pb-1.5 cursor-pointer hover:scale-115 transition-transform duration-150"
+										onClick={(e) => {
+											e.stopPropagation();
+											setOpenMenuId(openMenuId === song.id ? null : song.id);
+										}}
+									>
+										<EllipsisHorizontalIcon className="size-5 text-gray-300" />
+									</button>
+									{openMenuId === song.id && (
+										<SongOptionsMenu
+											anchorRect={getAnchorRef(
+												song.id
+											).current?.getBoundingClientRect?.()}
+											anchorRef={getAnchorRef(song.id)}
+											song={song}
+											onClose={() => setOpenMenuId(null)}
+										/>
+									)}
 									<button className="cursor-pointer hover:scale-110 transition-transform duration-150 p-1">
 										<img
 											src="/icons/remove.svg"

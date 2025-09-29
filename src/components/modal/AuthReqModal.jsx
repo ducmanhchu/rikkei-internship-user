@@ -6,7 +6,7 @@ import { openModal, closeModal } from "../../redux/modalSlice";
 
 export default function AuthReqModal({ data }) {
 	const dispatch = useDispatch();
-	const { color } = useColorThief(data.albumImage, {
+	const { color } = useColorThief(data?.album?.coverImage, {
 		format: "hex",
 	});
 
@@ -25,7 +25,7 @@ export default function AuthReqModal({ data }) {
 			>
 				<img
 					className="w-32 h-32 rounded-lg shadow-xl/30 object-cover mx-auto md:w-42 md:h-42 lg:w-52 lg:h-52"
-					src={data.albumImage}
+					src={data?.album?.coverImage}
 					alt={data.title}
 				/>
 

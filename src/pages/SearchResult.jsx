@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { searchService } from "../services/search";
 import ItemsCarousel from "../components/util/ItemsCarousel";
@@ -11,6 +12,7 @@ export default function SearchResult() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
+	const { user } = useSelector((state) => state.auth);
 	const [songResults, setSongResults] = useState([]);
 	const [albumResults, setAlbumResults] = useState([]);
 	const [artistResults, setArtistResults] = useState([]);
@@ -57,7 +59,21 @@ export default function SearchResult() {
 				}
 
 				if (playlistResults.status === "fulfilled") {
-					setPlaylistResults(playlistResults.value.data || []);
+					const publicPlaylist = playlistResults.value.data.filter(
+						(item) => item.isPublic
+					);
+					const privatePlaylist = playlistResults.value.data.filter(
+						(item) => !item.isPublic
+					);
+					if (
+						user &&
+						privatePlaylist.length > 0 &&
+						user.id === privatePlaylist[0].userId
+					) {
+						setPlaylistResults([...publicPlaylist, ...privatePlaylist]);
+					} else {
+						setPlaylistResults(publicPlaylist);
+					}
 				} else {
 					console.error("Search playlist failed:", playlistResults.reason);
 					setPlaylistResults([]);

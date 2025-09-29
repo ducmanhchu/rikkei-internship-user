@@ -53,7 +53,7 @@ export default function Downloads() {
 	}
 
 	return (
-		<div className="px-12 pb-8">
+		<div className="px-12 pb-8 min-h-[100vh]">
 			<div className="flex flex-col mx-8 my-6">
 				<p className="text-[#3BC8E7] text-lg">Free Downloads</p>
 				<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
@@ -69,11 +69,6 @@ export default function Downloads() {
 				<div className="flex justify-center my-6">
 					<PillButton text="View More" />
 				</div>
-			)}
-			{downloadedSongs.length === 0 && (
-				<p className="text-gray-500 text-md mt-6 text-center">
-					No downloaded songs available.
-				</p>
 			)}
 		</div>
 	);

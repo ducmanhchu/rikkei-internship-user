@@ -9,6 +9,7 @@ import { openModal } from "../redux/modalSlice";
 import { playlistService } from "../services/playlist";
 import PlaylistCover from "../components/util/PlaylistCover";
 import UserTable from "../components/table/UserTable";
+import SongTable from "../components/table/SongTable";
 import PillButton from "../components/button/PillButton";
 
 export default function PlaylistDetail() {
@@ -21,11 +22,6 @@ export default function PlaylistDetail() {
 
 	useEffect(() => {
 		const fetchPlaylist = async () => {
-			if (!user) {
-				setLoading(false);
-				return;
-			}
-
 			try {
 				setLoading(true);
 				setError(null);
@@ -118,40 +114,48 @@ export default function PlaylistDetail() {
 						</h1>
 						<h4 className="font-medium text-md ">{playlist?.username}</h4>
 					</div>
-					<button
-						className="self-end cursor-pointer hover:scale-110 transition-transform duration-150"
+					{user && user.id === playlist.userId && (
+						<button
+							className="self-end cursor-pointer hover:scale-110 transition-transform duration-150"
+							onClick={() =>
+								dispatch(
+									openModal({
+										modalName: "PLAYLIST_INFO_MODAL",
+										modalData: playlist,
+									})
+								)
+							}
+						>
+							<PencilIcon className="size-6 text-white" />
+						</button>
+					)}
+				</div>
+			</div>
+			{user && user.id === playlist.userId && (
+				<div className="px-12 pb-4">
+					<PillButton
+						text="Add Song"
+						Icon={PlusIcon}
 						onClick={() =>
 							dispatch(
 								openModal({
-									modalName: "PLAYLIST_INFO_MODAL",
+									modalName: "ADD_SONG_PLAYLIST_MODAL",
 									modalData: playlist,
 								})
 							)
 						}
-					>
-						<PencilIcon className="size-6 text-white" />
-					</button>
+					/>
 				</div>
-			</div>
-			<div className="px-12 pb-4">
-				<PillButton
-					text="Add Song"
-					Icon={PlusIcon}
-					onClick={() =>
-						dispatch(
-							openModal({
-								modalName: "ADD_SONG_PLAYLIST_MODAL",
-								modalData: playlist,
-							})
-						)
-					}
-				/>
-			</div>
+			)}
 			<div className="px-12 pb-8">
-				<UserTable
-					data={playlist?.songs || []}
-					onRemove={removeSongFromPlaylist}
-				/>
+				{user && user.id === playlist.userId ? (
+					<UserTable
+						data={playlist?.songs || []}
+						onRemove={removeSongFromPlaylist}
+					/>
+				) : (
+					<SongTable songs={playlist?.songs || []} />
+				)}
 			</div>
 		</div>
 	);

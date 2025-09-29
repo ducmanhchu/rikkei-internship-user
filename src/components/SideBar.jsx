@@ -1,4 +1,5 @@
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import MiraculousLogo from "../assets/miraculous.svg";
 import MiniMiraculouseLogo from "../assets/mini-miraculous.svg";
@@ -6,6 +7,7 @@ import MiniMiraculouseLogo from "../assets/mini-miraculous.svg";
 export default function Sidebar({ isOpen, handleClick }) {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { isLogin } = useSelector((state) => state.auth);
 
 	const menuItems = [
 		{ id: 0, icon: "/icons/home.svg", label: "Discover", path: "/" },
@@ -98,12 +100,13 @@ export default function Sidebar({ isOpen, handleClick }) {
 							</Link>
 						))}
 					</div>
-					<div className="px-2 mb-8">
-						{additionalMenuItems.map((item) => (
-							<Link
-								key={item.path}
-								to={item.path}
-								className={`
+					{isLogin && (
+						<div className="px-2 mb-8">
+							{additionalMenuItems.map((item) => (
+								<Link
+									key={item.path}
+									to={item.path}
+									className={`
 									w-full flex items-center gap-4 text-left transition-all duration-300 ease-in-out rounded-md border-gray-700 
 									${
 										location.pathname === item.path
@@ -112,20 +115,21 @@ export default function Sidebar({ isOpen, handleClick }) {
 									}
 									${isOpen ? "px-6 py-3" : "p-3 justify-center"}
 								`}
-							>
-								<img
-									className="w-5 h-5 shrink-0"
-									src={item.icon}
-									alt={item.label}
-								/>
-								{isOpen && (
-									<span className="pt-2 leading-5 transition whitespace-nowrap">
-										{item.label}
-									</span>
-								)}
-							</Link>
-						))}
-					</div>
+								>
+									<img
+										className="w-5 h-5 shrink-0"
+										src={item.icon}
+										alt={item.label}
+									/>
+									{isOpen && (
+										<span className="pt-2 leading-5 transition whitespace-nowrap">
+											{item.label}
+										</span>
+									)}
+								</Link>
+							))}
+						</div>
+					)}
 				</nav>
 
 				<button

@@ -91,7 +91,7 @@ export default function Library() {
 		);
 	}
 	return (
-		<div className="px-12 py-8">
+		<div className="px-12 py-6 min-h-[100vh]">
 			{roles === "ROLE_ARTIST" && (
 				<>
 					<div className="flex justify-between mb-6 mx-8">
@@ -127,9 +127,13 @@ export default function Library() {
 			</div>
 
 			<div className="grid grid-cols-1 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-6">
-				{playlists.map((playlist) => (
-					<AlbumCard key={playlist.id} album={playlist} isPlaylist />
-				))}
+				{playlists.length > 0 &&
+					playlists.map((playlist) => (
+						<AlbumCard key={playlist.id} album={playlist} isPlaylist />
+					))}
+				{playlists.length === 0 && (
+					<p className="text-white mt-2">No playlists available.</p>
+				)}
 			</div>
 		</div>
 	);

@@ -8,9 +8,10 @@ import OTPModal from "./OTPModal";
 import AuthReqModal from "./AuthReqModal";
 import ProfileModal from "./ProfileModal";
 import ChangePassModal from "./ChangePassModal";
-import PlaylistInfo from "./PlaylistInfo";
+import PlaylistInfoModal from "./PlaylistInfoModal";
 import AddSongPlaylistModal from "./AddSongPlaylistModal";
 import AlbumInfoModal from "./AlbumInfoModal";
+import AddSongAlbumModal from "./AddSongAlbumModal";
 
 const MODAL_COMPONENTS = {
 	LOGIN_MODAL: LoginModal,
@@ -19,9 +20,10 @@ const MODAL_COMPONENTS = {
 	AUTH_REQ_MODAL: AuthReqModal,
 	PROFILE_MODAL: ProfileModal,
 	CHANGE_PASS_MODAL: ChangePassModal,
-	PLAYLIST_INFO_MODAL: PlaylistInfo,
+	PLAYLIST_INFO_MODAL: PlaylistInfoModal,
 	ADD_SONG_PLAYLIST_MODAL: AddSongPlaylistModal,
 	ALBUM_INFO_MODAL: AlbumInfoModal,
+	ADD_SONG_ALBUM_MODAL: AddSongAlbumModal,
 };
 
 export default function ModalManager() {

@@ -49,8 +49,8 @@ export default function History() {
 	}
 
 	return (
-		<div className="px-12">
-			<div className="flex justify-between mx-8 mt-8 mb-6">
+		<div className="px-12 py-6 min-h-[100vh]">
+			<div className="flex justify-between mx-8 mb-6">
 				<div className="flex flex-col">
 					<p className="text-[#3BC8E7] text-lg">History</p>
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>

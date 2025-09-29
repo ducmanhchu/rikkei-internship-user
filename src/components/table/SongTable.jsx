@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-
 import { useDispatch } from "react-redux";
+
 import { setCurrentSong, setPlaylist } from "../../redux/playerSlice";
 import { secondsToTime } from "../../utils";
 import SongOptionsMenu from "../modal/SongOptionsMenu";

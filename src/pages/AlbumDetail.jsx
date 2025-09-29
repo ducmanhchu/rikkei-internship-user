@@ -1,16 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { PencilIcon } from "@heroicons/react/24/outline";
-import { useDispatch } from "react-redux";
+import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 import useColorThief from "use-color-thief";
 
 import { openModal } from "../redux/modalSlice";
 import { songService } from "../services/song";
 import { albumService } from "../services/album";
+import UserTable from "../components/table/UserTable";
 import SongTable from "../components/table/SongTable";
+import PillButton from "../components/button/PillButton";
 
 export default function AlbumDetail() {
 	const dispatch = useDispatch();
+	const { user, roles } = useSelector((state) => state.auth);
 	const { albumID } = useParams();
 	const [songs, setSongs] = useState([]);
 	const [album, setAlbum] = useState(null);
@@ -33,7 +37,8 @@ export default function AlbumDetail() {
 					setAlbum(albumRes.data);
 
 					window.updateAlbumDetail = (updatedAlbum) => {
-						setAlbum(updatedAlbum);
+						setAlbum(updatedAlbum.album);
+						setSongs(updatedAlbum.songs);
 					};
 				}
 			} catch (error) {
@@ -48,6 +53,20 @@ export default function AlbumDetail() {
 			window.updateAlbumDetail = null;
 		};
 	}, []);
+
+	const removeSongFromAlbum = async (songId) => {
+		const toastId = toast.loading("Removing song from album...");
+		try {
+			const response = await songService.removeSongFromAlbum(albumID, songId);
+			if (response.success) {
+				toast.success("Song removed from album successfully", { id: toastId });
+				setSongs((prevSongs) => prevSongs.filter((song) => song.id !== songId));
+			}
+		} catch (error) {
+			toast.error("Failed to remove song from album", { id: toastId });
+			console.error("Error removing song from album:", error);
+		}
+	};
 
 	return (
 		<div>
@@ -74,20 +93,45 @@ export default function AlbumDetail() {
 						</h1>
 						<h4 className="font-medium text-md ">{album?.artistName}</h4>
 					</div>
-					<button
-						className="self-end cursor-pointer hover:scale-110 transition-transform duration-150"
-						onClick={() =>
-							dispatch(
-								openModal({ modalName: "ALBUM_INFO_MODAL", modalData: album })
-							)
-						}
-					>
-						<PencilIcon className="size-6 text-white" />
-					</button>
+					{user?.id === album?.artistId && roles === "ROLE_ARTIST" && (
+						<button
+							className="self-end cursor-pointer hover:scale-110 transition-transform duration-150"
+							onClick={() =>
+								dispatch(
+									openModal({
+										modalName: "ALBUM_INFO_MODAL",
+										modalData: { songs, album },
+									})
+								)
+							}
+						>
+							<PencilIcon className="size-6 text-white" />
+						</button>
+					)}
 				</div>
 			</div>
 			<div className="px-12 pb-8">
-				<SongTable songs={songs} />
+				{user?.id === album?.artistId && roles === "ROLE_ARTIST" && (
+					<div className="mb-4">
+						<PillButton
+							text="Add Song"
+							Icon={PlusIcon}
+							onClick={() =>
+								dispatch(
+									openModal({
+										modalName: "ADD_SONG_ALBUM_MODAL",
+										modalData: { songs, album },
+									})
+								)
+							}
+						/>
+					</div>
+				)}
+				{user?.id === album?.artistId && roles === "ROLE_ARTIST" ? (
+					<UserTable data={songs} onRemove={removeSongFromAlbum} />
+				) : (
+					<SongTable songs={songs} />
+				)}
 			</div>
 		</div>
 	);

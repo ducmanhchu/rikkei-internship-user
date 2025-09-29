@@ -16,6 +16,53 @@ export const songService = {
 		}
 	},
 
+	createSongToAlbum: async (
+		albumId,
+		title,
+		duration,
+		genresId = [],
+		songFile
+	) => {
+		try {
+			const formData = new FormData();
+			formData.append("albumId", albumId);
+			formData.append("title", title);
+			formData.append("duration", duration);
+			(genresId || []).forEach((id) => formData.append("genresId", id));
+			formData.append("songFile", songFile);
+
+			const response = await apiClient.post(`/song/create`, formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to create song in album"
+			);
+		}
+	},
+
+	removeSongFromAlbum: async (albumId, songId) => {
+		try {
+			const response = await apiClient.delete(
+				`/song/album/${albumId}/song/${songId}`
+			);
+
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to remove song from album"
+			);
+		}
+	},
+
 	increaseViewSong: async (songID) => {
 		try {
 			const response = await apiClient.post(`/song/${songID}/view`);
