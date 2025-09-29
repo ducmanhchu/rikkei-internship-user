@@ -72,7 +72,7 @@ export default function Sidebar({ isOpen, handleClick }) {
 				</div>
 
 				<nav>
-					<div className="px-2 mb-10">
+					<div className="px-2 mb-3">
 						{menuItems.map((item) => (
 							<Link
 								key={item.path}
@@ -101,7 +101,7 @@ export default function Sidebar({ isOpen, handleClick }) {
 						))}
 					</div>
 					{isLogin && (
-						<div className="px-2 mb-8">
+						<div className="px-2">
 							{additionalMenuItems.map((item) => (
 								<Link
 									key={item.path}

@@ -1,6 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+	UserIcon,
+	LockClosedIcon,
+	ArrowLeftStartOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 import { logout } from "../redux/authSlice";
 import { clearPlayer } from "../redux/playerSlice";
@@ -8,11 +13,6 @@ import { authService } from "../services/auth";
 import { openModal } from "../redux/modalSlice";
 import SearchBar from "../components/SearchBar";
 import HamburgerMenu from "../components/button/HamburgerMenu";
-import {
-	UserIcon,
-	LockClosedIcon,
-	ArrowLeftStartOnRectangleIcon,
-} from "@heroicons/react/24/outline";
 
 export default function Header({ onMenuClick, sidebarOpen }) {
 	const dispatch = useDispatch();
@@ -41,16 +41,27 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 				<div></div>
 				<SearchBar />
 				<div className="flex gap-2 items-center">
-					{/* <p className="hidden md:block text-[15px] text-white font-medium">
-						Languages
-					</p>
-					<img
-						className="hidden md:block"
-						src="/icons/languages.svg"
-						alt="Languages"
-					/> */}
 					{isLogin && user ? (
 						<div className="relative flex">
+							{roles === "ROLE_ARTIST" ? (
+								<button
+									className="cursor-pointer self-center bg-white rounded-full px-4 py-2 hover:scale-110 transition-transform duration-105 ease-in-out"
+									onClick={() => navigate("/library")}
+								>
+									<p className="text-black text-sm font-bold">
+										Getting Music Up
+									</p>
+								</button>
+							) : (
+								<button
+									className="cursor-pointer self-center bg-white rounded-full px-4 py-2 hover:scale-105 transition-transform duration-100 ease-in-out"
+									onClick={() => navigate("/subscription-plan")}
+								>
+									<p className="text-black text-sm font-bold">
+										Explore Premium
+									</p>
+								</button>
+							)}
 							<button
 								className="ms-4 cursor-pointer self-center"
 								onClick={() => setShowDropdown(!showDropdown)}

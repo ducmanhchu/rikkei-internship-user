@@ -105,7 +105,7 @@ export default function Profile() {
 				</div>
 			</div>
 
-			<div className="px-12 pb-8">
+			<div className="px-16 pb-8">
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Playlists
 				</h2>
@@ -116,7 +116,7 @@ export default function Profile() {
 				)}
 			</div>
 
-			<div className="px-12 pb-8 mb-8">
+			<div className="px-16 pb-8 mb-8">
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Featured Albums
 				</h2>

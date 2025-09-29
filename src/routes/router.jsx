@@ -17,6 +17,7 @@ import SearchResult from "../pages/SearchResult";
 import ShowAll from "../pages/ShowAll";
 import Library from "../pages/Library";
 import PlaylistDetail from "../pages/PlaylistDetail";
+import SubscriptionPlan from "../pages/SubscriptionPlan";
 
 export const router = createBrowserRouter([
 	{
@@ -83,6 +84,10 @@ export const router = createBrowserRouter([
 			{
 				path: "playlists/:playlistID",
 				element: <PlaylistDetail />,
+			},
+			{
+				path: "subscription-plan",
+				element: <SubscriptionPlan />,
 			},
 		],
 	},

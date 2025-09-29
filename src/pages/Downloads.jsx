@@ -14,7 +14,6 @@ export default function Downloads() {
 		const fetchDownloadedSongs = async () => {
 			try {
 				const response = await songService.getDownloadedSongs();
-				console.log(response.data);
 				if (response.success) {
 					setDownloadedSongs(response.data.map((item) => item.song));
 				}
