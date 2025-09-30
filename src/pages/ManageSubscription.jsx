@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
 	StarIcon,
@@ -7,10 +7,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 
+import { formatDate, formatCurrency } from "../utils";
 import { subscriptionService } from "../services/subscription";
+import { setSubscription } from "../redux/authSlice";
 
 export default function ManageSubscription() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const { subscription } = useSelector((state) => state.auth);
 
 	const handleCancelSubscription = async () => {
@@ -18,6 +21,7 @@ export default function ManageSubscription() {
 		try {
 			const res = await subscriptionService.cancelSubscription(subscription.id);
 			if (res.success) {
+				dispatch(setSubscription("Miraculous Free"));
 				toast.success("Subscription cancelled successfully", { id: toastId });
 			}
 		} catch (error) {
@@ -49,9 +53,9 @@ export default function ManageSubscription() {
 				</div>
 			)}
 			{subscription && subscription.name && (
-				<div className="w-1/2 rounded-md">
+				<div className="min-w-1/2 rounded-md flex">
 					<div className="w-1/2 shadow-2xl rounded-lg bg-gray-800 overflow-hidden">
-						<div className="bg-gray-300 px-6 py-8">
+						<div className="bg-[#3BC8E7] px-6 py-8">
 							<div className="flex items-center gap-2 mb-2">
 								{subscription?.name === "Artist Plan" && (
 									<MusicalNoteIcon className="size-6 text-black" />
@@ -64,13 +68,13 @@ export default function ManageSubscription() {
 								</h2>
 							</div>
 							<p className="text-black text-base">
-								Price: {subscription?.price}đ/month
+								Price: {formatCurrency(subscription?.price)}/month
 							</p>
 							<p className="text-black text-base">
-								Start Date: {subscription?.startTime.toLocaleDateString()}
+								Start Date: {formatDate(subscription?.startTime)}
 							</p>
 							<p className="text-black text-base">
-								End Date: {subscription?.endTime.toLocaleDateString()}
+								End Date: {formatDate(subscription?.endTime)}
 							</p>
 						</div>
 
@@ -90,7 +94,7 @@ export default function ManageSubscription() {
 								</div>
 							)}
 							<button
-								className="w-full cursor-pointer bg-gray-700 text-red-400 font-medium py-3 px-4 rounded-full border border-red-400 transition-transform duration-200 hover:scale-102"
+								className="w-full cursor-pointer bg-gray-700 text-red-400 font-medium mt-6 py-3 px-4 rounded-full border border-red-400 transition-transform duration-200 hover:scale-102"
 								onClick={handleCancelSubscription}
 							>
 								Cancel Subscription

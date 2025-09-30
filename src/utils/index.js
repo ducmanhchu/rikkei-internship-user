@@ -20,3 +20,20 @@ export function shuffleAround(array, fixedIndex) {
 	shuffleArray(array);
 	array.splice(fixedIndex, 0, fixedElement);
 }
+
+export function formatDate(dateString) {
+	if (!dateString) return "";
+	const date = new Date(dateString);
+	if (isNaN(date.getTime())) return "";
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	const year = date.getFullYear();
+	return `${day}/${month}/${year}`;
+}
+
+export function formatCurrency(amount) {
+	if (typeof amount !== "number" && typeof amount !== "string") return "";
+	const number = Number(amount);
+	if (isNaN(number)) return "";
+	return number.toLocaleString("vi-VN").replace(/,/g, ".") + "đ";
+}

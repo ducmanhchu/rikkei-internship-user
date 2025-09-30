@@ -44,17 +44,16 @@ export default function Header({ onMenuClick, sidebarOpen }) {
 				<div className="flex gap-2 items-center">
 					{isLogin && user ? (
 						<div className="relative flex">
-							{roles === "ROLE_ARTIST" ||
-								(subscription?.name === "Artist Plan" && (
-									<button
-										className="cursor-pointer self-center bg-white rounded-full px-4 py-2 hover:scale-110 transition-transform duration-105 ease-in-out"
-										onClick={() => navigate("/library")}
-									>
-										<p className="text-black text-sm font-bold">
-											Getting Music Up
-										</p>
-									</button>
-								))}
+							{subscription?.name === "Artist Plan" && (
+								<button
+									className="cursor-pointer self-center bg-white rounded-full px-4 py-2 hover:scale-110 transition-transform duration-105 ease-in-out"
+									onClick={() => navigate("/library")}
+								>
+									<p className="text-black text-sm font-bold">
+										Getting Music Up
+									</p>
+								</button>
+							)}
 							{subscription?.name === "Premium Plan" && (
 								<button
 									className="cursor-pointer self-center bg-white rounded-full px-4 py-2 hover:scale-105 transition-transform duration-100 ease-in-out"

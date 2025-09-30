@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 
 import { subscriptionService } from "../services/subscription";
 import { setSubscription } from "../redux/authSlice";
+import { formatCurrency } from "../utils";
 
 export default function SubscriptionPlan() {
 	const dispatch = useDispatch();
@@ -150,7 +151,9 @@ export default function SubscriptionPlan() {
 								</li>
 							)}
 						</ul>
-						<p className="text-white mb-4 text-xl">{plan.price}đ/month</p>
+						<p className="text-white mb-4 text-xl">
+							{formatCurrency(plan.price)}/month
+						</p>
 						<button
 							disabled={!isLogin || subscription?.name === plan.planName}
 							className={`w-full rounded-full cursor-pointer px-4 py-2 font-semibold transition-colors ${
