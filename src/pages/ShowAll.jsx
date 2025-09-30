@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useParams, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { albumService } from "../services/album";
 import { songService } from "../services/song";
 import { artistService } from "../services/artist";
 import { genreService } from "../services/genre";
+import { playlistService } from "../services/playlist";
 
 import AlbumCard from "../components/card/AlbumCard";
 import SongCard from "../components/card/SongCard";
@@ -12,10 +15,10 @@ import ArtistCard from "../components/card/ArtistCard";
 import GenreCard from "../components/card/GenreCard";
 
 export default function ShowAll() {
+	const { user } = useSelector((state) => state.auth);
 	const { type } = useParams();
 	const [searchParams] = useSearchParams();
 	const source = searchParams.get("source");
-
 	const [items, setItems] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -25,11 +28,13 @@ export default function ShowAll() {
 			"albums:featured": "Featured Albums",
 			"albums:recently-played": "Recently Played",
 			"albums:new-releases": "New Releases",
+			"albums:my-albums": "My Albums",
 			"songs:weekly": "Weekly Top",
 			"songs:new-releases": "New Releases",
 			"songs:top-all-time": "Top All Time",
 			"artists:featured": "Featured Artists",
 			"genres:top": "Top Genres",
+			"playlists:my-playlists": "My Playlists",
 		};
 		return map[`${type}:${source}`] || "All";
 	}, [type, source]);
@@ -59,6 +64,9 @@ export default function ShowAll() {
 							});
 							setItems(Array.from(uniqueAlbumById.values()));
 						}
+					} else if (source === "my-albums") {
+						response = await albumService.getAlbumsByArtist(user.id);
+						mounted && setItems(response.data || []);
 					} else {
 						mounted && setItems([]);
 					}
@@ -90,6 +98,13 @@ export default function ShowAll() {
 					} else {
 						mounted && setItems([]);
 					}
+				} else if (type === "playlists") {
+					if (source === "my-playlists") {
+						response = await playlistService.getPlaylists();
+						mounted && setItems(response.data || []);
+					} else {
+						mounted && setItems([]);
+					}
 				} else {
 					mounted && setItems([]);
 				}
@@ -104,7 +119,7 @@ export default function ShowAll() {
 		return () => {
 			mounted = false;
 		};
-	}, [type, source]);
+	}, [type, source, user]);
 
 	return (
 		<div className="px-12 py-8">
@@ -115,7 +130,56 @@ export default function ShowAll() {
 				</div>
 			</div>
 
-			{loading && <p className="text-gray-400 mx-8">Loading...</p>}
+			{loading && (
+				<div
+					className={`grid grid-cols-1 mx-8 mb-14 md:grid-cols-2 ${
+						type === "songs" ? "lg:grid-cols-3" : "lg:grid-cols-6"
+					}`}
+				>
+					{type === "albums" &&
+						Array.from({ length: 12 }).map((_, i) => (
+							<div key={i} className="px-1 py-2">
+								<div className="rounded-md p-2">
+									<Skeleton height={160} className="w-full" />
+									<Skeleton height={16} className="mt-2" />
+									<Skeleton height={12} width="75%" />
+								</div>
+							</div>
+						))}
+
+					{type === "songs" &&
+						Array.from({ length: 12 }).map((_, i) => (
+							<div key={i} className="p-2 pe-10 rounded-md">
+								<div className="flex items-center gap-3">
+									<Skeleton height={52} width={52} className="rounded-md" />
+									<div className="flex-1">
+										<Skeleton height={16} className="mb-2" />
+										<Skeleton height={12} width="60%" />
+									</div>
+									<Skeleton height={12} width={32} />
+								</div>
+							</div>
+						))}
+
+					{type === "artists" &&
+						Array.from({ length: 12 }).map((_, i) => (
+							<div key={i} className="px-1 py-2">
+								<div className="p-2 flex flex-col items-center">
+									<Skeleton circle width={160} height={160} />
+									<Skeleton height={16} className="mt-2" />
+									<Skeleton height={12} width="50%" />
+								</div>
+							</div>
+						))}
+
+					{type === "genres" &&
+						Array.from({ length: 12 }).map((_, i) => (
+							<div key={i} className="px-1 py-2">
+								<Skeleton height={128} className="rounded-md" />
+							</div>
+						))}
+				</div>
+			)}
 			{!loading && error && <p className="text-red-400 mx-8">{error}</p>}
 			{!loading && !error && items.length === 0 && (
 				<p className="text-gray-500 mx-8">No data available.</p>
@@ -130,6 +194,14 @@ export default function ShowAll() {
 					{type === "albums" &&
 						items.map((album, idx) => (
 							<AlbumCard key={album.id || album.albumId || idx} album={album} />
+						))}
+					{type === "playlists" &&
+						items.map((playlist, idx) => (
+							<AlbumCard
+								key={playlist.id || playlist.playlistId || idx}
+								album={playlist}
+								isPlaylist
+							/>
 						))}
 					{type === "songs" &&
 						items.map((song, idx) => (

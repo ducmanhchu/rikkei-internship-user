@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
@@ -9,17 +10,23 @@ import { songService } from "../services/song";
 export default function History() {
 	const [history, setHistory] = useState([]);
 	const { isLogin } = useSelector((state) => state.auth);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchHistory = async () => {
 			try {
+				setLoading(true);
 				const response = await songService.getPlayedHistory();
-
 				if (response.success) {
-					setHistory(response.data);
+					setHistory(response.data || []);
+				} else {
+					setHistory([]);
 				}
 			} catch (error) {
 				console.error("Error fetching history:", error);
+				setHistory([]);
+			} finally {
+				setLoading(false);
 			}
 		};
 
@@ -59,7 +66,20 @@ export default function History() {
 			</div>
 
 			<div className="grid mx-8 mb-10 gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-				{history.length === 0 ? (
+				{loading ? (
+					Array.from({ length: 12 }).map((_, i) => (
+						<div key={i} className="p-2 pe-10 rounded-md">
+							<div className="flex items-center gap-3">
+								<Skeleton height={52} width={52} className="rounded-md" />
+								<div className="flex-1">
+									<Skeleton height={16} className="mb-2" />
+									<Skeleton height={12} width="60%" />
+								</div>
+								<Skeleton height={12} width={32} />
+							</div>
+						</div>
+					))
+				) : history.length === 0 ? (
 					<p className="text-gray-500 text-md">No history available.</p>
 				) : (
 					history.map((song) => <SongCard key={song.id} song={song} />)

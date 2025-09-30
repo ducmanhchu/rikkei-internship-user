@@ -1,20 +1,28 @@
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 
 import ArtistCard from "../components/card/ArtistCard";
 import { artistService } from "../services/artist";
 
 export default function Artists() {
 	const [featuredArtists, setFeaturedArtists] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchFeaturedArtists = async () => {
 			try {
+				setLoading(true);
 				const response = await artistService.getFeaturedArtists();
 				if (response.success) {
-					setFeaturedArtists(response.data);
+					setFeaturedArtists(response.data || []);
+				} else {
+					setFeaturedArtists([]);
 				}
 			} catch (error) {
 				console.error("Error fetching featured artists:", error);
+				setFeaturedArtists([]);
+			} finally {
+				setLoading(false);
 			}
 		};
 
@@ -30,9 +38,17 @@ export default function Artists() {
 				</div>
 			</div>
 			<div className="mx-8 mb-8 grid md:grid-cols-2 lg:grid-cols-6">
-				{featuredArtists.map((item) => (
-					<ArtistCard key={item.id} artist={item} />
-				))}
+				{loading
+					? Array.from({ length: 6 }).map((_, i) => (
+							<div key={i} className="flex flex-col items-center p-2">
+								<Skeleton circle width={192} height={192} />
+								<Skeleton height={16} width={140} className="mt-4" />
+								<Skeleton height={12} width={80} />
+							</div>
+					  ))
+					: featuredArtists.map((item) => (
+							<ArtistCard key={item.id} artist={item} />
+					  ))}
 			</div>
 		</div>
 	);

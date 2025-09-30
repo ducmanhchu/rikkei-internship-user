@@ -39,8 +39,8 @@ function App() {
 				const response = await subscriptionService.getCurrentPlan();
 				if (response.success) {
 					if (
-						response.data[0].plan.planName === "Artist Plan" &&
-						response.data[0].status === "ACTIVE"
+						response?.data[0]?.plan.planName === "Artist Plan" &&
+						response?.data[0]?.status === "ACTIVE"
 					) {
 						dispatch(
 							setSubscription({
@@ -52,8 +52,8 @@ function App() {
 							})
 						);
 					} else if (
-						response.data[0].plan.planName === "Premium Plan" &&
-						response.data[0].status === "ACTIVE"
+						response?.data[0]?.plan.planName === "Premium Plan" &&
+						response?.data[0]?.status === "ACTIVE"
 					) {
 						dispatch(
 							setSubscription({

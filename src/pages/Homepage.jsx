@@ -12,6 +12,7 @@ import PillButton from "../components/button/PillButton";
 import ItemsCarousel from "../components/util/ItemsCarousel";
 import WeeklyItem from "../components/item/WeeklyItem";
 import GenreCard from "../components/card/GenreCard";
+import Skeleton from "react-loading-skeleton";
 
 export default function Homepage() {
 	const navigate = useNavigate();
@@ -26,9 +27,23 @@ export default function Homepage() {
 	const [topGenres, setTopGenres] = useState([]);
 	const [breakingSongs, setBreakingSongs] = useState([]);
 
+	const [loadingRecently, setLoadingRecently] = useState(false);
+	const [loadingWeekly, setLoadingWeekly] = useState(true);
+	const [loadingArtists, setLoadingArtists] = useState(true);
+	const [loadingNew, setLoadingNew] = useState(true);
+	const [loadingAlbums, setLoadingAlbums] = useState(true);
+	const [loadingGenres, setLoadingGenres] = useState(true);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				setLoadingWeekly(true);
+				setLoadingArtists(true);
+				setLoadingNew(true);
+				setLoadingAlbums(true);
+				setLoadingGenres(true);
+				if (isLogin) setLoadingRecently(true);
+
 				const promises = [
 					songService.getWeeklySongs(),
 					albumService.getFeaturedAlbums(),
@@ -61,6 +76,7 @@ export default function Homepage() {
 					} else {
 						setRecentlyPlayed([]);
 					}
+					setLoadingRecently(false);
 				}
 
 				const [
@@ -84,6 +100,7 @@ export default function Homepage() {
 					setWeeklySongs([]);
 					setBreakingSongs([]);
 				}
+				setLoadingWeekly(false);
 
 				// Featured Albums
 				if (
@@ -95,6 +112,7 @@ export default function Homepage() {
 				} else {
 					setFeaturedAlbums([]);
 				}
+				setLoadingAlbums(false);
 
 				// Featured Artists
 				if (
@@ -106,6 +124,7 @@ export default function Homepage() {
 				} else {
 					setFeaturedArtists([]);
 				}
+				setLoadingArtists(false);
 
 				// New Releases
 				if (
@@ -118,6 +137,7 @@ export default function Homepage() {
 				} else {
 					setNewReleases([]);
 				}
+				setLoadingNew(false);
 
 				// Genres
 				if (
@@ -131,8 +151,16 @@ export default function Homepage() {
 				} else {
 					setTopGenres([]);
 				}
+				setLoadingGenres(false);
 			} catch (error) {
 				console.error("Error fetching genres:", error);
+
+				setLoadingWeekly(false);
+				setLoadingArtists(false);
+				setLoadingNew(false);
+				setLoadingAlbums(false);
+				setLoadingGenres(false);
+				setLoadingRecently(false);
 			}
 		};
 
@@ -158,7 +186,11 @@ export default function Homepage() {
 						<span className="text-[#3BC8E7]">Record Breaking Songs!</span>
 					</h1>
 					<p className="text-[#777777] text-center text-base px-14 mb-4 leading-7 lg:text-start lg:ps-0">
-						{breakingSongs.join(", ")} and many more...
+						{loadingWeekly ? (
+							<Skeleton count={2} height={16} width="75%" />
+						) : (
+							breakingSongs.join(", ") + " and many more..."
+						)}
 					</p>
 					<PillButton text="Listen Now" onClick={handleListenNow} />
 				</div>
@@ -183,7 +215,19 @@ export default function Homepage() {
 							)}
 						</div>
 						<div className="mb-14">
-							{recentlyPlayed.length === 0 ? (
+							{loadingRecently ? (
+								<div className="flex mx-8 gap-4">
+									{Array.from({ length: 6 }).map((_, i) => (
+										<div key={i} className="flex-shrink-0 w-1/6">
+											<div className="rounded-md p-2">
+												<Skeleton height={160} className="w-full" />
+												<Skeleton height={16} className="mt-2" />
+												<Skeleton height={12} width="75%" />
+											</div>
+										</div>
+									))}
+								</div>
+							) : recentlyPlayed.length === 0 ? (
 								<p className="text-gray-500 text-md ms-8">
 									No recently played items available.
 								</p>
@@ -199,9 +243,22 @@ export default function Homepage() {
 					<span className="block h-0.5 w-5 rounded-md bg-[#3BC8E7]"></span>
 				</div>
 				<div className="grid grid-cols-1 mx-8 mb-14 gap-3 lg:grid-cols-3">
-					{weeklySongs.map((song, index) => (
-						<WeeklyItem key={song.id} item={song} index={index} isSong />
-					))}
+					{loadingWeekly
+						? Array.from({ length: 15 }).map((_, i) => (
+								<div key={i} className="p-2 pe-10 rounded-md">
+									<div className="flex items-center gap-3">
+										<Skeleton height={52} width={52} className="rounded-md" />
+										<div className="flex-1">
+											<Skeleton height={16} className="mb-2" />
+											<Skeleton height={12} width="60%" />
+										</div>
+										<Skeleton height={12} width={32} />
+									</div>
+								</div>
+						  ))
+						: weeklySongs.map((song, index) => (
+								<WeeklyItem key={song.id} item={song} index={index} isSong />
+						  ))}
 				</div>
 
 				<div className="flex justify-between mb-6 mx-8">
@@ -219,7 +276,21 @@ export default function Homepage() {
 					)}
 				</div>
 				<div className="mb-14">
-					<ItemsCarousel items={featuredArtists} isArtist />
+					{loadingArtists ? (
+						<div className="flex mx-8 gap-4">
+							{Array.from({ length: 6 }).map((_, i) => (
+								<div key={i} className="flex-shrink-0 w-1/6">
+									<div className="p-2">
+										<Skeleton circle height={160} width={160} />
+										<Skeleton height={16} className="mt-2" />
+										<Skeleton height={12} width="50%" />
+									</div>
+								</div>
+							))}
+						</div>
+					) : (
+						<ItemsCarousel items={featuredArtists} isArtist />
+					)}
 				</div>
 
 				<div className="flex justify-between mb-6 mx-8">
@@ -237,7 +308,26 @@ export default function Homepage() {
 					)}
 				</div>
 				<div className="mb-14">
-					<ItemsCarousel items={newReleases} isSong />
+					{loadingNew ? (
+						<div className="flex mx-8 gap-4">
+							{Array.from({ length: 4 }).map((_, i) => (
+								<div key={i} className="flex-shrink-0 w-1/4">
+									<div className="p-2">
+										<div className="flex items-center gap-3">
+											<Skeleton height={52} width={52} className="rounded-md" />
+											<div className="flex-1">
+												<Skeleton height={16} className="mb-2" />
+												<Skeleton height={12} width="60%" />
+											</div>
+											<Skeleton height={12} width={32} />
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					) : (
+						<ItemsCarousel items={newReleases} isSong />
+					)}
 				</div>
 
 				<div className="flex justify-between mb-6 mx-8">
@@ -255,7 +345,21 @@ export default function Homepage() {
 					)}
 				</div>
 				<div className="mb-14">
-					<ItemsCarousel items={featuredAlbums} isAlbum />
+					{loadingAlbums ? (
+						<div className="flex mx-8 gap-4">
+							{Array.from({ length: 6 }).map((_, i) => (
+								<div key={i} className="flex-shrink-0 w-1/6">
+									<div className="rounded-md p-2">
+										<Skeleton height={160} className="w-full" />
+										<Skeleton height={16} className="mt-2" />
+										<Skeleton height={12} width="75%" />
+									</div>
+								</div>
+							))}
+						</div>
+					) : (
+						<ItemsCarousel items={featuredAlbums} isAlbum />
+					)}
 				</div>
 
 				<div className="flex justify-between mb-6 mx-8">
@@ -273,13 +377,19 @@ export default function Homepage() {
 					)}
 				</div>
 				<div className="grid grid-cols-1 gap-3 mx-8 mb-14 md:grid-cols-2 lg:grid-cols-3">
-					{topGenres.map((item) => (
-						<GenreCard
-							key={item.id}
-							genre={item}
-							additionalClass="w-full h-32"
-						/>
-					))}
+					{loadingGenres
+						? Array.from({ length: 6 }).map((_, i) => (
+								<div key={i} className="w-full">
+									<Skeleton height={128} className="rounded-md" />
+								</div>
+						  ))
+						: topGenres.map((item) => (
+								<GenreCard
+									key={item.id}
+									genre={item}
+									additionalClass="w-full h-32"
+								/>
+						  ))}
 				</div>
 			</div>
 		</div>
