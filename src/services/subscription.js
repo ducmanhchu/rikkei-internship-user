@@ -21,8 +21,8 @@ export const subscriptionService = {
 			return { success: true, data: res.data };
 		} catch (error) {
 			const message =
+				error.response?.data?.data ||
 				error.response?.data?.message ||
-				error.message ||
 				"Failed to create order";
 			throw new Error(message);
 		}
@@ -34,7 +34,9 @@ export const subscriptionService = {
 			return { success: true, data: res.data };
 		} catch (error) {
 			throw new Error(
-				error.response?.data?.message || "Failed to fetch order status"
+				error.response?.data?.data ||
+					error.response?.data?.message ||
+					"Failed to fetch order status"
 			);
 		}
 	},
@@ -45,7 +47,22 @@ export const subscriptionService = {
 			return { success: true, data: res.data.data };
 		} catch (error) {
 			throw new Error(
-				error.response?.data?.message || "Failed to fetch current plan"
+				error.response?.data?.data ||
+					error.response?.data?.message ||
+					"Failed to fetch current plan"
+			);
+		}
+	},
+
+	cancelSubscription: async (id) => {
+		try {
+			const res = await apiClient.delete(`/subscription/${id}`);
+			return { success: true, data: res.data };
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.data ||
+					error.response?.data?.message ||
+					"Failed to cancel subscription"
 			);
 		}
 	},

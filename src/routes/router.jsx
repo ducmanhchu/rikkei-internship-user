@@ -18,6 +18,7 @@ import ShowAll from "../pages/ShowAll";
 import Library from "../pages/Library";
 import PlaylistDetail from "../pages/PlaylistDetail";
 import SubscriptionPlan from "../pages/SubscriptionPlan";
+import ManageSubscription from "../pages/ManageSubscription";
 
 export const router = createBrowserRouter([
 	{
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
 			{
 				path: "subscription-plan",
 				element: <SubscriptionPlan />,
+			},
+			{
+				path: "my-subscription",
+				element: <ManageSubscription />,
 			},
 		],
 	},

@@ -5,6 +5,7 @@ const initialState = {
 	user: null,
 	accessToken: undefined,
 	roles: null,
+	subscription: null,
 };
 
 const authSlice = createSlice({
@@ -31,8 +32,12 @@ const authSlice = createSlice({
 			state.user = action.payload.user;
 			state.roles = action.payload.user.roles?.at(0).roleName;
 		},
+		setSubscription: (state, action) => {
+			state.subscription = action.payload;
+		},
 	},
 });
 
-export const { login, logout, setUser, setAccessToken } = authSlice.actions;
+export const { login, logout, setUser, setAccessToken, setSubscription } =
+	authSlice.actions;
 export default authSlice.reducer;

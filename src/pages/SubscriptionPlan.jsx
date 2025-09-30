@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { StarIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 
 import { subscriptionService } from "../services/subscription";
+import { setSubscription } from "../redux/authSlice";
 
 export default function SubscriptionPlan() {
-	const { isLogin, user } = useSelector((state) => state.auth);
+	const dispatch = useDispatch();
+	const { isLogin, user, subscription } = useSelector((state) => state.auth);
 	const [plans, setPlans] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -29,7 +31,7 @@ export default function SubscriptionPlan() {
 			}
 		};
 		fetchPlans();
-	}, []);
+	}, [subscription]);
 
 	useEffect(() => {
 		if (!apptransid) return;
@@ -37,7 +39,41 @@ export default function SubscriptionPlan() {
 			try {
 				const res = await subscriptionService.getZaloPayOrderStatus(apptransid);
 				if (res?.data?.returncode === 1) {
-					toast.success("Payment successful");
+					const response = await subscriptionService.getCurrentPlan();
+					if (response.success) {
+						if (
+							response.data[0].plan.planName === "Artist Plan" &&
+							response.data[0].status === "ACTIVE"
+						) {
+							dispatch(
+								setSubscription({
+									id: response.data[0].id,
+									name: "Artist Plan",
+									price: response.data[0].plan.price,
+									startTime: response.data[0].startTime,
+									endTime: response.data[0].endTime,
+								})
+							);
+						} else if (
+							response.data[0].plan.planName === "Premium Plan" &&
+							response.data[0].status === "ACTIVE"
+						) {
+							dispatch(
+								setSubscription({
+									id: response.data[0].id,
+									name: "Premium Plan",
+									price: response.data[0].plan.price,
+									startTime: response.data[0].startTime,
+									endTime: response.data[0].endTime,
+								})
+							);
+						} else {
+							dispatch(setSubscription("Miraculous Free"));
+						}
+						toast.success("Payment successful");
+					}
+				} else {
+					toast.error("Payment failed");
 				}
 			} catch (e) {
 				toast.error(e.message);
@@ -116,7 +152,7 @@ export default function SubscriptionPlan() {
 						</ul>
 						<p className="text-white mb-4 text-xl">{plan.price}đ/month</p>
 						<button
-							disabled={!isLogin}
+							disabled={!isLogin || subscription?.name === plan.planName}
 							className={`w-full rounded-full cursor-pointer px-4 py-2 font-semibold transition-colors ${
 								isLogin
 									? "bg-[#3BC8E7] text-black hover:bg-[#71b9c9]"
@@ -124,7 +160,11 @@ export default function SubscriptionPlan() {
 							}`}
 							onClick={() => handleChoosePlan(plan.id)}
 						>
-							{isLogin ? "Choose Plan" : "Sign in to choose"}
+							{isLogin
+								? subscription?.name === plan.planName
+									? "Current Plan"
+									: "Choose Plan"
+								: "Sign in to choose"}
 						</button>
 					</div>
 				))}
