@@ -12,6 +12,8 @@ import PlaylistInfoModal from "./PlaylistInfoModal";
 import AddSongPlaylistModal from "./AddSongPlaylistModal";
 import AlbumInfoModal from "./AlbumInfoModal";
 import AddSongAlbumModal from "./AddSongAlbumModal";
+import EmailRequireModal from "./EmailRequireModal";
+import ResetPasswordModal from "./ResetPasswordModal";
 
 const MODAL_COMPONENTS = {
 	LOGIN_MODAL: LoginModal,
@@ -24,6 +26,8 @@ const MODAL_COMPONENTS = {
 	ADD_SONG_PLAYLIST_MODAL: AddSongPlaylistModal,
 	ALBUM_INFO_MODAL: AlbumInfoModal,
 	ADD_SONG_ALBUM_MODAL: AddSongAlbumModal,
+	EMAIL_REQUIRE_MODAL: EmailRequireModal,
+	RESET_PASSWORD_MODAL: ResetPasswordModal,
 };
 
 export default function ModalManager() {

@@ -42,30 +42,24 @@ export default function SubscriptionPlan() {
 				if (res?.data?.returncode === 1) {
 					const response = await subscriptionService.getCurrentPlan();
 					if (response.success) {
-						if (
-							response.data[0].plan.planName === "Artist Plan" &&
-							response.data[0].status === "ACTIVE"
-						) {
+						if (response?.data?.plan?.planName === "Artist Plan") {
 							dispatch(
 								setSubscription({
-									id: response.data[0].id,
+									id: response.data.id,
 									name: "Artist Plan",
-									price: response.data[0].plan.price,
-									startTime: response.data[0].startTime,
-									endTime: response.data[0].endTime,
+									price: response.data.plan.price,
+									startTime: response.data.startTime,
+									endTime: response.data.endTime,
 								})
 							);
-						} else if (
-							response.data[0].plan.planName === "Premium Plan" &&
-							response.data[0].status === "ACTIVE"
-						) {
+						} else if (response?.data?.plan?.planName === "Premium Plan") {
 							dispatch(
 								setSubscription({
-									id: response.data[0].id,
+									id: response.data.id,
 									name: "Premium Plan",
-									price: response.data[0].plan.price,
-									startTime: response.data[0].startTime,
-									endTime: response.data[0].endTime,
+									price: response.data.plan.price,
+									startTime: response.data.startTime,
+									endTime: response.data.endTime,
 								})
 							);
 						} else {
@@ -157,7 +151,9 @@ export default function SubscriptionPlan() {
 						<button
 							disabled={!isLogin || subscription?.name === plan.planName}
 							className={`w-full rounded-full cursor-pointer px-4 py-2 font-semibold transition-colors ${
-								isLogin
+								isLogin && subscription?.name === plan.planName
+									? "bg-gray-600 text-gray-300 cursor-not-allowed"
+									: isLogin
 									? "bg-[#3BC8E7] text-black hover:bg-[#71b9c9]"
 									: "bg-gray-600 text-gray-300 cursor-not-allowed"
 							}`}

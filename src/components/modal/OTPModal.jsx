@@ -60,13 +60,22 @@ export default function OTPModal({ data }) {
 				setTimeout(() => {
 					dispatch(closeModal());
 					setOtp(["", "", "", "", "", ""]);
-					dispatch(openModal({ modalName: "LOGIN_MODAL" }));
-				}, 2000);
+
+					if (data.type === "resetPassword") {
+						dispatch(
+							openModal({
+								modalName: "RESET_PASSWORD_MODAL",
+								modalData: { email: data.email },
+							})
+						);
+					} else {
+						dispatch(openModal({ modalName: "LOGIN_MODAL" }));
+					}
+				}, 1500);
 			}
 		} catch (error) {
 			setError(error.message || "Invalid OTP code");
 		} finally {
-			setMessage("");
 			setLoading(false);
 		}
 	};
@@ -89,7 +98,7 @@ export default function OTPModal({ data }) {
 
 	return (
 		<div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center overflow-auto p-4">
-			<div className="bg-[#3BC8E7] rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
+			<div className="bg-linear-to-b from-black to-gray-800 rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
 				<button
 					onClick={() => dispatch(closeModal())}
 					className="absolute top-3 right-6 text-white hover:text-gray-200 text-4xl font-light cursor-pointer"
@@ -138,7 +147,7 @@ export default function OTPModal({ data }) {
 					<button
 						type="submit"
 						disabled={loading}
-						className="w-full bg-white text-[#3BC8E7] py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="w-full text-black bg-[#3BC8E7] py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						{loading ? "Verifying..." : "Verify OTP"}
 					</button>

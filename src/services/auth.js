@@ -196,4 +196,35 @@ export const authService = {
 			);
 		}
 	},
+
+	forgotPassword: async (email) => {
+		try {
+			const response = await apiClient.put("/user/forgot", { email });
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.data ||
+					"OTP has been sent to your email for reset password failed"
+			);
+		}
+	},
+
+	resetPassword: async (email, newPassword, confirmPassword) => {
+		try {
+			const response = await apiClient.put("/user/reset", {
+				email,
+				newPassword,
+				confirmPassword,
+			});
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(error.response?.data?.data || "Password reset failed");
+		}
+	},
 };

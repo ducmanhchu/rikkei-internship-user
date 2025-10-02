@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { authService } from "./services/auth";
 import { setAccessToken, setUser, setSubscription } from "./redux/authSlice";
@@ -16,6 +16,7 @@ import ModalManager from "./components/modal/ModalManager";
 function App() {
 	const dispatch = useDispatch();
 	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const { isLogin } = useSelector((state) => state.auth);
 
 	useEffect(() => {
 		const fetchMe = async () => {
@@ -24,36 +25,6 @@ function App() {
 
 				if (response.success && response.data) {
 					dispatch(setUser({ user: response.data }));
-
-					const subscriptionResponse =
-						await subscriptionService.getCurrentPlan();
-					if (subscriptionResponse.success) {
-						if (subscriptionResponse?.data?.plan.planName === "Artist Plan") {
-							dispatch(
-								setSubscription({
-									id: subscriptionResponse.data.id,
-									name: "Artist Plan",
-									price: subscriptionResponse.data.plan.price,
-									startTime: subscriptionResponse.data.startTime,
-									endTime: subscriptionResponse.data.endTime,
-								})
-							);
-						} else if (
-							subscriptionResponse?.data?.plan.planName === "Premium Plan"
-						) {
-							dispatch(
-								setSubscription({
-									id: subscriptionResponse.data.id,
-									name: "Premium Plan",
-									price: subscriptionResponse.data.plan.price,
-									startTime: subscriptionResponse.data.startTime,
-									endTime: subscriptionResponse.data.endTime,
-								})
-							);
-						} else {
-							dispatch(setSubscription("Miraculous Free"));
-						}
-					}
 				}
 			} catch {
 				dispatch(setAccessToken(null));
@@ -61,6 +32,40 @@ function App() {
 		};
 		fetchMe();
 	}, []);
+
+	useEffect(() => {
+		const fetchSubscription = async () => {
+			const subscriptionResponse = await subscriptionService.getCurrentPlan();
+			if (subscriptionResponse.success) {
+				if (subscriptionResponse?.data?.plan.planName === "Artist Plan") {
+					dispatch(
+						setSubscription({
+							id: subscriptionResponse.data.id,
+							name: "Artist Plan",
+							price: subscriptionResponse.data.plan.price,
+							startTime: subscriptionResponse.data.startTime,
+							endTime: subscriptionResponse.data.endTime,
+						})
+					);
+				} else if (
+					subscriptionResponse?.data?.plan.planName === "Premium Plan"
+				) {
+					dispatch(
+						setSubscription({
+							id: subscriptionResponse.data.id,
+							name: "Premium Plan",
+							price: subscriptionResponse.data.plan.price,
+							startTime: subscriptionResponse.data.startTime,
+							endTime: subscriptionResponse.data.endTime,
+						})
+					);
+				} else {
+					dispatch(setSubscription("Miraculous Free"));
+				}
+			}
+		};
+		fetchSubscription();
+	}, [isLogin]);
 
 	const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 

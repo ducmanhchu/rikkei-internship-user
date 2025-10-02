@@ -116,17 +116,19 @@ export default function Library() {
 					</div>
 
 					<div className="grid grid-cols-1 mx-8 mb-3 md:grid-cols-2 lg:grid-cols-6">
-						{loadingAlbums
-							? Array.from({ length: 6 }).map((_, i) => (
-									<div key={i} className="rounded-md p-2">
-										<Skeleton height={160} className="w-full" />
-										<Skeleton height={16} className="mt-2" />
-										<Skeleton height={12} width="75%" />
-									</div>
-							  ))
-							: albums.map((album) => (
-									<AlbumCard key={album.id} album={album} />
-							  ))}
+						{loadingAlbums ? (
+							Array.from({ length: 6 }).map((_, i) => (
+								<div key={i} className="rounded-md p-2">
+									<Skeleton height={160} className="w-full" />
+									<Skeleton height={16} className="mt-2" />
+									<Skeleton height={12} width="75%" />
+								</div>
+							))
+						) : albums.length > 0 ? (
+							albums.map((album) => <AlbumCard key={album.id} album={album} />)
+						) : (
+							<p className="text-gray-400 mt-2">No albums available.</p>
+						)}
 					</div>
 					{albums.length > 12 && (
 						<p
@@ -165,7 +167,7 @@ export default function Library() {
 						<AlbumCard key={playlist.id} album={playlist} isPlaylist />
 					))
 				) : (
-					<p className="text-white mt-2">No playlists available.</p>
+					<p className="text-gray-400 mt-2">No playlists available.</p>
 				)}
 			</div>
 			{playlists.length > 12 && (
