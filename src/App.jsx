@@ -64,7 +64,7 @@ function App() {
 				}
 			}
 		};
-		fetchSubscription();
+		if (isLogin) fetchSubscription();
 	}, [isLogin]);
 
 	const toggleSidebar = () => setSidebarOpen(!sidebarOpen);

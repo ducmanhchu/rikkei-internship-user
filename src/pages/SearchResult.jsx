@@ -58,7 +58,10 @@ export default function SearchResult() {
 					setArtistResults([]);
 				}
 
-				if (playlistResults.status === "fulfilled") {
+				if (
+					playlistResults.status === "fulfilled" &&
+					playlistResults.value.length > 0
+				) {
 					const publicPlaylist = playlistResults.value.data.filter(
 						(item) => item.isPublic
 					);
