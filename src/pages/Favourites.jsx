@@ -14,6 +14,7 @@ export default function Favourites() {
 		const fetchFavourites = async () => {
 			try {
 				const favourites = await songService.getFavouriteSongs();
+				console.log("favourites", favourites);
 				if (favourites.success) {
 					setFavouriteSongs(favourites.data.reverse());
 				}
