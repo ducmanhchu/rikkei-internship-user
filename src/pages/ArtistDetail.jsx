@@ -56,7 +56,11 @@ export default function ArtistDetail() {
 				<img
 					ref={imageRef}
 					crossOrigin="anonymous"
-					src={songs[0]?.artist?.profileImage || songs?.profileImage}
+					src={
+						songs[0]?.artist?.profileImage ||
+						songs?.profileImage ||
+						"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+					}
 					className="w-32 h-32 object-cover shadow-xl/30 rounded-full lg:w-52 lg:h-52"
 					alt="Artist Image"
 				/>

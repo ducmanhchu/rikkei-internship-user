@@ -37,6 +37,7 @@ export default function SubscriptionPlan() {
 	useEffect(() => {
 		if (!apptransid) return;
 		(async () => {
+			const toastId = toast.loading("Checking payment status...");
 			try {
 				const res = await subscriptionService.getZaloPayOrderStatus(apptransid);
 				if (res?.data?.returncode === 1) {
@@ -65,13 +66,13 @@ export default function SubscriptionPlan() {
 						} else {
 							dispatch(setSubscription("Miraculous Free"));
 						}
-						toast.success("Payment successful");
+						toast.success("Payment successful", { id: toastId });
 					}
 				} else {
-					toast.error("Payment failed");
+					toast.error("Payment failed", { id: toastId });
 				}
 			} catch (e) {
-				toast.error(e.message);
+				toast.error(e.message, { id: toastId });
 			}
 		})();
 	}, [apptransid]);

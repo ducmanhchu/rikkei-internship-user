@@ -16,7 +16,6 @@ export default function AddSongAlbumModal({ data }) {
 	const [songFile, setSongFile] = useState(null);
 	const [loadingGenres, setLoadingGenres] = useState(false);
 	const [submitting, setSubmitting] = useState(false);
-	console.log("data", data);
 
 	useEffect(() => {
 		const fetchGenres = async () => {
