@@ -41,8 +41,19 @@ export default function SubscriptionPlan() {
 			try {
 				const res = await subscriptionService.getZaloPayOrderStatus(apptransid);
 				if (res?.data?.returncode === 1) {
-					const response = await subscriptionService.getCurrentPlan();
-					if (response.success) {
+					let response = null;
+					let retries = 0;
+					const maxRetries = 3;
+					const delay = (ms) =>
+						new Promise((resolve) => setTimeout(resolve, ms));
+					do {
+						response = await subscriptionService.getCurrentPlan();
+						if (response && response.data) break;
+						retries++;
+						await delay(1000);
+					} while (retries < maxRetries);
+
+					if (response && response.success && response.data) {
 						if (response?.data?.plan?.planName === "Artist Plan") {
 							dispatch(
 								setSubscription({

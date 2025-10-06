@@ -62,7 +62,7 @@ export default function UserTable({ data, onRemove, isDownloaded }) {
 								<td className="py-4 px-4 text-gray-300">
 									{secondsToTime(song.duration)}
 								</td>
-								<td className="flex gap-4 justify-center items-center py-4 px-4 text-center">
+								<td className="flex gap-10 justify-center items-center py-4 px-4 text-center">
 									<button
 										ref={getAnchorRef(song.id)}
 										className="flex gap-0.5 mt-1.5 ms-2 pb-1.5 cursor-pointer hover:scale-115 transition-transform duration-150"

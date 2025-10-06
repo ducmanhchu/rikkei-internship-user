@@ -40,9 +40,8 @@ export default function GenreDetail() {
 					setSongs(songsRes.data);
 					const albums = new Map();
 					songsRes.data.forEach((item) => {
-						const albumId = item.albumId;
-						if (!albums.has(albumId)) {
-							albums.set(albumId, item);
+						if (!albums.has(item.album.id)) {
+							albums.set(item.album.id, item);
 						}
 					});
 					setAlbums(Array.from(albums.values()));
