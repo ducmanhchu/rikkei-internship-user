@@ -57,6 +57,7 @@ export default function OTPModal({ data }) {
 			setMessage("Verification successful!");
 
 			if (result.success) {
+				setLoading(false);
 				setTimeout(() => {
 					dispatch(closeModal());
 					setOtp(["", "", "", "", "", ""]);
@@ -74,21 +75,23 @@ export default function OTPModal({ data }) {
 				}, 1500);
 			}
 		} catch (error) {
-			setError(error.message || "Invalid OTP code");
-		} finally {
 			setLoading(false);
+			setError(error.message || "Invalid OTP code");
 		}
 	};
 
 	const handleResend = async () => {
 		setError("");
-
+		setLoading(true);
 		try {
-			await authService.resendOTP(data.email);
-			setMessage("OTP resent successfully!");
-			setCountdown(60);
-			setOtp(["", "", "", "", "", ""]);
-			inputRefs.current[0].focus();
+			const result = await authService.resendOTP(data.email);
+
+			if (result.success) {
+				setMessage("OTP resent successfully!");
+				setCountdown(60);
+				setOtp(["", "", "", "", "", ""]);
+				inputRefs.current[0].focus();
+			}
 		} catch (error) {
 			setError(error.message || "Failed to resend OTP");
 		} finally {
@@ -147,9 +150,9 @@ export default function OTPModal({ data }) {
 					<button
 						type="submit"
 						disabled={loading}
-						className="w-full text-black bg-[#3BC8E7] py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="w-full cursor-pointer text-black bg-[#3BC8E7] py-3 rounded-full font-semibold hover:bg-[#099bbc] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
 					>
-						{loading ? "Verifying..." : "Verify OTP"}
+						{loading ? "Processing..." : "Verify"}
 					</button>
 				</form>
 
