@@ -5,6 +5,7 @@ import useColorThief from "use-color-thief";
 import Skeleton from "react-loading-skeleton";
 
 import { authService } from "../services/auth";
+import { songService } from "../services/song";
 import { playlistService } from "../services/playlist";
 import { openModal } from "../redux/modalSlice";
 import { setUser } from "../redux/authSlice";
@@ -13,12 +14,14 @@ import ItemsCarousel from "../components/util/ItemsCarousel";
 export default function Profile() {
 	const dispatch = useDispatch();
 	const { user, roles } = useSelector((state) => state.auth);
+	const [recentlyPlayed, setRecentlyPlayed] = useState([]);
 	const [playlists, setPlaylists] = useState([]);
 	const { color } = useColorThief(user?.profileImage, {
 		format: "hex",
 	});
 
 	const [loadingProfile, setLoadingProfile] = useState(true);
+	const [loadingRecentlyPlayed, setLoadingRecentlyPlayed] = useState(true);
 	const [loadingPlaylists, setLoadingPlaylists] = useState(true);
 
 	useEffect(() => {
@@ -39,6 +42,26 @@ export default function Profile() {
 	}, []);
 
 	useEffect(() => {
+		const fetchRecentlyPlayed = async () => {
+			try {
+				setLoadingRecentlyPlayed(true);
+				const recentlyPlayedRes = await songService.getPlayedHistory();
+				if (recentlyPlayedRes.success) {
+					const recentlyAlbums = new Map();
+					(recentlyPlayedRes.data || []).forEach((item) => {
+						if (!recentlyAlbums.has(item.album.id)) {
+							recentlyAlbums.set(item.album.id, item);
+						}
+					});
+					setRecentlyPlayed(Array.from(recentlyAlbums.values()));
+				}
+			} catch (error) {
+				console.error("Error fetching recently played:", error);
+			} finally {
+				setLoadingRecentlyPlayed(false);
+			}
+		};
+
 		const fetchPlaylists = async () => {
 			try {
 				setLoadingPlaylists(true);
@@ -52,6 +75,8 @@ export default function Profile() {
 				setLoadingPlaylists(false);
 			}
 		};
+
+		fetchRecentlyPlayed();
 		fetchPlaylists();
 	}, [user]);
 
@@ -131,6 +156,31 @@ export default function Profile() {
 				</div>
 			</div>
 
+			<div className="px-16 pb-4">
+				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
+					Recently Played
+				</h2>
+				{loadingRecentlyPlayed ? (
+					<div className="flex mx-8 gap-4">
+						{Array.from({ length: 6 }).map((_, i) => (
+							<div key={i} className="flex-shrink-0 w-1/6">
+								<div className="rounded-md p-2">
+									<Skeleton height={160} className="w-full" />
+									<Skeleton height={16} className="mt-2" />
+									<Skeleton height={12} width="75%" />
+								</div>
+							</div>
+						))}
+					</div>
+				) : recentlyPlayed?.length > 0 ? (
+					<ItemsCarousel items={recentlyPlayed ?? []} isAlbum />
+				) : (
+					<p className="text-gray-400 my-4">
+						No recently played items available.
+					</p>
+				)}
+			</div>
+
 			<div className="px-16 pb-8">
 				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
 					Playlists
@@ -154,28 +204,30 @@ export default function Profile() {
 				)}
 			</div>
 
-			<div className="px-16 pb-8 mb-8">
-				<h2 className="text-white text-xl font-semibold mb-3 mt-8">
-					Featured Albums
-				</h2>
-				{loadingProfile ? (
-					<div className="flex mx-8 gap-4">
-						{Array.from({ length: 6 }).map((_, i) => (
-							<div key={i} className="flex-shrink-0 w-1/6">
-								<div className="rounded-md p-2">
-									<Skeleton height={160} className="w-full" />
-									<Skeleton height={16} className="mt-2" />
-									<Skeleton height={12} width="75%" />
+			{roles === "ROLE_ARTIST" && (
+				<div className="px-16 pb-8 mb-8">
+					<h2 className="text-white text-xl font-semibold mb-3 mt-8">
+						Featured Albums
+					</h2>
+					{loadingProfile ? (
+						<div className="flex mx-8 gap-4">
+							{Array.from({ length: 6 }).map((_, i) => (
+								<div key={i} className="flex-shrink-0 w-1/6">
+									<div className="rounded-md p-2">
+										<Skeleton height={160} className="w-full" />
+										<Skeleton height={16} className="mt-2" />
+										<Skeleton height={12} width="75%" />
+									</div>
 								</div>
-							</div>
-						))}
-					</div>
-				) : user?.albums?.length > 0 ? (
-					<ItemsCarousel items={user.albums ?? []} isAlbum />
-				) : (
-					<p className="text-gray-400 my-4">No albums available.</p>
-				)}
-			</div>
+							))}
+						</div>
+					) : user?.albums?.length > 0 ? (
+						<ItemsCarousel items={user.albums ?? []} isAlbum />
+					) : (
+						<p className="text-gray-400 my-4">No albums available.</p>
+					)}
+				</div>
+			)}
 		</div>
 	);
 }
