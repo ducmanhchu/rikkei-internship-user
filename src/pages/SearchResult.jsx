@@ -60,19 +60,15 @@ export default function SearchResult() {
 
 				if (
 					playlistResults.status === "fulfilled" &&
-					playlistResults.value.length > 0
+					playlistResults.value.data.length > 0
 				) {
 					const publicPlaylist = playlistResults.value.data.filter(
 						(item) => item.isPublic
 					);
 					const privatePlaylist = playlistResults.value.data.filter(
-						(item) => !item.isPublic
+						(item) => !item.isPublic && item.userId === user?.id
 					);
-					if (
-						user &&
-						privatePlaylist.length > 0 &&
-						user.id === privatePlaylist[0].userId
-					) {
+					if (user && privatePlaylist.length > 0) {
 						setPlaylistResults([...publicPlaylist, ...privatePlaylist]);
 					} else {
 						setPlaylistResults(publicPlaylist);
@@ -82,7 +78,7 @@ export default function SearchResult() {
 					setPlaylistResults([]);
 				}
 			} catch (err) {
-				setError("Có lỗi xảy ra khi tìm kiếm");
+				setError("Error searching");
 				console.error("Search error:", err);
 			} finally {
 				setLoading(false);
