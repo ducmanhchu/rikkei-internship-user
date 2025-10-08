@@ -2,12 +2,14 @@ import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { XMarkIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { closeModal } from "../../redux/modalSlice";
 import { albumService } from "../../services/album";
 
 export default function AlbumInfoModal({ data }) {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const fileInputRef = useRef(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
@@ -90,6 +92,26 @@ export default function AlbumInfoModal({ data }) {
 		fileInputRef.current?.click();
 	};
 
+	const handleRemove = async (albumId) => {
+		setLoading(true);
+		setMessage("");
+		setError("");
+		const toastId = toast.loading("Removing album...");
+		try {
+			const response = await albumService.removeAlbum(albumId);
+			if (response.success) {
+				toast.success("Album removed successfully", { id: toastId });
+				dispatch(closeModal());
+				navigate("/");
+			}
+		} catch (error) {
+			toast.error("Failed to remove album", { id: toastId });
+			console.error("Error removing album:", error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4">
 			<div className="w-[30vw] bg-gradient-to-b from-black to-gray-800 shadow-2xl/30 rounded-md p-8">
@@ -164,50 +186,21 @@ export default function AlbumInfoModal({ data }) {
 							setNewAlbumData((prev) => ({ ...prev, title: e.target.value }))
 						}
 					/>
-
-					{/* <label className="text-white font-semibold text-sm mb-2">
-						Type
-					</label>
-					<div className="flex gap-6 mb-6">
-						<label className="flex items-center gap-2 text-white">
-							<input
-								type="radio"
-								name="type"
-								value="FREE"
-								checked={newAlbumData.type === "FREE"}
-								onChange={() =>
-									setNewAlbumData((prev) => ({
-										...prev,
-										type: "FREE",
-									}))
-								}
-							/>
-							Free
-						</label>
-						<label className="flex items-center gap-2 text-white">
-							<input
-								type="radio"
-								name="type"
-								value="PREMIUM"
-								checked={newAlbumData.type === "PREMIUM"}
-								onChange={() =>
-									setNewAlbumData((prev) => ({
-										...prev,
-										type: "PREMIUM",
-									}))
-								}
-							/>
-							Premium
-						</label>
-					</div> */}
-
-					<button
-						className="flex-1 text-black font-semibold bg-[#3BC8E7] px-4 py-2 rounded-full cursor-pointer hover:bg-[#3BC8E7]/80 disabled:opacity-50 disabled:cursor-not-allowed"
-						onClick={handleSave}
-						disabled={loading || !newAlbumData.title.trim()}
-					>
-						{loading ? "Saving..." : "Save"}
-					</button>
+					<div className="flex gap-2">
+						<button
+							className="flex-1 text-black font-semibold bg-[#3BC8E7] px-4 py-2 rounded-full cursor-pointer hover:bg-[#3BC8E7]/80 disabled:opacity-50 disabled:cursor-not-allowed"
+							onClick={handleSave}
+							disabled={loading || !newAlbumData.title.trim()}
+						>
+							{loading ? "Saving..." : "Save"}
+						</button>
+						<button
+							className="text-black font-semibold bg-red-500 px-4 py-2 rounded-full cursor-pointer hover:bg-red-500/80"
+							onClick={() => handleRemove(data.album.id)}
+						>
+							Remove
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

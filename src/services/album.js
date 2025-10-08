@@ -138,4 +138,18 @@ export const albumService = {
 			throw new Error(errorMessage);
 		}
 	},
+
+	removeAlbum: async (id) => {
+		try {
+			const response = await apiClient.delete(`/album/${id}/delete`);
+			return {
+				success: true,
+				data: response.data.data,
+			};
+		} catch (error) {
+			throw new Error(
+				error.response?.data?.message || "Failed to remove album"
+			);
+		}
+	},
 };
